@@ -1,0 +1,13 @@
+{
+    "hello": "Herzlich Willkommen!",
+    "content": "Dies ist Inhalt.",
+
+    "numbers": {
+        "one": "Eins",
+        "two": "Zwei",
+        "three": "Drei",
+        "four": "Vier"
+    },
+
+    "helloHTML": "<h2>Hallo Welt</h2>"
+}

@@ -1,0 +1,13 @@
+{
+    "hello": "Hello World!",
+    "content": "This is content.",
+
+    "numbers": {
+        "one": "One",
+        "two": "Two",
+        "three": "Three",
+        "four": "Four"
+    },
+
+    "helloHTML": "<h2>Hello World</h2>"
+}

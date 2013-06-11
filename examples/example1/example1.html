@@ -1,0 +1,63 @@
+<!doctype html>
+<html ng-app="MyApp">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width">
+	<title>Example 1 - ng-i18next</title>
+
+	<style>
+		.italic {
+			font-style: italic;
+		}
+		.m50 {
+			margin-left: 50px;
+		}
+	</style>
+
+	<script src="../components/angular/angular.js"></script>
+	<script src="../components/i18next/i18next-1.6.3.min.js"></script>
+	<script src="../../ng-i18next.js"></script>
+	<script src="example1.js"></script>
+
+</head>
+
+<body>
+	<div ng-controller="MyCtrl">
+
+		<h1>Example 1</h1>
+
+		<p>&nbsp;</p>
+
+		<h3>Simple Strings</h3>
+		<div class="m50">
+			<p>Translate "hello"</p>
+			<p class="italic" ng-i18next="hello"></p>
+
+			<br>
+
+			<p>Translate "{{hello}}"</p>
+			<p class="italic" ng-i18next="{{hello}}"></p>
+
+			<br>
+
+			<p>Translate some numbers</p>
+			<p class="italic" ng-repeat="number in numbers" ng-i18next="numbers.{{number}}"></p>
+		</div>
+
+		<p>&nbsp;</p>
+
+		<h3>Strings with HTML <em>doesn't work, yet!</em></h3>
+		<div class="m50">
+			<p>Translate "hello"</p>
+			<p class="italic" ng-i18next="[html]helloHTML"></p>
+
+			<br>
+
+			<p>Translate "{{hello}}"</p>
+			<p class="italic" ng-i18next="[html]{{helloHTML}}"></p>
+		</div>
+
+	</div>
+</body>
+</html>
