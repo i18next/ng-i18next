@@ -40,22 +40,56 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 		translated = [];
 
 	/**
-	 * Translate the string given by the ng-i18next attribute and put it into the element.
+	 * Translate the string given by the ng-i18next attribute and put it into the element as
+	 * text or as an attribute.
 	 * @param {DOMElement} element     Element with the ng-i18next attribute
-	 * @param {String} translateString The string we want to translate
-	 * @param {Boolean} retranslate    Whether it is the first time we translate the element or not
+	 * @param {String}     key         The string we want to translate
+	 * @param {Boolean}    retranslate Whether it is the first time we translate the element or not
 	 */
-	function setText(element, translateString, retranslate) {
+	function parse(element, key, retranslate) {
+
+		/**
+		 * Default attribute we'll put the translated string into
+		 * (text means that it's the element's content)
+		 * @type {String}
+		 */
+		var attr = 'text';
 
 		if (!retranslate) {
 			translated[translated.length] = function () {
-				setText(element, translateString, true);
+				parse(element, key, true);
 			};
 		}
 
 		if (t !== null) {
+			/*
+			 * Check if we want to translate an attribute
+			 */
+			if (key.indexOf('[') === 0) {
+				var parts = key.split(']');
+				key = parts[1];
+				attr = parts[0].substr(1, parts[0].length - 1);
+			}
+			/*
+			 * Cut of the ";" that might be at the end of the string
+			 */
+			if (key.indexOf(';') === key.length - 1) {
+				key = key.substr(0, key.length - 2);
+			}
 
-			element.text(t(translateString));
+			if (attr === 'html') {
+
+				element.html(t(key));
+
+			} else if (attr === 'text') {
+
+				element.text(t(key));
+
+			} else {
+
+				element.attr(attr, t(key));
+
+			}
 
 		} else {
 			/*
@@ -65,11 +99,31 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 			 * i18next is ready.
 			 */
 			callbacks[callbacks.length] = function () {
-				setText(element, translateString);
+				parse(element, key);
 			};
 		}
 
 	}
+
+
+	function localize(element, key) {
+
+		if (key.indexOf(';') >= 0) {
+
+			var keys = key.split(';');
+
+			for (var i = 0; i < keys.length; i++) {
+				if (keys[i] !== '') {
+					parse(element, keys[i]);
+				}
+			}
+
+		} else {
+			parse(element, key);
+		}
+
+	}
+
 	/**
 	 * Initializes i18next
 	 * @param {Boolean} reinitialization Have the options (in $rootScope) changed, so
@@ -129,7 +183,7 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 					return;
 				}
 
-				setText(element, value);
+				localize(element, value);
 
 			});
 
