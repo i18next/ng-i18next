@@ -22,7 +22,7 @@
  *           console.log(i18n.t('hello'));
  *       });
  */
-angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
+angular.module('i18next', []).directive('ngI18next', function ($rootScope, $interpolate) {
 
 	'use strict';
 
@@ -46,7 +46,7 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 	 * @param {String}     key         The string we want to translate
 	 * @param {Boolean}    retranslate Whether it is the first time we translate the element or not
 	 */
-	function parse(element, key, retranslate) {
+	function parse(scope, element, key, retranslate) {
 
 		/**
 		 * Default attribute we'll put the translated string into
@@ -57,7 +57,7 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 
 		if (!retranslate) {
 			translated[translated.length] = function () {
-				parse(element, key, true);
+				parse(scope, element, key, true);
 			};
 		}
 
@@ -77,17 +77,22 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 				key = key.substr(0, key.length - 2);
 			}
 
+			/*
+			 * Bind variables to the scope (doesn't watch for changes)
+			 */
+			var string = $interpolate(t(key))(scope);
+
 			if (attr === 'html') {
 
-				element.html(t(key));
+				element.html(string);
 
 			} else if (attr === 'text') {
 
-				element.text(t(key));
+				element.text(string);
 
 			} else {
 
-				element.attr(attr, t(key));
+				element.attr(attr, string);
 
 			}
 
@@ -99,14 +104,14 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 			 * i18next is ready.
 			 */
 			callbacks[callbacks.length] = function () {
-				parse(element, key);
+				parse(scope, element, key);
 			};
 		}
 
 	}
 
 
-	function localize(element, key) {
+	function localize(scope, element, key) {
 
 		if (key.indexOf(';') >= 0) {
 
@@ -114,12 +119,12 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 
 			for (var i = 0; i < keys.length; i++) {
 				if (keys[i] !== '') {
-					parse(element, keys[i]);
+					parse(scope, element, keys[i]);
 				}
 			}
 
 		} else {
-			parse(element, key);
+			parse(scope, element, key);
 		}
 
 	}
@@ -174,6 +179,8 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 		// 'A': only as attribute
 		restrict: 'A',
 
+		scope: true,
+
 		link: function postLink(scope, element, attrs) {
 
 			attrs.$observe('ngI18next', function (value) {
@@ -183,7 +190,7 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope) {
 					return;
 				}
 
-				localize(element, value);
+				localize(scope, element, value);
 
 			});
 

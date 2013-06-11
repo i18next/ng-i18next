@@ -22,6 +22,13 @@ angular.module('MyApp').controller('MyCtrl', function ($rootScope, $scope) {
 	$scope.hello = "content"
 	$scope.helloHTML = "<h3>content</h3>"
 
-  $scope.date = new Date();
+	$scope.date = new Date();
+
+	window.setTimeout(function () {
+		console.log('Time should change!');
+		$scope.$apply(function () {
+			$scope.date = 'Should change!';
+		});
+	}, 3000);
 
 });

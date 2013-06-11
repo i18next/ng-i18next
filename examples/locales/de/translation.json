@@ -10,5 +10,5 @@
     },
 
     "helloHTML": "<h2>Hallo Welt</h2>",
-    "dynamic": "hiii {{date}}"
+    "dynamic": "Aktuelles Datum {{date}}"
 }
