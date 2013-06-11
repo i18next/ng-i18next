@@ -22,4 +22,6 @@ angular.module('MyApp').controller('MyCtrl', function ($rootScope, $scope) {
 	$scope.hello = "content"
 	$scope.helloHTML = "<h3>content</h3>"
 
+  $scope.date = new Date();
+
 });
