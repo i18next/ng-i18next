@@ -10,5 +10,7 @@
     },
 
     "helloHTML": "<h2>Hallo Welt</h2>",
-    "dynamic": "Aktuelles Datum {{date}}"
+    "dynamic": "Aktuelles Datum {{date}}",
+    "sayHello": "Sag <button ng-click='sayHello()'>hallo</button> wenn darauf geklickt"
+
 }
