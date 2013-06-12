@@ -24,9 +24,9 @@ angular.module('MyApp').controller('MyCtrl', function ($rootScope, $scope) {
 
 	$scope.date = new Date();
 
-  $scope.sayHello = function sayHello() {
-    alert('hello');
-  }
+	$scope.sayHello = function sayHello() {
+		alert('hello');
+	};
 
 	window.setTimeout(function () {
 		console.log('Time should change!');
