@@ -10,6 +10,9 @@
 		.italic {
 			font-style: italic;
 		}
+		.mBottom {
+			margin-bottom: 30px;
+		}
 		.m50 {
 			margin-left: 50px;
 		}
@@ -32,58 +35,54 @@
 		<h3>Simple Strings</h3>
 		<div class="m50">
 			<p>Translate "hello"</p>
-			<p class="italic" ng-i18next="hello"></p>
-
-			<br>
+			<p class="italic mBottom" ng-i18next="hello"></p>
 
 			<p>Translate "{{hello}}"</p>
-			<p class="italic" ng-i18next="{{hello}}"></p>
+			<p class="italic mBottom" ng-i18next="{{hello}}"></p>
 
-			<br>
-
-			<p>Translate some numbers</p>
+			<p>Translate some numbers using <em>ng-repeat</em></p>
 			<p class="italic" ng-repeat="number in numbers" ng-i18next="numbers.{{number}}"></p>
-
-			<br>
-
-			<p>Translate some dynamic content</p>
-			<p class="italic" ng-i18next="dynamic"></p>
 		</div>
 
 		<p>&nbsp;</p>
 
 		<h3>Strings with HTML</h3>
 		<div class="m50">
-			<p>Translate "hello"</p>
-			<p class="italic" ng-i18next="[html]helloHTML"></p>
+			<p>Translate "helloHTML"</p>
+			<p class="italic mBottom" ng-i18next="[html]helloHTML"></p>
 
-			<br>
-
-			<p>Translate "{{hello}}"</p>
-			<p class="italic" ng-i18next="[html]{{helloHTML}}"></p>
+			<p>Translate "{{helloHTML}}"</p>
+			<p class="italic mBottom" ng-i18next="[html]{{helloHTML}}"></p>
 		</div>
 
 		<p>&nbsp;</p>
 
-		<h3>Attributes</h3>
+		<h3>Variable-Binding</h3>
+		<div class="m50">
+			<p>Translate some dynamic content</p>
+			<p class="italic mBottom" ng-i18next="dynamicDate"></p>
+		</div>
+
+		<p>&nbsp;</p>
+
+		<h3>Attributes (using the a-tag)</h3>
 		<div class="m50">
 			<p>Set "hello" as title</p>
-			<a href="#" ng-i18next="[title]hello">Link</a>
-
-			<p>&nbsp;</p>
+			<a href="#"  class="italic mBottom" ng-i18next="[title]hello">Link</a>
 
 			<p>Set "hello" as title and "content" as text</p>
-			<a href="#" ng-i18next="[title]hello;content"></a>
+			<a href="#"  class="italic mBottom" ng-i18next="[title]hello;content"></a>
+
+			<p>Set "hello" as title and "contentHTML" as text</p>
+			<a href="#"  class="italic mBottom" ng-i18next="[title]hello;[html]contentHTML"></a>
 		</div>
 
 		<p>&nbsp;</p>
 
-    <h3>Directives</h3>
-    <div class="m50">
-      <p ng-i18next="[html]sayHello">Say <button ng-click="sayHello()">hello</button> when clicked</p>
-
-    </div>
-
+		<h3>Inner-Directives</h3>
+		<div class="m50">
+			<p ng-i18next="[html]sayHelloHTML"></p>
+		</div>
 
 	</div>
 </body>

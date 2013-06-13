@@ -1,6 +1,8 @@
 {
     "hello": "Herzlich Willkommen!",
+    "helloHTML": "<h2>Hallo Welt</h2>",
     "content": "Dies ist Inhalt.",
+    "contentHTML": "<div>Dies ist <strong>Inhalt</strong>.</div>",
 
     "numbers": {
         "one": "Eins",
@@ -9,8 +11,7 @@
         "four": "Vier"
     },
 
-    "helloHTML": "<h2>Hallo Welt</h2>",
-    "dynamic": "Aktuelles Datum {{date}}",
-    "sayHello": "Sag <button ng-click='sayHello()'>hallo</button> wenn darauf geklickt"
+    "dynamicDate": "Aktuelles Datum: {{date}}",
+    "sayHelloHTML": "Sag <button ng-click='sayHello()'>Hallo</button> wenn darauf klickst."
 
 }

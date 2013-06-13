@@ -80,7 +80,8 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope, $inte
 			/*
 			 * Bind variables to the scope (doesn't watch for changes, yet)
 			 */
-			var string = $interpolate(t(key))(scope);
+			var string = t(key),
+				hasExpression = $interpolate(string, true);
 
 			if (attr === 'html') {
 
@@ -97,10 +98,18 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope, $inte
 			}
 
 			/*
-			 * Now compile the content of the element and bind the variables to
-			 * the scope
+			 * We don't have to compile the element's content if there isn't
+			 * any expression.
 			 */
-			$compile(element.contents())(scope);
+			if (hasExpression) {
+				/*
+				 * Now compile the content of the element and bind the variables to
+				 * the scope
+				 */
+				scope.$apply(function(){
+					$compile(element.contents())(scope);
+				});
+			}
 
 		} else {
 			/*

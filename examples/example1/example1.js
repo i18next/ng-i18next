@@ -20,7 +20,7 @@ angular.module('MyApp').controller('MyCtrl', function ($rootScope, $scope) {
 	$scope.numbers =  ['one', 'two', 'three', 'four'];
 
 	$scope.hello = "content"
-	$scope.helloHTML = "<h3>content</h3>"
+	$scope.helloHTML = "<h2>content</h2>"
 
 	$scope.date = new Date();
 
