@@ -98,18 +98,12 @@ angular.module('i18next', []).directive('ngI18next', function ($rootScope, $inte
 			}
 
 			/*
-			 * We don't have to compile the element's content if there isn't
-			 * any expression.
+			 * Now compile the content of the element and bind the variables to
+			 * the scope
 			 */
-			if (hasExpression) {
-				/*
-				 * Now compile the content of the element and bind the variables to
-				 * the scope
-				 */
-				scope.$apply(function(){
-					$compile(element.contents())(scope);
-				});
-			}
+			scope.$apply(function(){
+				$compile(element.contents())(scope);
+			});
 
 		} else {
 			/*
