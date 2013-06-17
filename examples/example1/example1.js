@@ -1,21 +1,14 @@
-angular.module('MyApp', ['i18next']).config(function () {
-
-
-}).run(function ($rootScope) {
-
-	'use strict';
-
-	$rootScope.i18nextOptions = {
+angular.module('jm.i18next').config(function ($i18nextProvider) {
+	$i18nextProvider.options = {
 		lng: 'de',
 		useCookie: false,
 		useLocalStorage: false,
 		fallbackLng: 'dev',
 		resGetPath: '../locales/__lng__/__ns__.json'
 	};
-
 });
 
-angular.module('MyApp').controller('MyCtrl', function ($rootScope, $scope) {
+angular.module('MyApp', ['jm.i18next']).controller('MyCtrl', function ($rootScope, $scope, $timeout) {
 
 	$scope.numbers =  ['one', 'two', 'three', 'four'];
 
@@ -28,11 +21,9 @@ angular.module('MyApp').controller('MyCtrl', function ($rootScope, $scope) {
 		alert('hello');
 	};
 
-	window.setTimeout(function () {
+	$timeout(function () {
 		console.log('Time should change!');
-		$scope.$apply(function () {
-			$scope.date = 'Should change!';
-		});
+		$scope.date = 'Should change!';
 	}, 3000);
 
 });
