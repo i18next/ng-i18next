@@ -1,0 +1,144 @@
+<!doctype html>
+<html ng-app="MyApp">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width">
+	<title>Directive 1 - ng-i18next</title>
+
+	<style>
+		.mBottom, code {
+			margin-bottom: 40px;
+			display:block;
+		}
+	</style>
+
+	<script src="../../bower_components/angular/angular.js"></script>
+	<script src="../../bower_components/i18next/release/i18next-1.6.3.min.js"></script>
+	<script src="../../dist/ng-i18next.js"></script>
+	<script src="directive1.js"></script>
+
+</head>
+
+<body>
+	<!-- You can escape HTML here: http://www.htmlescape.net/htmlescape_tool.html -->
+	<div ng-controller="MyCtrl">
+
+		<h2 ng-i18next="Basics"></h2>
+
+		<p ng-i18next="both.basicUsage"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;both.basicUsage&quot;&gt;&lt;/p&gt;
+		</code>
+
+		<p ng-i18next="both.variableBinding"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;both.variableBinding&quot;&gt;&lt;/p&gt;
+		</code>
+
+		<p ng-i18next="both.ngRepeat"></p>
+		<p ng-repeat="number in numbers" ng-i18next="numbers.{{number}}"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;both.ngRepeat&quot;&gt;&lt;/p&gt;
+			<br/>
+			&lt;p&gt;ng-repeat=&quot;number in numbers&quot; ng-i18next=&quot;numbers.{{number}}&quot;&lt;/p&gt;
+		</code>
+
+
+
+		<h2 ng-i18next="directive.withHTML"></h2>
+
+		<p ng-i18next="[html]directive.basicUsageHTML"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;[html]directive.basicUsageHTML&quot;&gt;&lt;/p&gt;
+		</code>
+
+		<p ng-i18next="directive.basicUsageHTMLAsText"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;directive.basicUsageHTMLAsText&quot;&gt;&lt;/p&gt;
+		</code>
+
+		<p ng-i18next="[html]directive.dynamicHTML"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;[html]directive.dynamicHTML&quot;&gt;&lt;/p&gt;
+		</code>
+
+		<p ng-i18next="directive.dynamicHTMLAsText"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;directive.dynamicHTMLAsText&quot;&gt;&lt;/p&gt;
+		</code>
+
+		<p ng-i18next="directive.getTranslationKeyFromScope"></p>
+		<p ng-i18next="[html]{{bindingVariable}}"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;[html]{{bindingVariable}}&quot;&gt;&lt;/p&gt;
+		</code>
+
+
+
+
+		<h2 ng-i18next="directive.attrHeading"></h2>
+		<p ng-i18next="directive.attr.titleOnly"></p>
+		<a href="#" ng-i18next="[title]hello">Link</a>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;directive.attr.titleOnly&quot;&gt;&lt;/p&gt;
+			<br/>
+			&lt;a href=&quot;#&quot; ng-i18next=&quot;[title]hello&quot;&gt;Link&lt;/a&gt;
+		</code>
+
+		<p ng-i18next="directive.attr.titleAndContent"></p>
+		<a href="#" ng-i18next="[title]hello;content"></a>
+		<code ng-non-bindable>
+			&lt;a href=&quot;#&quot; ng-i18next=&quot;[title]hello;content&quot;&gt;Link&lt;/a&gt;
+		</code>
+
+		<p ng-i18next="[html]directive.attr.titleAndHTML"></p>
+		<a href="#" ng-i18next="[title]hello;[html]contentHTML"></a>
+		<code ng-non-bindable>
+			&lt;a href=&quot;#&quot; ng-i18next=&quot;[title]hello;[html]contentHTML&quot;&gt;Link&lt;/a&gt;
+		</code>
+
+
+
+
+		<h2 ng-i18next="directive.usingContentHeading"></h2>
+
+		<p ng-i18next>hello</p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next&gt;hello&lt;/p&gt;
+		</code>
+
+		<p ng-i18next>{{bindingVariable}}</p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next&gt;{{bindingVariable}}&lt;/p&gt;
+		</code>
+
+
+
+
+		<h2 ng-i18next="directive.innerDirective"></h2>
+
+		<p ng-i18next="[html]sayHelloHTML"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;[html]sayHelloHTML&quot;&gt;&lt;/p&gt;
+		</code>
+
+
+
+
+		<h2 ng-i18next="directive.others"></h2>
+
+		<p ng-i18next="directive.translateVariableThatChanges"></p>
+		<p ng-i18next="dynamicDate"></p>
+		<code ng-non-bindable>
+			&lt;p ng-i18next=&quot;directive.translateVariableThatChanges&quot;&gt;&lt;/p&gt;
+			<br/>
+			&lt;p ng-i18next=&quot;dynamicDate&quot;&gt;&lt;/p&gt;
+		</code>
+
+		<p>&nbsp;</p>
+
+
+	</div>
+</body>
+</html>

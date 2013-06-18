@@ -10,10 +10,9 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 angular.module('MyApp', ['jm.i18next']).controller('MyCtrl', function ($rootScope, $scope, $timeout) {
 
-	$scope.numbers =  ['one', 'two', 'three', 'four'];
+	$scope.numbers =  ['one', 'two', 'three'];
 
-	$scope.hello = "content"
-	$scope.helloHTML = "<h2>content</h2>"
+	$scope.bindingVariable = 'helloHTML';
 
 	$scope.date = new Date();
 

@@ -1,16 +1,49 @@
 {
-    "hello": "Herzlich Willkommen!",
-    "helloHTML": "<h2>Hallo Welt</h2>",
-    "content": "Dies ist Inhalt.",
-    "contentHTML": "<div>Dies ist <strong>Inhalt</strong>.</div>",
+    "headings": {
+        "directive": "Angular Directive - ng-i18next",
+        "filter": "Angular Directive - ng-i18next"
+    },
+
+    "both": {
+        "basicUsage": "Basic Usage",
+        "variableBinding": "Übersetzung und Variablen binden",
+        "ngRepeat": "Übersetzung mit ng-repeat"
+    },
+
+    "directive": {
+        "basics": "Basics",
+        "withHTML": "Mit HTML",
+        "attr": "Als Attribut",
+        "basicUsageHTML": "<em>HTML Code-Übersetzung</em>",
+        "basicUsageHTMLAsText": "<em>HTML Code-Übersetzung als Text</em>",
+        "dynamicHTML": "<em>numbers[2] = {{numbers[2]}}</em>",
+        "dynamicHTMLAsText":"<em>numbers[2] = {{numbers[2]}}</em> - it's text, not HTML",
+        "getTranslationKeyFromScope": "Den zu übersetzenden String vom $scope erhalten",
+        "attrHeading": "Übersetzungen von Attributen",
+        "attr": {
+            "titleOnly": "Titel sollte nun '$t(hello)' sein",
+            "titleAndContent": "Titel sollte nun '$t(hello)' und der Inhalt sollte '$t(content)' sein.",
+            "titleAndHTML": "Titel sollte nun '$t(hello)' und der Inhalt sollte '$t(contentHTML)' sein."
+        },
+        "usingContentHeading": "Den Inhalt zur Übersetzung verwenden",
+        "usingContent": {
+
+        },
+        "innerDirective": "Directive innerhalb der Übersetzung",
+        "others": "Sonstiges",
+        "translateVariableThatChanges": "Übersetze eine Variable, die sich ändert."
+    },
 
     "numbers": {
         "one": "Eins",
         "two": "Zwei",
-        "three": "Drei",
-        "four": "Vier"
+        "three": "Drei"
     },
 
+    "hello": "Herzlich Willkommen!",
+    "helloHTML": "<h3>Hallo Welt</h3>",
+    "content": "Dies ist Inhalt.",
+    "contentHTML": "Dies ist <strong>Inhalt</strong>.",
     "dynamicDate": "Aktuelles Datum: {{date}}",
     "sayHelloHTML": "Sag <button ng-click='sayHello()'>Hallo</button> wenn darauf klickst."
 
