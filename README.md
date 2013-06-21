@@ -26,9 +26,10 @@ to your HTML file.
 There are two ways to use ````ng-i18next````:
 
 ## filter ##
-    <p>{{'hello' | i18next}}</p>
+	<p>{{'hello' | i18next}}</p>
 => translates ````hello````
-    <p>{{hello | i18next}}</p>
+
+	<p>{{hello | i18next}}</p>
 => translates ````$scope.hello````
 
 ## directive ##
@@ -40,6 +41,12 @@ There are two ways to use ````ng-i18next````:
 
 	<p ng-i18next="{{hello}}"></p>
 => translates ````$scope.hello````
+
+	<p ng-i18next>hello</p>
+=> translates ````hello```` (uses the content of the p-tag)
+
+	<p ng-i18next>{{hello}}</p>
+=> translates ````$scope.hello```` (uses the content of the p-tag)
 
 Note, that HTML isn't compiled!
 
