@@ -104,11 +104,13 @@ You can combine both, too!
 
 ### Passing Options ###
 You can also pass options:
+
 	<p ng-i18next="[i18next]({lng:'de'})hello"></p>
 => translates ````hello```` in German (````de````)
 
 ### Passing Options + HTML ###
 You can also pass options:
+
 	<p ng-i18next="[html:i18next]({lng:'de'})hello"></p>
 => translates ````hello```` in German (````de````) and compiles it to HTML code.
 
