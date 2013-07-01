@@ -90,7 +90,7 @@ angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18ne
 
 			});
 
-			scope.$on('languageChange', function () {
+			scope.$on('i18nextLanguageChange', function () {
 				localize(scope.$parent, element, scope.translationValue);
 			});
 

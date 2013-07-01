@@ -15,7 +15,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
         for (var key in translations) {
           setTranslation(key);
         }
-        $rootScope.$broadcast('languageChange');
+        $rootScope.$broadcast('i18nextLanguageChange');
       });
     }
     function translate(key) {
@@ -94,7 +94,7 @@ angular.module('jm.i18next').directive('ngI18next', [
           }
           localize(scope.$parent, element, scope.translationValue);
         });
-        scope.$on('languageChange', function () {
+        scope.$on('i18nextLanguageChange', function () {
           localize(scope.$parent, element, scope.translationValue);
         });
       }
