@@ -23,6 +23,20 @@ First add
 
 to your HTML file.
 
+Make sure you require ````jm.i18next```` as a dependency of your AngularJS module. Also configurate the provider first:
+
+	angular.module('jm.i18next').config(function ($i18nextProvider) {
+		$i18nextProvider.options = {
+			lng: 'de',
+			useCookie: false,
+			useLocalStorage: false,
+			fallbackLng: 'dev',
+			resGetPath: '../locales/__lng__/__ns__.json'
+		};
+	});
+
+For more options visit the [i18next documentation](http://i18next.com/pages/doc_init.html).
+
 There are two ways to use ````ng-i18next````:
 
 ## filter ##
@@ -113,4 +127,17 @@ Build ````ng-i18next.js```` using Grunt:
 	grunt build
 
 
----
+---------
+
+# Changelog #
+
+v.0.2.1
+- it's now possible to change options at runtime (and not only in ````.config()````)
+- the dist folder was added
+
+v0.2
+- completly new version
+- i18next preovider, directive and filter
+
+v0.1
+- first version

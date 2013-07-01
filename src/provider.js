@@ -1,23 +1,19 @@
-//hey, we can configure a provider!
-// angular.module('i18next').config(function ($i18next) {
-// });
-
 angular.module('jm.i18next', ['ng']);
 angular.module('jm.i18next').provider('$i18next', function () {
 
 	'use strict';
 
-	var /**
+	var self = this,
+		/**
 		 * This will be our translation function (see code below)
 		 */
 		t = null,
-		translations = {};
+		translations = {},
+		optionsObj;
 
-	this.options = {};
+	self.options = {};
 
-	this.$get = function ($rootScope) {
-
-		var options = this.options;
+	self.$get = function ($rootScope) {
 
 		function init(options) {
 
@@ -41,12 +37,6 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		$rootScope.$watch(this.options, function () {
-			console.log(options);
-			init(options);
-		});
-
-
 		function translate(key) {
 			if (!t) {
 				translations[key] = key;
@@ -62,6 +52,19 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			return translations[key];
 
 		}
+
+		optionsObj = $i18nextTanslate.options = self.options;
+
+		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
+
+			console.log('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
+
+			optionsObj = $i18nextTanslate.options;
+
+			init(optionsObj);
+
+		}, true);
+
 
 		return $i18nextTanslate;
 

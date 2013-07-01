@@ -13,13 +13,12 @@ module.exports = function (grunt) {
 
 		pkg: grunt.file.readJSON('package.json'),
 
-		// meta: {
-		// 	banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-		// 		'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-		// 		'<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-		// 		'* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-		// 		' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
-		// },
+		meta: {
+			banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+				'<%= grunt.template.today("yyyy-mm-dd") %>' +
+				' - Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+				' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+		},
 		watch: {
 			scripts: {
 				files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
@@ -43,7 +42,7 @@ module.exports = function (grunt) {
 			options: {
 				jshintrc: '.jshintrc'
 			},
-			all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
+			all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']
 		},
 		concat: {
 			src: {
@@ -52,6 +51,9 @@ module.exports = function (grunt) {
 			}
 		},
 		uglify: {
+			options: {
+				banner: '<%= meta.banner %>'
+			},
 			src: {
 				files: {
 					'dist/ng-i18next.min.js': '<%= concat.src.dest %>'

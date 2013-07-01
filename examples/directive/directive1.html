@@ -23,7 +23,11 @@
 <body>
 	<!-- You can escape HTML here: http://www.htmlescape.net/htmlescape_tool.html -->
 	<div ng-controller="MyCtrl">
-
+		<p>
+			Change language to: <br>
+			<a href="#" ng-click="changeLng('dev')">English</a><br>
+			<a href="#" ng-click="changeLng('de')">German</a>
+		</p>
 		<h2 ng-i18next="Basics"></h2>
 
 		<p ng-i18next="both.basicUsage"></p>
