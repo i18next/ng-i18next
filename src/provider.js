@@ -11,13 +11,12 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		 * This will be our translation function (see code below)
 		 */
 		t = null,
-		translations = {};
+		translations = {}
+		self = this;
 
-	this.options = {};
+	self.options = {};
 
-	this.$get = function ($rootScope) {
-
-		var options = this.options;
+	self.$get = function ($rootScope) {
 
 		function init(options) {
 
@@ -41,9 +40,9 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		$rootScope.$watch(this.options, function () {
-			console.log(options);
-			init(options);
+		$rootScope.$watch(self.options, function () {
+			console.log(self.options);
+			init(self.options);
 		});
 
 
@@ -62,6 +61,12 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			return translations[key];
 
 		}
+
+		$i18nextTanslate.changeConfig = function(new_config){
+	        self.options = new_config;
+	        console.log(self.options);
+            init(self.options);
+	    };
 
 		return $i18nextTanslate;
 
