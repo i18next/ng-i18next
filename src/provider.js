@@ -31,7 +31,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 					setTranslation(key);
 				}
 
-				$rootScope.$broadcast('languageChange');
+				$rootScope.$broadcast('i18nextLanguageChange');
 
 			});
 
