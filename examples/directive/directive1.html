@@ -130,6 +130,30 @@
 
 
 
+		<h2 ng-i18next="both.passingOptions"></h2>
+
+		<p ng-i18next="both.passingOptionsDescription"></p>
+		<ul>
+			<li ng-i18next="[i18next]({lng:'de'})both.lngTest"></li>
+			<li ng-i18next="[i18next]({lng:'dev'})both.lngTest"></li>
+		</ul>
+		<code ng-non-bindable>
+			&lt;ul&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[i18next]({lng:'de'})both.lngTest&quot;&gt;&lt;/li&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[i18next]({lng:'dev'})both.lngTest&quot;&gt;&lt;/li&gt;<br/>&lt;/ul&gt;
+		</code>
+
+
+		<p ng-i18next="both.passingOptionsHTMLDescription"></p>
+		<ul>
+			<li ng-i18next="[html:i18next]({lng:'de'})both.lngTestHTML"></li>
+			<li ng-i18next="[html:i18next]({lng:'dev'})both.lngTestHTML"></li>
+		</ul>
+		<code ng-non-bindable>
+			&lt;ul&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[html:i18next]({lng:'de'})both.lngTestHTML&quot;&gt;&lt;/li&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[html:i18next]({lng:'dev'})both.lngTestHTML&quot;&gt;&lt;/li&gt;<br/>&lt;/ul&gt;
+		</code>
+
+
+
+
 		<h2 ng-i18next="directive.others"></h2>
 
 		<p ng-i18next="directive.translateVariableThatChanges"></p>

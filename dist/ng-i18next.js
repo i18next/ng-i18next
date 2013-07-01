@@ -8,7 +8,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
       window.i18n.init(options, function (localize) {
         function setTranslation(key) {
           $rootScope.$apply(function () {
-            translations[key] = localize(key);
+            translations[options.lng][key] = localize(key);
           });
         }
         t = localize;
@@ -18,16 +18,21 @@ angular.module('jm.i18next').provider('$i18next', function () {
         $rootScope.$broadcast('i18nextLanguageChange');
       });
     }
-    function translate(key) {
+    function translate(key, options) {
+      var lng = options.lng;
+      if (!translations[lng]) {
+        translations[lng] = {};
+      }
       if (!t) {
-        translations[key] = key;
+        translations[lng][key] = key;
       } else {
-        translations[key] = t(key);
+        translations[lng][key] = t(key, options);
       }
     }
-    function $i18nextTanslate(key) {
-      translate(key);
-      return translations[key];
+    function $i18nextTanslate(key, options) {
+      var mergedOptions = angular.extend({}, optionsObj, options);
+      translate(key, mergedOptions);
+      return translations[mergedOptions.lng][key];
     }
     optionsObj = $i18nextTanslate.options = self.options;
     $rootScope.$watch(function () {
@@ -35,6 +40,9 @@ angular.module('jm.i18next').provider('$i18next', function () {
     }, function (newOptions, oldOptions) {
       console.log('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
       optionsObj = $i18nextTanslate.options;
+      if (!optionsObj.lng) {
+        optionsObj.lng = 'dev';
+      }
       init(optionsObj);
     }, true);
     return $i18nextTanslate;
@@ -45,10 +53,11 @@ angular.module('jm.i18next').directive('ngI18next', [
   '$i18next',
   '$interpolate',
   '$compile',
-  function ($rootScope, $i18next, $interpolate, $compile) {
+  '$parse',
+  function ($rootScope, $i18next, $interpolate, $compile, $parse) {
     'use strict';
     function parse(scope, element, key) {
-      var attr = 'text';
+      var attr = 'text', attrs = [attr], string;
       if (key.indexOf('[') === 0) {
         var parts = key.split(']');
         key = parts[1];
@@ -57,7 +66,25 @@ angular.module('jm.i18next').directive('ngI18next', [
       if (key.indexOf(';') === key.length - 1) {
         key = key.substr(0, key.length - 2);
       }
-      var string = $i18next(key);
+      if (attr.indexOf(':') >= 0) {
+        attrs = attr.split(':');
+        attr = attrs[0];
+      } else if (attr === 'i18next') {
+        attrs[1] = 'i18next';
+        attr = 'text';
+      }
+      if (attr !== 'i18next' && attrs[1] !== 'i18next') {
+        string = $i18next(key);
+      } else {
+        var options = {}, strippedKey = key;
+        if (key.indexOf('(') >= 0 && key.indexOf(')') >= 0) {
+          var keys = key.split(')');
+          keys[0] = keys[0].substr(1, keys[0].length);
+          options = $parse(keys[0])();
+          strippedKey = keys[1];
+        }
+        string = $i18next(strippedKey, options);
+      }
       if (attr === 'html') {
         element.html(string);
       } else if (attr === 'text') {

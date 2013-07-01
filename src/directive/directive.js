@@ -1,10 +1,12 @@
-angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18next, $interpolate, $compile) {
+angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18next, $interpolate, $compile, $parse) {
 
 	'use strict';
 
 	function parse(scope, element, key) {
 
-		var attr = 'text';
+		var attr = 'text',
+			attrs = [attr],
+			string;
 
 		/*
 		 * Check if we want to translate an attribute
@@ -20,8 +22,41 @@ angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18ne
 		if (key.indexOf(';') === key.length - 1) {
 			key = key.substr(0, key.length - 2);
 		}
+		/*
+		 * If passing options, split attr
+		 */
+		if (attr.indexOf(':') >= 0) {
+			attrs = attr.split(':');
+			attr = attrs[0];
+		} else if (attr === 'i18next') {
+			attrs[1] = 'i18next';
+			attr = 'text';
+		}
 
-		var string = $i18next(key);
+		if (attr !== 'i18next' && attrs[1] !== 'i18next') {
+
+			string = $i18next(key);
+
+		} else {
+
+			var options = {},
+				strippedKey = key;
+
+			if (key.indexOf('(') >= 0 && key.indexOf(')') >= 0) {
+
+				var keys = key.split(')');
+
+				keys[0] = keys[0].substr(1, keys[0].length);
+
+				options = $parse(keys[0])();
+
+				strippedKey = keys[1];
+
+			}
+
+			string = $i18next(strippedKey, options);
+
+		}
 
 		if (attr === 'html') {
 

@@ -7,7 +7,12 @@
     "both": {
         "basicUsage": "Basic Usage",
         "variableBinding": "Übersetzung und Variablen binden",
-        "ngRepeat": "Übersetzung mit ng-repeat"
+        "ngRepeat": "Übersetzung mit ng-repeat",
+        "passingOptions": "Optionen übergeben",
+        "passingOptionsDescription": "Übergebe Optionen mithilfe von [i18next]",
+        "passingOptionsHTMLDescription": "Du kannst Optionen in Verbindung mit HTML übergeben [html:i18next]",
+        "lngTest": "Ich bin in Deutsch",
+        "lngTestHTML": "<strong>Ich bin in Deutsch</strong>"
     },
 
     "directive": {

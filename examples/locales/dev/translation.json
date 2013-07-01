@@ -7,7 +7,12 @@
     "both": {
         "basicUsage": "Basic Usage",
         "variableBinding": "bind translation to variables",
-        "ngRepeat": "translate using ng-repeat"
+        "ngRepeat": "translate using ng-repeat",
+        "passingOptions": "passing options",
+        "passingOptionsDescription": "pass options in directive by using [i18next]",
+        "passingOptionsHTMLDescription": "You can also pass options use HTML at the same time by using [html:i18next]",
+        "lngTest": "I'm in English",
+        "lngTestHTML": "<strong>I'm in English</strong>"
     },
 
     "directive": {

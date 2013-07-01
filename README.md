@@ -102,6 +102,16 @@ You can combine both, too!
 => translates ````$scope.hello```` and sets it as the title
 => translates ````$scope.content```` and compiles the HTML as the content of the link.
 
+### Passing Options ###
+You can also pass options:
+	<p ng-i18next="[i18next]({lng:'de'})hello"></p>
+=> translates ````hello```` in German (````de````)
+
+### Passing Options + HTML ###
+You can also pass options:
+	<p ng-i18next="[html:i18next]({lng:'de'})hello"></p>
+=> translates ````hello```` in German (````de````) and compiles it to HTML code.
+
 ---------
 
 For more, see examples.
@@ -131,7 +141,10 @@ Build ````ng-i18next.js```` using Grunt:
 
 # Changelog #
 
-v.0.2.1
+v0.2.2
+- you can now pass options to a directive
+
+v0.2.1
 - it's now possible to change options at runtime (and not only in ````.config()````)
 - the dist folder was added
 

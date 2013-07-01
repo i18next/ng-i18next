@@ -21,7 +21,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 				function setTranslation(key) {
 					$rootScope.$apply(function () {
-						translations[key] = localize(key);
+						translations[options.lng][key] = localize(key);
 					});
 				}
 
@@ -37,19 +37,29 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		function translate(key) {
-			if (!t) {
-				translations[key] = key;
-			} else {
-				translations[key] = t(key);
+		function translate(key, options) {
+
+			var lng = options.lng;
+
+			if (!translations[lng]) {
+				translations[lng] = {};
 			}
+
+			if (!t) {
+				translations[lng][key] = key;
+			} else {
+				translations[lng][key] = t(key, options);
+			}
+
 		}
 
-		function $i18nextTanslate(key) {
+		function $i18nextTanslate(key, options) {
 
-			translate(key);
+			var mergedOptions = angular.extend({}, optionsObj, options);
 
-			return translations[key];
+			translate(key, mergedOptions);
+
+			return translations[mergedOptions.lng][key];
 
 		}
 
@@ -60,6 +70,10 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			console.log('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
 
 			optionsObj = $i18nextTanslate.options;
+
+			if (!optionsObj.lng) {
+				optionsObj.lng = 'dev';
+			}
 
 			init(optionsObj);
 
