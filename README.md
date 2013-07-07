@@ -124,7 +124,7 @@ For more, see examples.
 
 # Contribute #
 
-To contribute, you must have
+To contribute, you must have:
 
 - [Node.js](http://nodejs.org/)
 - [bower](http://bower.io/)
@@ -148,7 +148,7 @@ You can run the examples using:
 
 	grunt server
 
-_(note that you have to be in the root directory of this project)__
+_(note that you have to be in the root directory of this project)_
 
 ---------
 
@@ -161,12 +161,12 @@ v0.2.2
 - you can now pass options to the filter
 
 v0.2.1
-- it's now possible to change options at runtime (and not only in ````.config()````)
+- it is now possible to change options at runtime (and not only in `.config()`)
 - the dist folder was added
 
 v0.2
 - completly new version
-- i18next preovider, directive and filter
+- `i18next` provider, directive and filter
 
 v0.1
 - first version
