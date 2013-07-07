@@ -1,11 +1,17 @@
 {
   "name": "ng-i18next",
-  "version": "0.1.0",
+  "version": "0.2.2",
   "dependencies": {
     "angular": "~1.0.7",
     "i18next": "latest"
   },
   "devDependencies": {
     "angular-mocks": "~1.0.7"
-  }
+  },
+  "ignore": [
+    "examples",
+    "src",
+    "test",
+    "karma.conf.js"
+  ]
 }

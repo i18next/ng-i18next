@@ -63,11 +63,13 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
+		$i18nextTanslate.debugMsg = [];
+
 		optionsObj = $i18nextTanslate.options = self.options;
 
 		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
 
-			console.log('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
+			$i18nextTanslate.debugMsg.push('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
 
 			optionsObj = $i18nextTanslate.options;
 
@@ -79,6 +81,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}, true);
 
+		init(optionsObj);
 
 		return $i18nextTanslate;
 

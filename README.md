@@ -2,8 +2,8 @@
 
 Project goal is to provide an easy way to use [i18next](http://i18next.com/) with [AngularJS](http://angularjs.org/):
 
-- ````ng-i18next```` directive
-- ````i18next```` filter
+- `ng-i18next` directive
+- `i18next` filter
 
 First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 
@@ -11,8 +11,8 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 - AngularJS directive
 - AngularJS filter
 - variable binding (translates again, if variable changes)
-- nested translations (````$t('hello')````; see i18next documentation)
-- scope variables in translations (if the translation contains directives of variables like ````{{hello}}````, they'll get compiled)
+- nested translations (`$t('hello')`; see i18next documentation)
+- scope variables in translations (if the translation contains directives of variables like `{{hello}}`, they'll get compiled)
 
 # Usage #
 First add
@@ -23,17 +23,19 @@ First add
 
 to your HTML file.
 
-Make sure you require ````jm.i18next```` as a dependency of your AngularJS module. Also configurate the provider first:
+Make sure you require `jm.i18next` as a dependency of your AngularJS module. Also configurate the provider first:
 
-	angular.module('jm.i18next').config(function ($i18nextProvider) {
-		$i18nextProvider.options = {
-			lng: 'de',
-			useCookie: false,
-			useLocalStorage: false,
-			fallbackLng: 'dev',
-			resGetPath: '../locales/__lng__/__ns__.json'
-		};
-	});
+```js
+angular.module('jm.i18next').config(function ($i18nextProvider) {
+	$i18nextProvider.options = {
+		lng: 'de',
+		useCookie: false,
+		useLocalStorage: false,
+		fallbackLng: 'dev',
+		resGetPath: '../locales/__lng__/__ns__.json'
+	};
+});
+```
 
 For more options visit the [i18next documentation](http://i18next.com/pages/doc_init.html).
 
@@ -129,15 +131,24 @@ To contribute, you must have
 
 installed.
 
-Load all dependencies using [````npm````](https://npmjs.org/) and [````bower````](http://bower.io/):
+Load all dependencies using [`npm`](https://npmjs.org/) and [`bower`](http://bower.io/):
 
 	npm install
 	bower install
 
-Build ````ng-i18next.js```` using Grunt:
+Build `ng-i18next.js` using Grunt:
 
-	grunt build
+	grunt
 
+---------
+
+# Examples #
+
+You can run the examples using:
+
+	grunt server
+
+_(note that you have to be in the root directory of this project)__
 
 ---------
 
@@ -145,6 +156,9 @@ Build ````ng-i18next.js```` using Grunt:
 
 v0.2.2
 - you can now pass options to a directive
+- new tests and Gruntfile (now supports `grunt server`)
+- updated dependencies in package.json
+- you can now pass options to the filter
 
 v0.2.1
 - it's now possible to change options at runtime (and not only in ````.config()````)

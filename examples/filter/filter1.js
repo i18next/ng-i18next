@@ -1,4 +1,7 @@
 angular.module('jm.i18next').config(function ($i18nextProvider) {
+
+	'use strict';
+
 	$i18nextProvider.options = {
 		lng: 'de',
 		useCookie: false,
@@ -6,9 +9,12 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 		fallbackLng: 'dev',
 		resGetPath: '../locales/__lng__/__ns__.json'
 	};
+
 });
 
-angular.module('MyApp', ['jm.i18next']).controller('MyCtrl', function ($rootScope, $scope, $timeout) {
+angular.module('MyApp', ['jm.i18next']).controller('MyFilterCtrl', function ($rootScope, $scope, $timeout) {
+
+	'use strict';
 
 	$scope.numbers =  ['one', 'two', 'three'];
 

@@ -1,6 +1,8 @@
-describe('jm.i18next - Filter', function () {
+describe('jm.i18next - Provider', function () {
 
 	'use strict';
+
+	var $i18next;
 
 	beforeEach(function () {
 
@@ -43,8 +45,12 @@ describe('jm.i18next - Filter', function () {
 			};
 
 		});
+
 	});
 
+	beforeEach(inject(function (_$i18next_) {
+		$i18next = _$i18next_;
+	}));
 
 	/*
 	 * Tests
@@ -55,23 +61,21 @@ describe('jm.i18next - Filter', function () {
 	 *  - context
 	 */
 
-	it('should be a function object', function () {
-		inject(function ($filter) {
-			expect(typeof $filter('i18next')).toBe('function');
-		});
+	it('should have options passed in "beforeEach"', function () {
+		expect($i18next.options.lng).toBe('de-DE');
 	});
 
 	describe('simple strings', function () {
 
 		it('should return original key, because translation does not exist', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('Key_Not_Found')).toBe('Key_Not_Found');
+			inject(function () {
+				expect($i18next('Key_Not_Found')).toBe('Key_Not_Found');
 			});
 		});
 
 		it('should translate "hello" into German ("de-DE"; default language)', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('hello')).toBe('Herzlich Willkommen!');
+			inject(function () {
+				expect($i18next('hello')).toEqual('Herzlich Willkommen!');
 			});
 		});
 
@@ -80,20 +84,20 @@ describe('jm.i18next - Filter', function () {
 	describe('passing options', function () {
 
 		it('should translate "hello" into language passed by options ("dev")', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('hello', {lng: 'dev'})).toEqual('Welcome!');
+			inject(function () {
+				expect($i18next('hello', {lng: 'dev'})).toEqual('Welcome!');
 			});
 		});
 
 		it('should replace "__name__" in the translation string with name given by options', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('helloName', {name: 'Andre'})).toEqual('Herzlich Willkommen, Andre!');
+			inject(function () {
+				expect($i18next('helloName', {name: 'Andre'})).toEqual('Herzlich Willkommen, Andre!');
 			});
 		});
 
 		it('should replace "__name__" in the translation string with name given by options and should use "dev" as language', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('helloName', {name: 'Andre', lng: 'dev'})).toEqual('Welcome, Andre!');
+			inject(function () {
+				expect($i18next('helloName', {name: 'Andre', lng: 'dev'})).toEqual('Welcome, Andre!');
 			});
 		});
 
@@ -108,14 +112,14 @@ describe('jm.i18next - Filter', function () {
 	describe('plurals', function () {
 
 		it('should use the single form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('woman', {count: 1})).toEqual('Frau');
+			inject(function () {
+				expect($i18next('woman', {count: 1})).toEqual('Frau');
 			});
 		});
 
 		it('should use the plural form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('woman', {count: 5})).toEqual('Frauen');
+			inject(function () {
+				expect($i18next('woman', {count: 5})).toEqual('Frauen');
 			});
 		});
 
@@ -124,20 +128,20 @@ describe('jm.i18next - Filter', function () {
 	describe('context', function () {
 
 		it('should use the "normal" form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('friend')).toEqual('Freund');
+			inject(function () {
+				expect($i18next('friend')).toEqual('Freund');
 			});
 		});
 
 		it('should use the male form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('friend', {context: 'male'})).toEqual('Fester Freund');
+			inject(function () {
+				expect($i18next('friend', {context: 'male'})).toEqual('Fester Freund');
 			});
 		});
 
 		it('should use the female form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('friend', {context: 'female'})).toEqual('Feste Freundin');
+			inject(function () {
+				expect($i18next('friend', {context: 'female'})).toEqual('Feste Freundin');
 			});
 		});
 
@@ -146,14 +150,14 @@ describe('jm.i18next - Filter', function () {
 	describe('nesting translations', function () {
 
 		it('should include another translation', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('helloNesting')).toEqual('Weißt du was? Du bist Herzlich Willkommen!');
+			inject(function () {
+				expect($i18next('helloNesting')).toEqual('Weißt du was? Du bist Herzlich Willkommen!');
 			});
 		});
 
 		it('should include another translation and should use "dev" as language', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('helloNesting', {lng: 'dev'})).toEqual('You know what? You\'re Welcome!');
+			inject(function () {
+				expect($i18next('helloNesting', {lng: 'dev'})).toEqual('You know what? You\'re Welcome!');
 			});
 		});
 

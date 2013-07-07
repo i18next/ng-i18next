@@ -12,7 +12,7 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 });
 
-angular.module('MyApp', ['jm.i18next']).controller('MyCtrl', function ($rootScope, $scope, $timeout, $i18next) {
+angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function ($rootScope, $scope, $timeout, $i18next) {
 
 	'use strict';
 

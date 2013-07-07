@@ -34,17 +34,19 @@ angular.module('jm.i18next').provider('$i18next', function () {
       translate(key, mergedOptions);
       return translations[mergedOptions.lng][key];
     }
+    $i18nextTanslate.debugMsg = [];
     optionsObj = $i18nextTanslate.options = self.options;
     $rootScope.$watch(function () {
       return $i18nextTanslate.options;
     }, function (newOptions, oldOptions) {
-      console.log('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
+      $i18nextTanslate.debugMsg.push('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
       optionsObj = $i18nextTanslate.options;
       if (!optionsObj.lng) {
         optionsObj.lng = 'dev';
       }
       init(optionsObj);
     }, true);
+    init(optionsObj);
     return $i18nextTanslate;
   };
 });
@@ -134,8 +136,8 @@ angular.module('jm.i18next').filter('i18next', [
   '$i18next',
   function ($parse, $timeout, $i18next) {
     'use strict';
-    return function (string) {
-      return $i18next(string);
+    return function (string, options) {
+      return $i18next(string, options);
     };
   }
 ]);

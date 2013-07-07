@@ -22,7 +22,7 @@
 
 <body>
 	<!-- You can escape HTML here: http://www.htmlescape.net/htmlescape_tool.html -->
-	<div ng-controller="MyCtrl">
+	<div ng-controller="MyDirectiveCtrl">
 		<p>
 			Change language to: <br>
 			<a href="#" ng-click="changeLng('dev')">English</a><br>
@@ -107,7 +107,9 @@
 
 		<h2 ng-i18next="directive.usingContentHeading"></h2>
 
-		<p ng-i18next>hello</p>
+		<p ng-i18next>
+			hello
+		</p>
 		<code ng-non-bindable>
 			&lt;p ng-i18next&gt;hello&lt;/p&gt;
 		</code>

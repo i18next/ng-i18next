@@ -20,6 +20,7 @@
   "smarttabs": true,
   "sub": true,
   "globals": {
+    "alert": false,
     "angular": false,
     "i18n": false,
     "describe": false,

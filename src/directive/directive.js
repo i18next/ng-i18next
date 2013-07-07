@@ -111,7 +111,7 @@ angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18ne
 			attrs.$observe('ngI18next', function (value) {
 
 				if (value === '') {
-					scope.translationValue = element.text().replace(/^\s+|\s+$/g, '');
+					scope.translationValue = element.text().replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
 				} else {
 					scope.translationValue = value;
 				}

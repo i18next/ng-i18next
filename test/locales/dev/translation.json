@@ -1,0 +1,9 @@
+{
+
+    "hello": "Welcome!",
+    "helloHTML": "<h3>Welcome</h3>",
+    "content": "This is content.",
+    "contentHTML": "This is <strong>content</strong>.",
+    "dynamicDate": "Current date: {{date}}"
+
+}

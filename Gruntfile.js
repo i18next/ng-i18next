@@ -1,5 +1,7 @@
 'use strict';
 
+var LIVERELOAD_PORT = 35729;
+var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
 var mountFolder = function (connect, dir) {
 	return connect.static(require('path').resolve(dir));
 };
@@ -9,9 +11,17 @@ module.exports = function (grunt) {
 	// load all grunt tasks
 	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
+	var config = {
+		src: './src',
+		examples: './examples',
+		dist: './dist'
+	};
+
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
+
+		config: config,
 
 		meta: {
 			banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
@@ -19,16 +29,39 @@ module.exports = function (grunt) {
 				' - Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
 				' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
 		},
+
 		watch: {
-			scripts: {
-				files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
-				tasks: ['jshint', 'karma:unit']
+			livereload: {
+				options: {
+					livereload: LIVERELOAD_PORT
+				},
+				files: [
+					'<%= config.examples %>/{,*/}*.{html,js}',
+					'{.tmp,<%= config.src %>}/{,*/}*.js'
+				]
 			}
 		},
+
 		connect: {
+			options: {
+				port: 9000,
+				// Change this to '0.0.0.0' to access the server from outside.
+				hostname: 'localhost'
+			},
+			livereload: {
+				options: {
+					middleware: function (connect) {
+						return [
+							lrSnippet,
+							mountFolder(connect, '.tmp'),
+							mountFolder(connect, './'),
+							mountFolder(connect, config.examples)
+						];
+					}
+				}
+			},
 			test: {
 				options: {
-					port: 9000,
 					middleware: function (connect) {
 						return [
 							mountFolder(connect, '.tmp'),
@@ -38,47 +71,119 @@ module.exports = function (grunt) {
 				}
 			}
 		},
+
+		open: {
+			server: {
+				url: 'http://localhost:<%= connect.options.port %>'
+			}
+		},
+
+		clean: {
+			dist: {
+				files: [{
+					dot: true,
+					src: [
+						'.tmp',
+						'<%= config.dist %>/*',
+						'!<%= config.dist %>/.git*'
+					]
+				}]
+			},
+			server: '.tmp'
+		},
+
 		jshint: {
 			options: {
 				jshintrc: '.jshintrc'
 			},
-			all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']
+			all: [
+				'Gruntfile.js',
+				'src/{,*/}*.js',
+				'test/{,*/}*.js',
+				'examples/{,*/}*.js'
+			]
 		},
+
 		concat: {
-			src: {
-				src: ['src/provider.js', 'src/**/*.js'],
-				dest: 'dist/ng-i18next.js'
+			dist: {
+				src: ['src/provider.js', 'src/{,*/}*.js'],
+				dest: '<%= config.dist %>/<%= pkg.name %>.js'
 			}
 		},
-		uglify: {
-			options: {
-				banner: '<%= meta.banner %>'
-			},
-			src: {
-				files: {
-					'dist/ng-i18next.min.js': '<%= concat.src.dest %>'
-				}
-			}
-		},
+
 		karma: {
 			unit: {
 				configFile: 'karma.conf.js',
 				singleRun: true
 			}
 		},
+
 		ngmin: {
+			dist: {
+				files: [{
+					expand: true,
+					cwd: '<%= config.dist %>',
+					src: '*.js',
+					dest: '<%= config.dist %>'
+				}]
+			}
+		},
+
+		uglify: {
+			options: {
+				banner: '<%= meta.banner %>'
+			},
 			src: {
-				src: '<%= concat.src.dest %>',
-				dest: '<%= concat.src.dest %>'
+				files: {
+					'dist/ng-i18next.min.js': '<%= concat.dist.dest %>'
+				}
+			},
+			dist: {
+				files: {
+					'<%= config.dist %>/<%= pkg.name %>.min.js': [
+						'<%= concat.dist.dest %>'
+					]
+				}
 			}
 		}
+
 	});
 
-	grunt.registerTask('default', ['jshint']);
-	grunt.registerTask('test', ['karma']);
-	grunt.registerTask('build', ['jshint', 'concat', 'ngmin', 'uglify']);
+	grunt.registerTask('server', function (target) {
 
-	grunt.registerTask('dev', ['jshint', 'karma:unit', 'concat']);
+		if (target === 'dist') {
+			return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+		}
+
+		grunt.task.run([
+			'clean:server',
+			'connect:livereload',
+			'open',
+			'watch'
+		]);
+	});
+
+	grunt.registerTask('test', [
+		'clean:server',
+		'connect:test',
+		'karma'
+	]);
+
+	/*
+	 * 'build' neither tests the script nor does it run jshint!
+	 */
+	grunt.registerTask('build', [
+		'clean:dist',
+		'concat',
+		'ngmin',
+		'uglify'
+	]);
+
+	grunt.registerTask('default', [
+		'jshint',
+		'test',
+		'build'
+	]);
 
 };
 
