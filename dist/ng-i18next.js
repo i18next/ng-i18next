@@ -112,7 +112,7 @@ angular.module('jm.i18next').directive('ngI18next', [
       restrict: 'A',
       scope: true,
       link: function postLink(scope, element, attrs) {
-        attrs.$observe('ngI18next', function (value) {
+        function observe(value) {
           if (value === '') {
             scope.translationValue = element.text().replace(/^\s+|\s+$/g, '');
           } else {
@@ -122,7 +122,9 @@ angular.module('jm.i18next').directive('ngI18next', [
             return;
           }
           localize(scope.$parent, element, scope.translationValue);
-        });
+        }
+        attrs.$observe('ngI18next', observe);
+        observe(attrs.ngI18next);
         scope.$on('i18nextLanguageChange', function () {
           localize(scope.$parent, element, scope.translationValue);
         });
