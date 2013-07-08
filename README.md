@@ -154,6 +154,10 @@ _(note that you have to be in the root directory of this project)_
 
 # Changelog #
 
+v0.2.3
+- fixed minification
+- not using `ngmin` anymore
+
 v0.2.2
 - you can now pass options to a directive
 - new tests and Gruntfile (now supports `grunt server`)

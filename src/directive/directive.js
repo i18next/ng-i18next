@@ -1,4 +1,4 @@
-angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18next, $interpolate, $compile, $parse) {
+angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '$compile', '$parse', function ($rootScope, $i18next, $compile, $parse) {
 
 	'use strict';
 
@@ -71,13 +71,15 @@ angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18ne
 			element.attr(attr, string);
 
 		}
-
 		/*
 		 * Now compile the content of the element and bind the variables to
 		 * the scope
 		 */
 		$compile(element.contents())(scope);
 
+		window.setTimeout(function () {
+			$rootScope.$digest();
+		},0);
 	}
 
 
@@ -137,4 +139,4 @@ angular.module('jm.i18next').directive('ngI18next', function ($rootScope, $i18ne
 
 	};
 
-});
+}]);

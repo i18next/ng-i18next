@@ -118,17 +118,6 @@ module.exports = function (grunt) {
 			}
 		},
 
-		ngmin: {
-			dist: {
-				files: [{
-					expand: true,
-					cwd: '<%= config.dist %>',
-					src: '*.js',
-					dest: '<%= config.dist %>'
-				}]
-			}
-		},
-
 		uglify: {
 			options: {
 				banner: '<%= meta.banner %>'
@@ -175,7 +164,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('build', [
 		'clean:dist',
 		'concat',
-		'ngmin',
 		'uglify'
 	]);
 

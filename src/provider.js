@@ -13,7 +13,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 	self.options = {};
 
-	self.$get = function ($rootScope) {
+	self.$get = ['$rootScope', function ($rootScope) {
 
 		function init(options) {
 
@@ -85,7 +85,6 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		return $i18nextTanslate;
 
-	};
+	}];
 
 });
-

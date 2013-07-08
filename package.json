@@ -1,6 +1,6 @@
 {
   "name": "ng-i18next",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "AngularJS filter and directive for i18next by Jan Mühlemann",
   "main": "./dist/ng-i18next.js",
   "author": {
@@ -23,7 +23,6 @@
     "grunt-karma": "~0.4.3",
     "grunt-open": "~0.2.0",
     "matchdep": "~0.1.2",
-    "connect-livereload": "~0.2.0",
-    "grunt-ngmin": "~0.0.2"
+    "connect-livereload": "~0.2.0"
   }
 }
