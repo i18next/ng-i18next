@@ -1,0 +1,57 @@
+<!doctype html>
+<html ng-app="MyApp">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width">
+	<title>Directive 1 - ng-i18next</title>
+
+	<style>
+		.mBottom, code {
+			margin-bottom: 40px;
+			display:block;
+		}
+	</style>
+
+	<script src="../../bower_components/angular/angular.js"></script>
+	<script src="../../bower_components/i18next/release/i18next-1.6.3.min.js"></script>
+	<script src="../../dist/ng-i18next.js"></script>
+	<script src="directive.js"></script>
+
+</head>
+
+<body>
+	<!-- You can escape HTML here: http://www.htmlescape.net/htmlescape_tool.html -->
+	<div ng-controller="MyDirectiveCtrl">
+		<p>
+			Change language to: <br>
+			<a href="#" ng-click="changeLng('dev')">English</a><br>
+			<a href="#" ng-click="changeLng('de')">German</a>
+		</p>
+
+		<h2 ng-i18next="both.passingOptions"></h2>
+
+		<p ng-i18next="both.passingOptionsDescription"></p>
+		<ul>
+			<li ng-i18next="[i18next]({lng:'de'})both.lngTest"></li>
+			<li ng-i18next="[i18next]({lng:'dev'})both.lngTest"></li>
+		</ul>
+		<code ng-non-bindable>
+			&lt;ul&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[i18next]({lng:'de'})both.lngTest&quot;&gt;&lt;/li&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[i18next]({lng:'dev'})both.lngTest&quot;&gt;&lt;/li&gt;<br/>&lt;/ul&gt;
+		</code>
+
+
+		<p ng-i18next="both.passingOptionsHTMLDescription"></p>
+		<ul>
+			<li ng-i18next="[html:i18next]({lng:'de'})both.lngTestHTML"></li>
+			<li ng-i18next="[html:i18next]({lng:'dev'})both.lngTestHTML"></li>
+		</ul>
+		<code ng-non-bindable>
+			&lt;ul&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[html:i18next]({lng:'de'})both.lngTestHTML&quot;&gt;&lt;/li&gt;<br/>&nbsp;&nbsp;&lt;li&nbsp;ng-i18next=&quot;[html:i18next]({lng:'dev'})both.lngTestHTML&quot;&gt;&lt;/li&gt;<br/>&lt;/ul&gt;
+		</code>
+
+		<p>&nbsp;</p>
+
+	</div>
+</body>
+</html>
