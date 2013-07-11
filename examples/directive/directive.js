@@ -22,6 +22,16 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 
 	$scope.date = new Date();
 
+	$scope.clientsTotal =  2;
+
+	$scope.increaseClients = function () {
+		$scope.clientsTotal++;
+	};
+
+	$scope.decreaseClients = function () {
+		$scope.clientsTotal--;
+	};
+
 	$scope.sayHello = function sayHello() {
 		alert('hello');
 	};

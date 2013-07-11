@@ -1,55 +1,65 @@
 {
-    "headings": {
-        "directive": "Angular Directive - ng-i18next",
-        "filter": "Angular Directive - ng-i18next"
-    },
+	"headings": {
+		"directive": "Angular Directive - ng-i18next",
+		"filter": "Angular Directive - ng-i18next"
+	},
 
-    "both": {
-        "basicUsage": "Basic Usage",
-        "variableBinding": "bind translation to variables",
-        "ngRepeat": "translate using ng-repeat",
-        "passingOptions": "passing options",
-        "passingOptionsDescription": "pass options in directive by using [i18next]",
-        "passingOptionsHTMLDescription": "You can also pass options use HTML at the same time by using [html:i18next]",
-        "lngTest": "I'm in English",
-        "lngTestHTML": "<strong>I'm in English</strong>"
-    },
+	"both": {
+		"basicUsage": "Basic Usage",
+		"variableBinding": "bind translation to variables",
+		"ngRepeat": "translate using ng-repeat",
+		"passingOptions": "passing options",
+		"passingOptionsDescription": "pass options in directive by using [i18next]",
+		"passingOptionsHTMLDescription": "You can also pass options use HTML at the same time by using [html:i18next]",
+		"lngTest": "I'm in English",
+		"lngTestHTML": "<strong>I'm in English</strong>",
+		"passingOptionsPlural": "plural",
+		"passingOptionsPluralDynamic": "plural - dynamic"
+	},
 
-    "directive": {
-        "basics": "Basics",
-        "withHTML": "with HTML",
-        "attr": "As an attribut",
-        "basicUsageHTML": "<em>HTML Code-Translation</em>",
-        "basicUsageHTMLAsText": "<em>HTML Code-Translation as text</em>",
-        "dynamicHTML": "<em>numbers[2] = {{numbers[2]}}</em>",
-        "dynamicHTMLAsText":"<em>numbers[2] = {{numbers[2]}}</em> - it's text, not HTML",
-        "getTranslationKeyFromScope": "Get the string, we want to translate, from the $scope",
-        "attrHeading": "Translation of attributes",
-        "attr": {
-            "titleOnly": "title should be '$t(hello)'",
-            "titleAndContent": "title should be '$t(hello)' and the content should be '$t(content)'.",
-            "titleAndHTML": "title should be '$t(hello)' and the content should be '$t(contentHTML)'."
-        },
-        "usingContentHeading": "use content for translation",
-        "usingContent": {
+	"directive": {
+		"basics": "Basics",
+		"withHTML": "with HTML",
+		"attr": "As an attribut",
+		"basicUsageHTML": "<em>HTML Code-Translation</em>",
+		"basicUsageHTMLAsText": "<em>HTML Code-Translation as text</em>",
+		"dynamicHTML": "<em>numbers[2] = {{numbers[2]}}</em>",
+		"dynamicHTMLAsText":"<em>numbers[2] = {{numbers[2]}}</em> - it's text, not HTML",
+		"getTranslationKeyFromScope": "Get the string, we want to translate, from the $scope",
+		"attrHeading": "Translation of attributes",
+		"attr": {
+			"titleOnly": "title should be '$t(hello)'",
+			"titleAndContent": "title should be '$t(hello)' and the content should be '$t(content)'.",
+			"titleAndHTML": "title should be '$t(hello)' and the content should be '$t(contentHTML)'."
+		},
+		"usingContentHeading": "use content for translation",
+		"usingContent": {
 
-        },
-        "innerDirective": "Directive within translation",
-        "others": "Others",
-        "translateVariableThatChanges": "Translate a variable which changes after a while."
-    },
+		},
+		"innerDirective": "Directive within translation",
+		"others": "Others",
+		"translateVariableThatChanges": "Translate a variable which changes after a while."
+	},
 
-    "numbers": {
-        "one": "One",
-        "two": "Two",
-        "three": "Three"
-    },
+	"numbers": {
+		"one": "One",
+		"two": "Two",
+		"three": "Three"
+	},
 
-    "hello": "Welcome!",
-    "helloHTML": "<h3>Welcome</h3>",
-    "content": "This is content.",
-    "contentHTML": "This is <strong>content</strong>.",
-    "dynamicDate": "Current date: {{date}}",
-    "sayHelloHTML": "Say <button ng-click='sayHello()'>hello</button> if clicked."
+	"client": {
+		"client": "client",
+		"client_plural": "clients",
+		"total": "__total__ $t(client.client, {\"count\": __total__ }) total.",
+		"increaseClients": "increase total clients",
+		"decreaseClients": "decrease total clients"
+	},
+
+	"hello": "Welcome!",
+	"helloHTML": "<h3>Welcome</h3>",
+	"content": "This is content.",
+	"contentHTML": "This is <strong>content</strong>.",
+	"dynamicDate": "Current date: {{date}}",
+	"sayHelloHTML": "Say <button ng-click='sayHello()'>hello</button> if clicked."
 
 }
