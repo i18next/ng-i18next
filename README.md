@@ -154,6 +154,10 @@ _(note that you have to be in the root directory of this project)_
 
 # Changelog #
 
+v0.2.4
+- removed unnecessary code in provider.js
+- fixed issue #14 where auto detection of language didn't work
+
 v0.2.3
 - fixed minification
 - not using `ngmin` anymore

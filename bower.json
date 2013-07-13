@@ -1,6 +1,6 @@
 {
   "name": "ng-i18next",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "dependencies": {
     "angular": "~1.0.7",
     "i18next": "latest"
