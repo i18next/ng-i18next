@@ -19,6 +19,10 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			window.i18n.init(options, function (localize) {
 
+				window.setTimeout(function () {
+					$rootScope.$digest();
+				},0);
+
 				t = localize;
 
 				$rootScope.$broadcast('i18nextLanguageChange');
@@ -45,12 +49,12 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		function $i18nextTanslate(key, options) {
 
-			var mergedOptions = angular.extend({}, optionsObj, options),
-				lng = mergedOptions.lng || 'auto';
+			var mergedOptions = angular.extend({}, optionsObj, options);
 
 			translate(key, mergedOptions);
 
-			return translations[lng][key];
+			return (options && options.lng) ? translations[options.lng][key] :
+				!!optionsObj.lng ? translations[optionsObj.lng][key] : translations['auto'][key];
 
 		}
 
