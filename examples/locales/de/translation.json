@@ -6,7 +6,6 @@
 
 	"both": {
 		"basicUsage": "Basic Usage",
-		"variableBinding": "Übersetzung und Variablen binden",
 		"ngRepeat": "Übersetzung mit ng-repeat",
 		"passingOptions": "Optionen übergeben",
 		"passingOptionsDescription": "Übergebe Optionen mithilfe von [i18next]",
