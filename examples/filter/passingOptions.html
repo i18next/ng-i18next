@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width">
-	<title>Filter 1 - ng-i18next</title>
+	<title>Passing Options - ng-i18next</title>
 
 	<style>
 		.mBottom, code {
@@ -24,19 +24,16 @@
 	<!-- You can escape HTML here: http://www.htmlescape.net/htmlescape_tool.html -->
 	<div ng-controller="MyFilterCtrl">
 
-		<h2>{{'Basics' | i18next}}</h2>
+		<h2>{{'both.passingOptions' | i18next}}</h2>
 
-		<p>{{'both.basicUsage' | i18next}}</p>
+		<ul>
+			<li>{{'both.lngTest' | i18next:{lng:'de'} }}</li>
+			<li>{{'both.lngTest' | i18next:{lng:'dev'} }}</li>
+		</ul>
 		<code ng-non-bindable>
-			&lt;p&gt;{{'both.basicUsage' | i18next}}&lt;/p&gt;
-		</code>
-
-		<p>{{'both.ngRepeat' | i18next}}</p>
-		<p ng-repeat="number in numbers">{{'numbers.' + number | i18next}}</p>
-		<code ng-non-bindable>
-			&lt;p&gt;{{'both.ngRepeat' | i18next}}&lt;/p&gt;
-			<br/>
-			&lt;p ng-repeat=&quot;number in numbers&quot;&gt;{{'numbers.' + number | i18next}}&lt;/p&gt;
+			&lt;ul&gt;<br/>	&lt;li&gt;{{'both.lngTest' | i18next:{lng:'de'}}}&lt;/li&gt;
+			<br/>	&lt;li&gt;{{'both.lngTest' | i18next:{lng:'dev'}}}&lt;/li&gt;
+			<br/>&lt;/ul&gt;
 		</code>
 
 	</div>
