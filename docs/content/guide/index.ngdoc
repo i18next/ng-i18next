@@ -1,0 +1,49 @@
+@ngdoc overview
+@name Guide
+@description
+
+# i18next for Angular
+
+
+This guide will tell you how to use [i18next](http://i18next.com) the right way with AngularJS. Please note that this guide is under development!
+
+Please checkout the [examples](https://github.com/archer96/ng-i18next/tree/master/examples).
+
+## Quick Start
+Install module via Bower (ng-i18next currently isn't in the bower repository):
+
+```
+$ bower install git://github.com/archer96/ng-i18next.git
+```
+
+
+Inject <code>ng-i18next</code> module as a dependency into your app:
+
+<pre>
+angular.module('myApp', ['jm.i18next']);
+</pre>
+
+
+Config <code>$i18nextProvider</code>:
+
+<pre>
+angular.module('myApp').config(function($i18nextProvider) {
+	$i18nextProvider.options = {
+		useCookie: false,
+		useLocalStorage: false,
+		resGetPath: '../locales/__lng__/__ns__.json',
+		lng: 'de'
+		// for more visit http://i18next.com
+	};
+});
+</pre>
+
+Translate your app:
+
+<pre>
+<h1 ng-i18next="title"></h1>
+<p ng-i18next="[html]someHTML"></p>
+<p>{{ 'someText' | i18next }}</p>
+</pre>
+
+For more read the full guide.

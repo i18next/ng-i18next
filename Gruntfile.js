@@ -30,6 +30,20 @@ module.exports = function (grunt) {
 				' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
 		},
 
+		ngdocs: {
+			options: {
+				dest: '<%= config.dist %>/docs',
+				title: 'ng-i18next',
+				html5Mode: false,
+				scripts: ['angular.js'],
+				startPage: '/guide'
+			},
+			guide: {
+				src: ['docs/content/guide/*.ngdoc'],
+				title: 'Guide'
+			}
+		},
+
 		watch: {
 			livereload: {
 				options: {
@@ -86,6 +100,15 @@ module.exports = function (grunt) {
 						'.tmp',
 						'<%= config.dist %>/*',
 						'!<%= config.dist %>/.git*'
+					]
+				}]
+			},
+			doc: {
+				files: [{
+					dot: true,
+					src: [
+						'.tmp',
+						'<%= config.dist %>/docs/*',
 					]
 				}]
 			},
@@ -160,6 +183,7 @@ module.exports = function (grunt) {
 
 	/*
 	 * 'build' neither tests the script nor does it run jshint!
+	 * Also it does not create the documentation!
 	 */
 	grunt.registerTask('build', [
 		'clean:dist',
@@ -167,10 +191,16 @@ module.exports = function (grunt) {
 		'uglify'
 	]);
 
+	grunt.registerTask('build:doc', [
+		'clean:doc',
+		'ngdocs'
+	]);
+
 	grunt.registerTask('default', [
 		'jshint',
 		'test',
-		'build'
+		'build',
+		'ngdocs'
 	]);
 
 };

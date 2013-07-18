@@ -154,6 +154,10 @@ _(note that you have to be in the root directory of this project)_
 
 # Changelog #
 
+v0.2.6
+- fixed #15 - fixed error "$digest already in progress"
+- added docs using ng-docs
+
 v0.2.5
 - fixed some minor bugs (in filter)
 

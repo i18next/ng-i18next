@@ -19,9 +19,9 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			window.i18n.init(options, function (localize) {
 
-				window.setTimeout(function () {
+				if (!$rootScope.$$phase) {
 					$rootScope.$digest();
-				},0);
+				}
 
 				t = localize;
 
