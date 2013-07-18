@@ -159,9 +159,9 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 		 */
 		$compile(element.contents())(scope);
 
-		window.setTimeout(function () {
+		if (!$rootScope.$$phase) {
 			$rootScope.$digest();
-		},0);
+		}
 	}
 
 
