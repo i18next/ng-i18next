@@ -26,7 +26,7 @@ to your HTML file.
 Make sure you require `jm.i18next` as a dependency of your AngularJS module. Also configurate the provider first:
 
 ```js
-angular.module('jm.i18next').config(function ($i18nextProvider) {
+angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvider) {
 	$i18nextProvider.options = {
 		lng: 'de',
 		useCookie: false,
@@ -34,7 +34,7 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 		fallbackLng: 'dev',
 		resGetPath: '../locales/__lng__/__ns__.json'
 	};
-});
+}]);
 ```
 
 For more options visit the [i18next documentation](http://i18next.com/pages/doc_init.html).
