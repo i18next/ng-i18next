@@ -18,7 +18,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		function init(options) {
 
 			window.i18n.init(options, function (localize) {
-
+				translations = {};
 				if (!$rootScope.$$phase) {
 					$rootScope.$digest();
 				}
@@ -41,7 +41,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			if (!t) {
 				translations[lng][key] = key;
-			} else {
+			} else if (!translations[lng][key]) {
 				translations[lng][key] = t(key, options);
 			}
 
