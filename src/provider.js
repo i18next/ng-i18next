@@ -41,7 +41,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			if (!t) {
 				translations[lng][key] = key;
-			} else if (!translations[lng][key]) {
+			} else if (!translations[lng][key] || options) {
 				translations[lng][key] = t(key, options);
 			}
 
@@ -49,7 +49,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		function $i18nextTanslate(key, options) {
 
-			var mergedOptions = angular.extend({}, optionsObj, options);
+			var mergedOptions = options ? angular.extend({}, optionsObj, options) : optionsObj;
 
 			translate(key, mergedOptions);
 
