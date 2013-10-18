@@ -1,4 +1,4 @@
-describe('jm.i18next - Filter', function () {
+describe('jm.i18next - Directive', function () {
 
 	'use strict';
 

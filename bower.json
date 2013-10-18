@@ -1,7 +1,7 @@
 {
   "name": "ng-i18next",
   "main": "./dist/ng-i18next.js",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "devDependencies": {
     "angular": "~1.0.7",
     "i18next": "latest",

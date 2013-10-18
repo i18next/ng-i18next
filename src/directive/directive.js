@@ -106,24 +106,26 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 		// 'A': only as attribute
 		restrict: 'A',
 
-		scope: true,
+		scope: false,
 
 		link: function postLink(scope, element, attrs) {
+
+			var translationValue;
 
 			function observe (value) {
 
 				if (value === '') {
-					scope.translationValue = element.text().replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
+					translationValue = element.text().replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
 				} else {
-					scope.translationValue = value;
+					translationValue = value;
 				}
 
-				if (!scope.translationValue) {
+				if (!translationValue) {
 					// Well, seems that we don't have anything to translate...
 					return;
 				}
 
-				localize(scope.$parent, element, scope.translationValue);
+				localize(scope.this, element, translationValue);
 
 			}
 
@@ -132,9 +134,8 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			observe(attrs.ngI18next);
 
 			scope.$on('i18nextLanguageChange', function () {
-				localize(scope.$parent, element, scope.translationValue);
+				localize(scope.this, element, translationValue);
 			});
-
 		}
 
 	};

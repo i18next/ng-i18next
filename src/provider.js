@@ -18,7 +18,9 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		function init(options) {
 
 			window.i18n.init(options, function (localize) {
+
 				translations = {};
+
 				if (!$rootScope.$$phase) {
 					$rootScope.$digest();
 				}
@@ -31,7 +33,11 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		function translate(key, options) {
+		/*
+		 * hasOwnOptions means that we are passing options to
+		 * $i18next so we can't use previous saved translation.
+		 */
+		function translate(key, options, hasOwnOptions) {
 
 			var lng = options.lng || 'auto';
 
@@ -41,7 +47,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			if (!t) {
 				translations[lng][key] = key;
-			} else if (!translations[lng][key] || options) {
+			} else if (!translations[lng][key] || hasOwnOptions) {
 				translations[lng][key] = t(key, options);
 			}
 
@@ -51,7 +57,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			var mergedOptions = options ? angular.extend({}, optionsObj, options) : optionsObj;
 
-			translate(key, mergedOptions);
+			translate(key, mergedOptions, !!options);
 
 			return (options && options.lng) ? translations[options.lng][key] :
 				!!optionsObj.lng ? translations[optionsObj.lng][key] : translations['auto'][key];

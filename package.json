@@ -1,6 +1,6 @@
 {
   "name": "ng-i18next",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "AngularJS filter and directive for i18next by Jan Mühlemann",
   "main": "./dist/ng-i18next.js",
   "author": {
