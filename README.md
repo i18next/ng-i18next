@@ -154,6 +154,9 @@ _(note that you have to be in the root directory of this project)_
 
 # Changelog #
 
+v0.2.8
+- fixed #24 - fixed an error with IE8
+
 v0.2.7
 - fixed #21 - fixed error when using `ng-model` and `ng-i18next` on the same element
 

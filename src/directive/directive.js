@@ -125,7 +125,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 					return;
 				}
 
-				localize(scope.this, element, translationValue);
+				localize(scope, element, translationValue);
 
 			}
 
@@ -134,7 +134,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			observe(attrs.ngI18next);
 
 			scope.$on('i18nextLanguageChange', function () {
-				localize(scope.this, element, translationValue);
+				localize(scope, element, translationValue);
 			});
 		}
 
