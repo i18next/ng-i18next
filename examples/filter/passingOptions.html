@@ -36,6 +36,29 @@
 			<br/>&lt;/ul&gt;
 		</code>
 
+        <p>&nbsp;</p>
+
+        <p ng-i18next="both.passingOptionsPlural"></p>
+		<p ng-i18next="{{'client.total' | i18next:{total:0} }}"></p>
+		<p ng-i18next="{{'client.total' | i18next:{total:1} }}"></p>
+		<p ng-i18next="{{'client.total' | i18next:{total:4} }}"></p>
+
+        <code ng-non-bindable>
+          &lt;p ng-i18next="{{\'client.total\' | i18next:{total:0} }}"&gt;&lt;/p&gt;
+          <br/>&lt;p ng-i18next="{{\'client.total\' | i18next:{total:1} }}"&gt;&lt;/p&gt;
+          <br/>&lt;p ng-i18next="{{\'client.total\' | i18next:{total:4} }}"&gt;&lt;/p&gt;
+        </code>
+
+        <p>&nbsp;</p>
+
+		<p ng-i18next="both.passingOptionsPluralDynamic"></p>
+		<p>
+			<a href="#" ng-click="increaseClients()" ng-i18next="client.increaseClients"></a>
+			 |
+			<a href="#" ng-click="decreaseClients()" ng-i18next="client.decreaseClients"></a>
+		</p>
+		<p ng-i18next="{{'client.total' | i18next: {total:clientsTotal} }}"></p>
+
 	</div>
 </body>
 </html>
