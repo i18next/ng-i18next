@@ -29,6 +29,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyFilterCtrl', function ($ro
 	$scope.decreaseClients = function () {
 		$scope.clientsTotal--;
 	};
+
 	$scope.sayHello = function sayHello() {
 		alert('hello');
 	};

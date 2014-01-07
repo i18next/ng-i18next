@@ -1,6 +1,6 @@
 {
   "name": "ng-i18next",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "AngularJS filter and directive for i18next by Jan Mühlemann",
   "main": "./dist/ng-i18next.js",
   "author": {
@@ -13,7 +13,7 @@
     }
   ],
   "devDependencies": {
-    "grunt": "~0.4.1",
+    "grunt": "~0.4.2",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-jshint": "~0.6.0",

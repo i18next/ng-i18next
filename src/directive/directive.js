@@ -48,9 +48,18 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 				keys[0] = keys[0].substr(1, keys[0].length);
 
-				options = $parse(keys[0])();
+				if (keys.length > 2) {
 
-				strippedKey = keys[1];
+					strippedKey = keys.pop();
+
+					options = $parse(keys.join(')'))();
+
+				} else {
+
+					options = $parse(keys[0])();
+					strippedKey = keys[1];
+
+				}
 
 			}
 

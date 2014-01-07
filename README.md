@@ -154,6 +154,9 @@ _(note that you have to be in the root directory of this project)_
 
 # Changelog #
 
+v0.2.9
+- fix error (#28) when using `ng-i18next` directive with options containing parentheses
+
 v0.2.8
 - fixed #24 - fixed an error with IE8
 
