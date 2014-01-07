@@ -116,6 +116,21 @@ You can also pass options:
 	<p ng-i18next="[html:i18next]({lng:'de'})hello"></p>
 => translates ````hello```` in German (````de````) and compiles it to HTML code.
 
+### Passing Options + interpopulate ###
+You can also pass options that reference existing translations:
+
+Assuming translation file:
+
+```
+{
+	"super": "Super",
+	"superDuper": "__attribute__ Duper"
+}
+```
+
+	<p ng-i18next="[html:i18next]({attribute: 'i18n.t.super'})hello"></p>
+=> translates to the string ```Super Duper```
+
 ---------
 
 For more, see examples.

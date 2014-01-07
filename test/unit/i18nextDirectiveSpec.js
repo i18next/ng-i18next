@@ -112,6 +112,13 @@ describe('jm.i18next - Directive', function () {
 			});
 		});
 
+		it('should interpopulate existing translation within an option', function () {
+			inject(function ($rootScope, $compile) {
+				var c = $compile('<p ng-i18next="[i18next]({name:\'i18n.t.woman\'})helloName"></p>')($rootScope).text();
+				expect(c).toEqual('Herzlich Willkommen, Frau!');
+			});
+		});
+
 	});
 
 	describe('using $scope', function () {

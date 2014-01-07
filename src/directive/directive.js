@@ -50,6 +50,19 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 				options = $parse(keys[0])();
 
+				//Check to see if any of the options need to be localized
+				for (var k in options) {
+
+					if (typeof options[k] === 'string' && options[k].indexOf('i18n.t.') > -1) {
+
+						var valToLocalize = options[k].split('i18n.t.')[1];
+
+						options[k] = i18n.t(valToLocalize);
+
+					}
+
+				}
+
 				strippedKey = keys[1];
 
 			}
