@@ -74,7 +74,9 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			optionsObj = $i18nextTanslate.options;
 
-			init(optionsObj);
+			if (oldOptions !== newOptions) {
+				init(optionsObj);
+			}
 
 		}, true);
 
