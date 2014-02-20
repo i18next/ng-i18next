@@ -3,8 +3,8 @@
   "main": "./dist/ng-i18next.js",
   "version": "0.2.9",
   "devDependencies": {
-    "angular": "~1.2.6",
-    "i18next": "latest",
+    "angular": "~1.2",
+    "i18next": "~1.7.2",
     "angular-mocks": "~1.2.6"
   },
   "ignore": [

@@ -1,9 +1,7 @@
 // Karma configuration
-// Generated on Fri Mar 29 2013 13:57:21 GMT+0100 (CET)
 
 // base path, that will be used to resolve files and exclude
 basePath = '';
-
 
 // list of files / patterns to load in the browser
 files = [
@@ -11,7 +9,7 @@ files = [
   JASMINE_ADAPTER,
   'bower_components/angular/angular.js',
   'bower_components/angular-mocks/angular-mocks.js',
-  'bower_components/i18next/release/i18next-1.6.3.min.js',
+  'bower_components/i18next/i18next.min.js',
   'src/provider.js',
   'src/**/*.js',
   'examples/**/*.js',
@@ -19,10 +17,7 @@ files = [
 ];
 
 // list of files to exclude
-exclude = [
-
-];
-
+exclude = [];
 
 // test results reporter to use
 // possible values: 'dots', 'progress', 'junit'
