@@ -1,27 +1,22 @@
 'use strict';
 
-var LIVERELOAD_PORT = 35729;
-var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
-var mountFolder = function (connect, dir) {
-	return connect.static(require('path').resolve(dir));
-};
-
 module.exports = function (grunt) {
 
-	// load all grunt tasks
-	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+	// Load grunt tasks automatically
+	require('load-grunt-tasks')(grunt);
 
-	var config = {
-		src: './src',
-		examples: './examples',
-		dist: './dist'
-	};
+	// Time how long tasks take. Can help when optimizing build times
+	require('time-grunt')(grunt);
 
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
 
-		config: config,
+		config: {
+			src: './src',
+			examples: './examples',
+			dist: './dist'
+		},
 
 		meta: {
 			banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
@@ -45,9 +40,18 @@ module.exports = function (grunt) {
 		},
 
 		watch: {
+			js: {
+				files: ['<%= config.src %>/**/*.js'],
+				options: {
+					livereload: true
+				}
+			},
+			gruntfile: {
+				files: ['Gruntfile.js']
+			},
 			livereload: {
 				options: {
-					livereload: LIVERELOAD_PORT
+					livereload: '<%= connect.options.livereload %>'
 				},
 				files: [
 					'<%= config.examples %>/{,*/}*.{html,js}',
@@ -56,39 +60,32 @@ module.exports = function (grunt) {
 			}
 		},
 
+		// The actual grunt server settings
 		connect: {
 			options: {
 				port: 9000,
 				// Change this to '0.0.0.0' to access the server from outside.
-				hostname: 'localhost'
+				hostname: 'localhost',
+				livereload: 35729
 			},
 			livereload: {
 				options: {
-					middleware: function (connect) {
-						return [
-							lrSnippet,
-							mountFolder(connect, '.tmp'),
-							mountFolder(connect, './'),
-							mountFolder(connect, config.examples)
-						];
-					}
+					open: true,
+					base: [
+						'./',
+						'<%= config.examples %>'
+					]
 				}
 			},
 			test: {
 				options: {
-					middleware: function (connect) {
-						return [
-							mountFolder(connect, '.tmp'),
-							mountFolder(connect, 'test')
-						];
-					}
+					port: 9001,
+					base: [
+						'./',
+						'test',
+						'<%= config.examples %>'
+					]
 				}
-			}
-		},
-
-		open: {
-			server: {
-				url: 'http://localhost:<%= connect.options.port %>'
 			}
 		},
 
@@ -117,7 +114,8 @@ module.exports = function (grunt) {
 
 		jshint: {
 			options: {
-				jshintrc: '.jshintrc'
+				jshintrc: '.jshintrc',
+				reporter: require('jshint-stylish')
 			},
 			all: [
 				'Gruntfile.js',
@@ -145,11 +143,6 @@ module.exports = function (grunt) {
 			options: {
 				banner: '<%= meta.banner %>'
 			},
-			src: {
-				files: {
-					'dist/ng-i18next.min.js': '<%= concat.dist.dest %>'
-				}
-			},
 			dist: {
 				files: {
 					'<%= config.dist %>/<%= pkg.name %>.min.js': [
@@ -161,18 +154,23 @@ module.exports = function (grunt) {
 
 	});
 
-	grunt.registerTask('server', function (target) {
+	grunt.registerTask('serve', function (target) {
 
 		if (target === 'dist') {
-			return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
+			return grunt.task.run(['build', 'connect:dist:keepalive']);
 		}
 
 		grunt.task.run([
 			'clean:server',
 			'connect:livereload',
-			'open',
 			'watch'
 		]);
+
+	});
+
+	grunt.registerTask('server', function () {
+		grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+		grunt.task.run(['serve']);
 	});
 
 	grunt.registerTask('test', [
