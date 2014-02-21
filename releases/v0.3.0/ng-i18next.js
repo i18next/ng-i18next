@@ -85,7 +85,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		}
 
 		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
-			// Check whether there are new options and whether the new options are different from the old options.
+			// Check wehther there are new options and whether the new options are different from the old options.
 			if (!!newOptions && oldOptions !== newOptions) {
 				optionsChange(newOptions, oldOptions);
 			}

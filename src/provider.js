@@ -9,7 +9,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		 */
 		t = null,
 		translations = {},
-		optionsObj;
+		globalOptions = null;
 
 	self.options = {};
 
@@ -21,11 +21,11 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 				translations = {};
 
+				t = localize;
+
 				if (!$rootScope.$$phase) {
 					$rootScope.$digest();
 				}
-
-				t = localize;
 
 				$rootScope.$broadcast('i18nextLanguageChange');
 
@@ -33,9 +33,20 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		/*
-		 * hasOwnOptions means that we are passing options to
-		 * $i18next so we can't use previous saved translation.
+		function optionsChange (newOptions, oldOptions) {
+
+			$i18nextTanslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
+
+			globalOptions = newOptions;
+
+			init(globalOptions);
+
+		}
+
+		/**
+		 * Translates `key` with given options and puts the translation into `translations`.
+		 * @param {Boolean} hasOwnOptions hasOwnOptions means that we are passing options to
+		 *                                $i18next so we can't use previous saved translation.
 		 */
 		function translate(key, options, hasOwnOptions) {
 
@@ -55,7 +66,8 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		function $i18nextTanslate(key, options) {
 
-			var mergedOptions = options ? angular.extend({}, optionsObj, options) : optionsObj;
+			var optionsObj = options || {},
+				mergedOptions = options ? angular.extend({}, optionsObj, options) : optionsObj;
 
 			translate(key, mergedOptions, !!options);
 
@@ -66,21 +78,18 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		$i18nextTanslate.debugMsg = [];
 
-		optionsObj = $i18nextTanslate.options = self.options;
+		$i18nextTanslate.options = self.options;
+
+		if (self.options !== globalOptions) {
+			optionsChange(self.options, globalOptions);
+		}
 
 		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
-
-			$i18nextTanslate.debugMsg.push('i18next options changed: \n', 'old options', oldOptions, 'new options', newOptions);
-
-			optionsObj = $i18nextTanslate.options;
-
-			if (oldOptions !== newOptions) {
-				init(optionsObj);
+			// Check whether there are new options and whether the new options are different from the old options.
+			if (!!newOptions && oldOptions !== newOptions) {
+				optionsChange(newOptions, oldOptions);
 			}
-
 		}, true);
-
-		init(optionsObj);
 
 		return $i18nextTanslate;
 

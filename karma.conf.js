@@ -12,7 +12,6 @@ files = [
   'bower_components/i18next/i18next.min.js',
   'src/provider.js',
   'src/**/*.js',
-  'examples/**/*.js',
   'test/**/*Spec.js'
 ];
 
