@@ -1,4 +1,7 @@
-# Changelog #
+# Changelog # #
+
+v0.3.0 - 2014/02/21
+- now `ng-i18next` requires options instead of using default options
 
 v0.2.9 - 2014/01/07
 - fix error (#28) when using `ng-i18next` directive with options containing parentheses
