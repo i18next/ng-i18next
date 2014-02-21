@@ -1,56 +1,61 @@
-describe('jm.i18next - Provider', function () {
+describe('Unit: jm.i18next - Provider', function () {
 
 	'use strict';
 
 	var $i18next;
+	var i18nextOptions = {
+		lng: 'de-DE',
+		useCookie: false,
+		useLocalStorage: false,
+		fallbackLng: 'dev',
+		resStore: {
+			'de-DE': {
+				translation: {
+					'hello': 'Herzlich Willkommen!',
+					'helloName': 'Herzlich Willkommen, __name__!',
+					'helloNesting': 'Weißt du was? Du bist $t(hello)',
+					'woman': 'Frau',
+					'woman_plural': 'Frauen',
+					'woman_plural_0': 'Keine Frauen',
+					'friend': 'Freund',
+					'friend_male': 'Fester Freund',
+					'friend_female': 'Feste Freundin'
+				}
+			},
+			'dev': {
+				translation: {
+					'hello': 'Welcome!',
+					'helloName': 'Welcome, __name__!',
+					'helloNesting': 'You know what? You\'re $t(hello)',
+					'woman': 'Woman',
+					'woman_plural': 'Women',
+					'woman_plural_0': 'No women',
+					'friend': 'Friend',
+					'friend_male': 'Boyfriend',
+					'friend_female': 'Girlfriend'
+				}
+			}
+		}
+		//resGetPath: '/test/locales/__lng__/__ns__.json'
+	};
 
 	beforeEach(function () {
 
 		module('jm.i18next', function ($i18nextProvider) {
+			$i18nextProvider.options = i18nextOptions;
+		});
 
-			$i18nextProvider.options = {
-				lng: 'de-DE',
-				useCookie: false,
-				useLocalStorage: false,
-				fallbackLng: 'dev',
-				resStore: {
-					'de-DE': {
-						translation: {
-							'hello': 'Herzlich Willkommen!',
-							'helloName': 'Herzlich Willkommen, __name__!',
-							'helloNesting': 'Weißt du was? Du bist $t(hello)',
-							'woman': 'Frau',
-							'woman_plural': 'Frauen',
-							'woman_plural_0': 'Keine Frauen',
-							'friend': 'Freund',
-							'friend_male': 'Fester Freund',
-							'friend_female': 'Feste Freundin'
-						}
-					},
-					'dev': {
-						translation: {
-							'hello': 'Welcome!',
-							'helloName': 'Welcome, __name__!',
-							'helloNesting': 'You know what? You\'re $t(hello)',
-							'woman': 'Woman',
-							'woman_plural': 'Women',
-							'woman_plural_0': 'No women',
-							'friend': 'Friend',
-							'friend_male': 'Boyfriend',
-							'friend_female': 'Girlfriend'
-						}
-					}
-				}
-				//resGetPath: '/test/locales/__lng__/__ns__.json'
-			};
-
+		inject(function (_$i18next_) {
+			$i18next = _$i18next_;
 		});
 
 	});
 
-	beforeEach(inject(function (_$i18next_) {
-		$i18next = _$i18next_;
-	}));
+	it('should contain an $i18next service', function () {
+		inject(function () {
+			expect($i18next).not.toEqual(null);
+		});
+	});
 
 	/*
 	 * Tests
