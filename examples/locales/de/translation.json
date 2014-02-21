@@ -37,7 +37,11 @@
 		},
 		"innerDirective": "Directive innerhalb der Übersetzung",
 		"others": "Sonstiges",
-		"translateVariableThatChanges": "Übersetze eine Variable, die sich ändert."
+		"translateVariableThatChanges": "Übersetze eine Variable, die sich ändert.",
+		"cloak": {
+			"heading": "i18next Cloak",
+			"description": "Wenn die Sprach-Dateien noch nicht geladen sind, erscheint erst der Übersetzungs-Key. Sie dir bitte den Code von `directive.js` und dieser HTML Datei an, um zu sehen wie man diese vermeidet."
+		}
 	},
 
 	"numbers": {

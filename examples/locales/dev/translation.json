@@ -8,7 +8,6 @@
 		"basicUsage": "Basic Usage",
 		"ngRepeat": "translate using ng-repeat",
 		"passingOptions": "passing options",
-		"passingOptionsDescription": "pass options in directive by using [i18next]",
 		"passingOptionsHTMLDescription": "You can also pass options use HTML at the same time by using [html:i18next]",
 		"lngTest": "I'm in English",
 		"lngTestHTML": "<strong>I'm in English</strong>",
@@ -20,6 +19,7 @@
 		"basics": "Basics",
 		"withHTML": "with HTML",
 		"attr": "As an attribut",
+		"passingOptionsDescription": "pass options in directive by using [i18next]",
 		"basicUsageHTML": "<em>HTML Code-Translation</em>",
 		"basicUsageHTMLAsText": "<em>HTML Code-Translation as text</em>",
 		"dynamicHTML": "<em>numbers[2] = {{numbers[2]}}</em>",
@@ -37,7 +37,11 @@
 		},
 		"innerDirective": "Directive within translation",
 		"others": "Others",
-		"translateVariableThatChanges": "Translate a variable which changes after a while."
+		"translateVariableThatChanges": "Translate a variable which changes after a while.",
+		"cloak": {
+			"heading": "i18next Cloak",
+			"description": "If the translation files aren't loaded, yet, the translation keys will be used first. Please read the source code of `directive.js` and of this HTML file to see how to avoid that."
+		}
 	},
 
 	"numbers": {
