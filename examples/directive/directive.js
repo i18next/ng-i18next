@@ -14,6 +14,17 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 
 	'use strict';
 
+	$scope.i18nextReady = false;
+
+	$scope.$on('i18nextLanguageChange', function () {
+		console.log('Language has changed!');
+		if (!$scope.i18nextReady) {
+			$timeout(function () {
+				$scope.i18nextReady = true;
+			}, 500);
+		}
+	});
+
 	$scope.numbers =  ['one', 'two', 'three'];
 
 	$scope.bindingVariable = 'helloHTML';
@@ -36,6 +47,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 
 	$scope.changeLng = function (lng) {
 		$i18next.options.lng = lng;
+		console.log($i18next.debugMsg[$i18next.debugMsg.length - 1]);
 	};
 
 	$timeout(function () {
