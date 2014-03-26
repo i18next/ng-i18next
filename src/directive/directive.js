@@ -69,7 +69,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 		if (attr === 'html') {
 
-			element.html(string);
+			element.empty().append(string);
 
 		} else if (attr === 'text') {
 
