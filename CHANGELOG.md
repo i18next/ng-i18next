@@ -1,4 +1,7 @@
-# Changelog # #
+# Changelog #
+
+v0.3.1 - 2014/03/26
+- Fix for IE - invalid argument for .html() - see #32
 
 v0.3.0 - 2014/02/21
 - now `ng-i18next` requires options instead of using default options
