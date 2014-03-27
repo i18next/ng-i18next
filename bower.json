@@ -11,6 +11,7 @@
   },
   "ignore": [
     "bower_components",
+    "releases",
     "docs",
     "examples",
     "src",
