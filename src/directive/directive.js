@@ -70,6 +70,11 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 		if (attr === 'html') {
 
 			element.empty().append(string);
+			/*
+			 * Now compile the content of the element and bind the variables to
+			 * the scope
+			 */
+			$compile(element.contents())(scope);
 
 		} else if (attr === 'text') {
 
@@ -80,11 +85,6 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			element.attr(attr, string);
 
 		}
-		/*
-		 * Now compile the content of the element and bind the variables to
-		 * the scope
-		 */
-		$compile(element.contents())(scope);
 
 		if (!$rootScope.$$phase) {
 			$rootScope.$digest();
