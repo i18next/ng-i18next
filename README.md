@@ -17,11 +17,11 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 # Usage #
 First add
 
-- AngularJS
-- i18next
-- ng-i18next
+- `AngularJS`
+- `i18next`
+- `ng-i18next`
 
-to your HTML file.
+to your HTML file. `AngularJS` and `i18next` have to be loaded **before** `ng-i18next`!
 
 Make sure you require `jm.i18next` as a dependency of your AngularJS module. Also configurate the provider first:
 
@@ -36,6 +36,8 @@ angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvi
 	};
 }]);
 ```
+
+For testing purposes set up a server. Don't open your files directly because `i18next` then fails to load the language files!
 
 For more options visit the [i18next documentation](http://i18next.com/pages/doc_init.html).
 
