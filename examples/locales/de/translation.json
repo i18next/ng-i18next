@@ -42,6 +42,11 @@
 		"cloak": {
 			"heading": "i18next Cloak",
 			"description": "Wenn die Sprach-Dateien noch nicht geladen sind, erscheint erst der Übersetzungs-Key. Sieh dir bitte den Code von `directive.js` und dieser HTML Datei an, um zu sehen wie man diese vermeidet."
+		},
+		"postProcessor": {
+			"heading": "Post Processor",
+			"randomStrings": "Noch einige Wörter:",
+			"own": "Eigener postProcessor:"
 		}
 	},
 

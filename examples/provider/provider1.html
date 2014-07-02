@@ -26,9 +26,13 @@
 	<!-- You can escape HTML here: http://www.htmlescape.net/htmlescape_tool.html -->
 	<div ng-controller="MyProviderCtrl">
 
-		{{hello}}
+		<p>
+			<a href="#" ng-click="togglePatrick()">Toggle Patrick (postProcessor)</a>
+		</p>
 
-		<h2>sprintf</h2>
+		<p>{{hello}}</p>
+
+		<h2 ng-i18next="sprintf"></h2>
 
 		<p>{{sprintf}}</p>
 

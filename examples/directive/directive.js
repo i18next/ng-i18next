@@ -2,6 +2,15 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 	'use strict';
 
+	window.i18n.addPostProcessor('patrick', function (value, key, options) {
+		//https://www.youtube.com/watch?v=YSzOXtXm8p0
+		return 'No, this is Patrick!';
+	});
+
+	window.i18n.addPostProcessor('test', function (value, key, options) {
+		return 'PostProcessor is working!';
+	});
+
 	$i18nextProvider.options = {
 		useCookie: false,
 		useLocalStorage: false,
@@ -46,8 +55,13 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 	};
 
 	$scope.changeLng = function (lng) {
-		$i18next.options.lng = lng;
-		console.log($i18next.debugMsg[$i18next.debugMsg.length - 1]);
+		if (lng === 'patrick') {
+			$i18next.options.postProcess = 'patrick';
+		} else {
+			$i18next.options.postProcess = '';
+			$i18next.options.lng = lng;
+			console.log($i18next.debugMsg[$i18next.debugMsg.length - 1]);
+		}
 	};
 
 	$timeout(function () {

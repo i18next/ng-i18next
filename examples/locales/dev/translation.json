@@ -42,6 +42,11 @@
 		"cloak": {
 			"heading": "i18next Cloak",
 			"description": "If the translation files aren't loaded, yet, the translation keys will be used first. Please read the source code of `directive.js` and of this HTML file to see how to avoid that."
+		},
+		"postProcessor": {
+			"heading": "Post Processor",
+			"randomStrings": "Some more words:",
+			"own": "Own postProcessor:"
 		}
 	},
 

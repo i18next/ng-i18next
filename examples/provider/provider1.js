@@ -2,6 +2,11 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 	'use strict';
 
+	window.i18n.addPostProcessor('patrick', function (value, key, options) {
+		//https://www.youtube.com/watch?v=YSzOXtXm8p0
+		return 'No, this is Patrick!';
+	});
+
 	$i18nextProvider.options = {
 		lng: 'de',
 		useCookie: false,
@@ -22,11 +27,15 @@ angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($
 
 		$scope.$apply(function () {
 			$scope.hello = $i18next('hello');
-			$scope.sprintf = $i18next('both.sprintf', { postProcess:'sprintf', sprintf:['a','b','c','d']});
+			$scope.sprintf = $i18next('both.sprintf', { postProcess: 'sprintf', sprintf:['a','b','c','d']});
 		});
 
 		console.log($scope.hello);
 
 	});
+
+	$scope.togglePatrick = function () {
+		$i18next.options.postProcess = $i18next.options.postProcess == 'patrick' ? '' : 'patrick';
+	};
 
 });
