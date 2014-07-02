@@ -12,7 +12,8 @@
 		"lngTest": "I'm in English",
 		"lngTestHTML": "<strong>I'm in English</strong>",
 		"passingOptionsPlural": "plural",
-		"passingOptionsPluralDynamic": "plural - dynamic"
+		"passingOptionsPluralDynamic": "plural - dynamic",
+		"sprintf": "The first 4 letters of the english alphabet are: %s, %s, %s and %s"
 	},
 
 	"directive": {

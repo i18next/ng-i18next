@@ -13,6 +13,7 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 - variable binding (translates again, if variable changes)
 - nested translations (`$t('hello')`; see i18next documentation)
 - scope variables in translations (if the translation contains directives of variables like `{{hello}}`, they'll get compiled)
+- sprintf support (directive and provider)
 
 # Usage #
 First add
@@ -113,10 +114,19 @@ You can also pass options:
 => translates `hello` in German (`de`)
 
 ### Passing Options + HTML ###
-You can also pass options:
+Also options work perfectly together with html:
 
 	<p ng-i18next="[html:i18next]({lng:'de'})hello"></p>
 => translates `hello` in German (`de`) and compiles it to HTML code.
+
+### Passing Options - sprintf
+You can use i18next sprintf feature:
+
+	<p ng-i18next="[i18next]({sprintf:['a','b','c','d']})sprintfString"">
+
+where `sprintfString` could be `The first 4 letters of the english alphabet are: %s, %s, %s and %s` in your translation file.
+
+Using the directive, `postProcess:'sprintf'` isn't neccassary. The directive will add it automatically when using `sprintf` in the options.
 
 ---------
 
@@ -151,6 +161,8 @@ You can run the examples using:
 	grunt server
 
 _(note that you have to be in the root directory of this project)_
+
+Do not just open the HTML files. That won't work.
 
 ---------
 

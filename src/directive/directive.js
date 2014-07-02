@@ -6,15 +6,27 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 		var attr = 'text',
 			attrs = [attr],
-			string;
+			string,
+			i;
 
 		/*
 		 * Check if we want to translate an attribute
 		 */
 		if (key.indexOf('[') === 0) {
+
 			var parts = key.split(']');
+
+			// If there are more than two parts because of multiple "]", concatenate them again.
+			if (parts.length > 2) {
+				for (i = 2; i < parts.length; i++) {
+					parts[1] += ']' + parts[i];
+					parts[i] = null;
+				}
+			}
+
 			key = parts[1];
 			attr = parts[0].substr(1, parts[0].length - 1);
+
 		}
 		/*
 		 * Cut of the ";" that might be at the end of the string
@@ -61,6 +73,10 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 				}
 
+				if (options.sprintf) {
+					options.postProcess = 'sprintf';
+				}
+
 			}
 
 			string = $i18next(strippedKey, options);
@@ -80,6 +96,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			element.attr(attr, string);
 
 		}
+
 		/*
 		 * Now compile the content of the element and bind the variables to
 		 * the scope

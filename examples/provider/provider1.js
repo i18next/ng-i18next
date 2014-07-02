@@ -22,6 +22,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($
 
 		$scope.$apply(function () {
 			$scope.hello = $i18next('hello');
+			$scope.sprintf = $i18next('both.sprintf', { postProcess:'sprintf', sprintf:['a','b','c','d']});
 		});
 
 		console.log($scope.hello);

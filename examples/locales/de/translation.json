@@ -12,7 +12,8 @@
 		"lngTest": "Ich bin in Deutsch",
 		"lngTestHTML": "<strong>Ich bin in Deutsch</strong>",
 		"passingOptionsPlural": "Plural",
-		"passingOptionsPluralDynamic": "Plural - dynamisch"
+		"passingOptionsPluralDynamic": "Plural - dynamisch",
+		"sprintf": "Die ersten 4 Buchstaben des Englischen Alphabets sind: %s, %s, %s und %s"
 	},
 
 	"directive": {
@@ -40,7 +41,7 @@
 		"translateVariableThatChanges": "Übersetze eine Variable, die sich ändert.",
 		"cloak": {
 			"heading": "i18next Cloak",
-			"description": "Wenn die Sprach-Dateien noch nicht geladen sind, erscheint erst der Übersetzungs-Key. Sie dir bitte den Code von `directive.js` und dieser HTML Datei an, um zu sehen wie man diese vermeidet."
+			"description": "Wenn die Sprach-Dateien noch nicht geladen sind, erscheint erst der Übersetzungs-Key. Sieh dir bitte den Code von `directive.js` und dieser HTML Datei an, um zu sehen wie man diese vermeidet."
 		}
 	},
 
