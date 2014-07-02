@@ -1,5 +1,8 @@
 # Changelog #
 
+v0.3.2 - 2014/07/02
+- Add sprintf support - see #37
+
 v0.3.1 - 2014/03/26
 - Fix for IE - invalid argument for .html() - see #32
 
