@@ -97,9 +97,11 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 });
 
-angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '$compile', '$parse', function ($rootScope, $i18next, $compile, $parse) {
+angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '$compile', '$parse', '$interpolate', function ($rootScope, $i18next, $compile, $parse, $interpolate) {
 
 	'use strict';
+
+	var watchUnregister;
 
 	function parse(scope, element, key) {
 
@@ -107,6 +109,11 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			attrs = [attr],
 			string,
 			i;
+
+		// If there was a watched value, unregister it
+		if (watchUnregister) {
+			watchUnregister();
+		}
 
 		/*
 		 * Check if we want to translate an attribute
@@ -163,11 +170,11 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 					strippedKey = keys.pop();
 
-					options = $parse(keys.join(')'))();
+					options = $parse(keys.join(')'))(scope);
 
 				} else {
 
-					options = $parse(keys[0])();
+					options = $parse(keys[0])(scope);
 					strippedKey = keys[1];
 
 				}
@@ -186,21 +193,22 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 			element.empty().append(string);
 
-		} else if (attr === 'text') {
-
-			element.text(string);
+			/*
+			 * Now compile the content of the element and bind the variables to
+			 * the scope
+			 */
+			$compile(element.contents())(scope);
 
 		} else {
+			var insertText = element.text.bind(element);
 
-			element.attr(attr, string);
+			if (attr !== 'text') {
+				insertText = element.attr.bind(element, attr);
+			}
 
+			watchUnregister = scope.$watch($interpolate(string), insertText);
+			insertText(string);
 		}
-
-		/*
-		 * Now compile the content of the element and bind the variables to
-		 * the scope
-		 */
-		$compile(element.contents())(scope);
 
 		if (!$rootScope.$$phase) {
 			$rootScope.$digest();
@@ -238,20 +246,27 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			var translationValue;
 
 			function observe (value) {
+				translationValue = value.replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
 
 				if (value === '') {
-					translationValue = element.text().replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
-				} else {
-					translationValue = value;
-				}
-
-				if (!translationValue) {
-					// Well, seems that we don't have anything to translate...
-					return;
+					return setupWatcher();
 				}
 
 				localize(scope, element, translationValue);
+			}
 
+			function setupWatcher() {
+				// Prevent from executing this method twice
+				if (setupWatcher.done) {
+					return;
+				}
+
+				// interpolate is allowing to transform {{expr}} into text
+				var interpolation = $interpolate(element.text());
+
+				scope.$watch(interpolation, observe);
+
+				setupWatcher.done = true;
 			}
 
 			attrs.$observe('ngI18next', observe);
