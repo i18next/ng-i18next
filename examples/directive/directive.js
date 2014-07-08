@@ -36,7 +36,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 
 	$scope.numbers =  ['one', 'two', 'three'];
 
-	$scope.bindingVariable = 'helloHTML';
+	$scope.bindingVariable = $scope.dynamicBindingVariable = 'helloHTML';
 
 	$scope.date = new Date();
 
@@ -67,6 +67,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 	$timeout(function () {
 		console.log('Time should change!');
 		$scope.date = 'Should change!';
+		$scope.dynamicBindingVariable = 'hello';
 	}, 3000);
 
 });
