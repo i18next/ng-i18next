@@ -262,7 +262,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 				}
 
 				// interpolate is allowing to transform {{expr}} into text
-				var interpolation = $interpolate(element.text());
+				var interpolation = $interpolate(element.html());
 
 				scope.$watch(interpolation, observe);
 
