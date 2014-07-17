@@ -57,7 +57,9 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			}
 
 			if (!t) {
-				translations[lng][key] = key;
+				translations[lng][key] = 'defaultValue' in options ? options.defaultValue :
+					'defaultValue' in globalOptions ? globalOptions.defaultValue :
+					'defaultLoadingValue' in globalOptions ? globalOptions.defaultLoadingValue : key;
 			} else if (!translations[lng][key] || hasOwnOptions) {
 				translations[lng][key] = t(key, options);
 			}
