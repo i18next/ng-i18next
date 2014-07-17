@@ -14,6 +14,7 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 - nested translations (`$t('hello')`; see i18next documentation)
 - scope variables in translations (if the translation contains directives of variables like `{{hello}}`, they'll get compiled)
 - sprintf support (directive and provider)
+- support for default values to be displayed before i18next engine is initialized
 
 # Usage #
 First add
@@ -33,7 +34,8 @@ angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvi
 		useCookie: false,
 		useLocalStorage: false,
 		fallbackLng: 'dev',
-		resGetPath: '../locales/__lng__/__ns__.json'
+		resGetPath: '../locales/__lng__/__ns__.json',
+		defaultLoadingValue: '' // ng-i18next option, *NOT* directly supported by i18next
 	};
 }]);
 ```
@@ -131,6 +133,33 @@ Using the directive, `postProcess:'sprintf'` isn't neccassary. The directive wil
 ---------
 
 For more, see examples.
+
+---------
+
+# Default values while i18next is initializing #
+
+`i18next` supports providing a `defaultValue` when requesting any translation. But what happens when i18next hasn't been fully initialized yet?
+
+`ng-i18next` adds a `defaultLoadingValue` option, which can be provided either in `$i18nextProvider.options` or with any individual
+translation request just like you would `defaultValue`. If i18n strings need to be rendered before i18next is initialized,
+these special loading values will be used instead.
+
+## Examples
+	$i18nextProvider.options = {
+		/* ... */
+		defaultLoadingValue: ''
+	};
+	
+	(in template)
+	<p>{{'hello' | i18next}}</p>
+=> displays an empty string (visually nothing) until i18next is initialized, then translates `hello`
+
+	<p>{{'hello' | i18next:{'defaultLoadingValue':'Loading...'} }}</p>
+=> displays "Loading..." until i18next is loaded, then translates `hello`
+
+	<p>{{'not-translated-welcome-key' | i18next:{'defaultLoadingValue':'Loading...', 'defaultValue':'Welcome!'} }}</p>
+=> displays "Loading..." until i18next is loaded, then translates `not-translated-welcome-key` with default of "Welcome!"
+if the key is not defined in your i18n file
 
 ---------
 
