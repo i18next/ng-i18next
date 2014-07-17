@@ -16,6 +16,8 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			watchUnregister();
 		}
 
+		key = key.trim();
+
 		/*
 		 * Check if we want to translate an attribute
 		 */
@@ -39,7 +41,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 		 * Cut of the ";" that might be at the end of the string
 		 */
 		if (key.indexOf(';') === key.length - 1) {
-			key = key.substr(0, key.length - 2);
+			key = key.substr(0, key.length - 2).trim();
 		}
 		/*
 		 * If passing options, split attr
@@ -76,7 +78,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 				} else {
 
 					options = $parse(keys[0])(scope);
-					strippedKey = keys[1];
+					strippedKey = keys[1].trim();
 
 				}
 
