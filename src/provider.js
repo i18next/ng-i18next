@@ -33,7 +33,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		function optionsChange (newOptions, oldOptions) {
+		function optionsChange(newOptions, oldOptions) {
 
 			$i18nextTanslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
 
