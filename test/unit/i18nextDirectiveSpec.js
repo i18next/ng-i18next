@@ -75,14 +75,20 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should return original key, because translation does not exist', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="Key_Not_Found"></p>')($rootScope).text();
-				expect(c).toBe('Key_Not_Found');
+				$rootScope.$evalAsync(function () {
+					expect(c).toBe('Key_Not_Found');
+					done();
+				});
 			});
 		});
 
 		it('should translate "hello" into German ("de-DE"; default language)', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="hello"></p>')($rootScope).text();
-				expect(c).toBe('Herzlich Willkommen!');
+				$rootScope.$evalAsync(function () {
+					expect(c).toBe('Herzlich Willkommen!');
+					done();
+				});
 			});
 		});
 
@@ -93,21 +99,30 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should translate "hello" into language passed by options ("dev")', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({lng:\'dev\'})hello"></p>')($rootScope).text();
-				expect(c).toEqual('Welcome!');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Welcome!');
+					done();
+				});
 			});
 		});
 
 		it('should replace "__name__" in the translation string with name given by options', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\'})helloName"></p>')($rootScope).text();
-				expect(c).toEqual('Herzlich Willkommen, Andre!');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Herzlich Willkommen, Andre!');
+					done();
+				});
 			});
 		});
 
 		it('should replace "__name__" in the translation string with name given by options and should use "dev" as language', function () {
-			inject(function ($rootScope, $compile) {
+				inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\',lng:\'dev\'})helloName"></p>')($rootScope).text();
-				expect(c).toEqual('Welcome, Andre!');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Welcome, Andre!');
+					done();
+				});
 			});
 		});
 
@@ -124,14 +139,20 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should use the single form', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({count: 1})woman"></p>')($rootScope).text();
-				expect(c).toEqual('Frau');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Frau');
+					done();
+				});
 			});
 		});
 
 		it('should use the plural form', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({count: 5})woman"></p>')($rootScope).text();
-				expect(c).toEqual('Frauen');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Frauen');
+					done();
+				});
 			});
 		});
 
@@ -142,21 +163,30 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should use the "normal" form', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="friend"></p>')($rootScope).text();
-				expect(c).toEqual('Freund');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Freund');
+					done();
+				});
 			});
 		});
 
 		it('should use the male form', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({context:\'male\'})friend"></p>')($rootScope).text();
-				expect(c).toEqual('Fester Freund');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Fester Freund');
+					done();
+				});
 			});
 		});
 
 		it('should use the female form', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({context:\'female\'})friend"></p>')($rootScope).text();
-				expect(c).toEqual('Feste Freundin');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Feste Freundin');
+					done();
+				});
 			});
 		});
 
@@ -167,14 +197,20 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should include another translation', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="helloNesting"></p>')($rootScope).text();
-				expect(c).toEqual('Weißt du was? Du bist Herzlich Willkommen!');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('Weißt du was? Du bist Herzlich Willkommen!');
+					done();
+				});
 			});
 		});
 
 		it('should include another translation and should use "dev" as language', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({lng:\'dev\'})helloNesting"></p>')($rootScope).text();
-				expect(c).toEqual('You know what? You\'re Welcome!');
+				$rootScope.$evalAsync(function () {
+					expect(c).toEqual('You know what? You\'re Welcome!');
+					done();
+				});
 			});
 		});
 
@@ -191,7 +227,10 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should return original key, because translation does not exist', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[html]helloHTML"></p>')($rootScope).html();
-				expect(c).toBe('<h1 class="ng-scope">Herzlich Willkommen!</h1>');
+				$rootScope.$evalAsync(function () {
+					expect(c).toBe('<h1 class="ng-scope">Herzlich Willkommen!</h1>');
+					done();
+				});
 			});
 		});
 
@@ -202,7 +241,10 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should translate "hello" into German ("de-DE"; default language)', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[html:i18next]({name:\'Andre\'})helloNameHTML"></p>')($rootScope).html();
-				expect(c).toBe('<h1 class="ng-scope">Herzlich Willkommen, Andre!</h1>');
+				$rootScope.$evalAsync(function () {
+					expect(c).toBe('<h1 class="ng-scope">Herzlich Willkommen, Andre!</h1>');
+					done();
+				});
 			});
 		});
 
