@@ -23,9 +23,12 @@
     "alert": false,
     "angular": false,
     "i18n": false,
+    "jasmine": false,
     "describe": false,
     "beforeEach": false,
+    "afterEach": false,
     "it": false,
+    "spyOn": false,
     "inject": false,
     "expect": false,
     "waits": false
