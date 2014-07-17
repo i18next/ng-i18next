@@ -157,10 +157,6 @@ these special loading values will be used instead.
 	<p>{{'hello' | i18next:{'defaultLoadingValue':'Loading...'} }}</p>
 => displays "Loading..." until i18next is loaded, then translates `hello`
 
-	<p>{{'not-translated-welcome-key' | i18next:{'defaultLoadingValue':'Loading...', 'defaultValue':'Welcome!'} }}</p>
-=> displays "Loading..." until i18next is loaded, then translates `not-translated-welcome-key` with default of "Welcome!"
-if the key is not defined in your i18n file
-
 ---------
 
 # Contribute #
