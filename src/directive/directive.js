@@ -148,10 +148,10 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 			var translationValue;
 
-			function observe (value) {
+			function observe(value) {
 				translationValue = value.replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
 
-				if (value === '') {
+				if (translationValue === '') {
 					return setupWatcher();
 				}
 
@@ -173,8 +173,6 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			}
 
 			attrs.$observe('ngI18next', observe);
-
-			observe(attrs.ngI18next);
 
 			scope.$on('i18nextLanguageChange', function () {
 				localize(scope, element, translationValue);
