@@ -47,6 +47,9 @@
 			"heading": "Post Processor",
 			"randomStrings": "Noch einige Wörter:",
 			"own": "Eigener postProcessor:"
+		},
+		"defaultValue": {
+			"shouldBe": "In der nachfolgenden Zeile sollte zuerst \"Loading...\", dann nach einer Sekunde \"Key not found!\" enthalten."
 		}
 	},
 
