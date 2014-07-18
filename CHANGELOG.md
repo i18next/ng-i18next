@@ -1,10 +1,22 @@
 # Changelog #
 
+v0.3.3 - 2014/07/18
+- fix tests
+- add repository field to `package.json`
+- update dev dependencies
+- add `defaultLoadingValue` - a value that is shown before `i18next` is loaded (+examples)
+- add `$i18next.reInit()`` function - #46
+- trim keys - #45
+- fix directive's interpolation content - #40
+- improve the way of handling values that could be interpolated - #39
+- check if `i18next` is loaded - if not, check a few times again
+- other small bug fixes
+
 v0.3.2 - 2014/07/02
-- Add sprintf support - see #37
+- add sprintf support - see #37
 
 v0.3.1 - 2014/03/26
-- Fix for IE - invalid argument for .html() - see #32
+- fix for IE - invalid argument for .html() - see #32
 
 v0.3.0 - 2014/02/21
 - now `ng-i18next` requires options instead of using default options

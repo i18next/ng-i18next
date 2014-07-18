@@ -45,7 +45,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 					}, 400);
 
 				} else {
-					throw new Error("[ng-i18next] Can't find i18next!");
+					throw new Error('[ng-i18next] Can\'t find i18next!');
 				}
 
 			}

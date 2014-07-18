@@ -9,28 +9,44 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		 */
 		t = null,
 		translations = {},
-		globalOptions = null;
+		globalOptions = null,
+		triesToLoadI18next = 0;
 
 	self.options = {};
 
-	self.$get = ['$rootScope', function ($rootScope) {
+	self.$get = ['$rootScope', '$timeout', function ($rootScope, $timeout) {
 
 		function init(options) {
 
-			window.i18n.init(options, function (localize) {
+			if (window.i18n) {
 
-				translations = {};
+				window.i18n.init(options, function (localize) {
 
-				t = localize;
+					translations = {};
 
-				if (!$rootScope.$$phase) {
-					$rootScope.$digest();
+					t = localize;
+
+					if (!$rootScope.$$phase) {
+						$rootScope.$digest();
+					}
+
+					$rootScope.$broadcast('i18nextLanguageChange');
+
+				});
+
+			} else {
+
+				triesToLoadI18next++;
+
+				if (triesToLoadI18next < 5) {
+
+					$timeout(function () {
+						init(options);
+					}, 400);
+
 				}
 
-				$rootScope.$broadcast('i18nextLanguageChange');
-
-			});
-
+			}
 		}
 
 		function optionsChange(newOptions, oldOptions) {
@@ -57,7 +73,9 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			}
 
 			if (!t) {
-				translations[lng][key] = key;
+				translations[lng][key] = 'defaultLoadingValue' in options ? options.defaultLoadingValue :
+					'defaultValue' in options ? options.defaultValue :
+					'defaultLoadingValue' in globalOptions ? globalOptions.defaultLoadingValue : key;
 			} else if (!translations[lng][key] || hasOwnOptions) {
 				translations[lng][key] = t(key, options);
 			}
