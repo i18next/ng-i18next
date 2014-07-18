@@ -2,10 +2,12 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 	'use strict';
 
+	/*jshint unused:false */
 	window.i18n.addPostProcessor('patrick', function (value, key, options) {
 		//https://www.youtube.com/watch?v=YSzOXtXm8p0
 		return 'No, this is Patrick!';
 	});
+	/*jshint unused:true */
 
 	$i18nextProvider.options = {
 		lng: 'de',
@@ -35,7 +37,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($
 	});
 
 	$scope.togglePatrick = function () {
-		$i18next.options.postProcess = $i18next.options.postProcess == 'patrick' ? '' : 'patrick';
+		$i18next.options.postProcess = $i18next.options.postProcess === 'patrick' ? '' : 'patrick';
 	};
 
 });

@@ -2,6 +2,7 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 	'use strict';
 
+	/*jshint unused:false */
 	window.i18n.addPostProcessor('patrick', function (value, key, options) {
 		//https://www.youtube.com/watch?v=YSzOXtXm8p0
 		return 'No, this is Patrick!';
@@ -10,6 +11,7 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 	window.i18n.addPostProcessor('test', function (value, key, options) {
 		return 'PostProcessor is working!';
 	});
+	/*jshint unused:true */
 
 	$i18nextProvider.options = {
 		useCookie: false,
