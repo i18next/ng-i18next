@@ -15,11 +15,15 @@ angular.module('jm.i18next').provider('$i18next', function () {
 	self.options = {};
 
 	self.watchOptions = true;
-	self.$get = ['$rootScope', '$timeout', function ($rootScope, $timeout) {
+
+	self.$get = ['$rootScope', '$timeout', '$q', function ($rootScope, $timeout, $q) {
+	
+	    var i18nDeferred;
 
 		function init(options) {
 
 			if (window.i18n) {
+			    i18nDeferred = $q.defer();
 
 				window.i18n.init(options, function (localize) {
 
@@ -33,16 +37,20 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 					$rootScope.$broadcast('i18nextLanguageChange');
 
+					i18nDeferred.resolve();
 				});
+
+				return i18nDeferred.promise;
 
 			} else {
 
 				triesToLoadI18next++;
 				// only check 4 times for i18next
+
 				if (triesToLoadI18next < 5) {
 
 					$timeout(function () {
-						init(options);
+						return init(options);
 					}, 400);
 
 				} else {
@@ -58,7 +66,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			globalOptions = newOptions;
 
-			init(globalOptions);
+			return init(globalOptions);
 
 		}
 
@@ -108,7 +116,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		}
 
 		$i18nextTanslate.reInit = function () {
-			optionsChange(globalOptions, globalOptions);
+			return optionsChange(globalOptions, globalOptions);
 		};
 
 		if (self.watchOptions) {
