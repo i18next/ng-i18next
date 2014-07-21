@@ -14,6 +14,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 	self.options = {};
 
+	self.watchOptions = true;
 	self.$get = ['$rootScope', '$timeout', function ($rootScope, $timeout) {
 
 		function init(options) {
@@ -100,20 +101,24 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		$i18nextTanslate.options = self.options;
 
-		if (self.options !== globalOptions) {
+		if (self.watchOptions && self.options !== globalOptions) {
 			optionsChange(self.options, globalOptions);
+		} else {
+		    globalOptions = self.options;
 		}
 
 		$i18nextTanslate.reInit = function () {
 			optionsChange(globalOptions, globalOptions);
 		};
 
-		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
-			// Check whether there are new options and whether the new options are different from the old options.
-			if (!!newOptions && oldOptions !== newOptions) {
-				optionsChange(newOptions, oldOptions);
-			}
-		}, true);
+		if (self.watchOptions) {
+		    $rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
+		        // Check whether there are new options and whether the new options are different from the old options.
+		        if (!!newOptions && oldOptions !== newOptions) {
+		            optionsChange(newOptions, oldOptions);
+		        }
+		    }, true);
+		}
 
 		return $i18nextTanslate;
 
