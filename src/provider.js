@@ -119,6 +119,31 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			return optionsChange(globalOptions, globalOptions);
 		};
 
+		$i18nextTanslate.loadNamespace = function (namespace) {
+            // Check, if i18n is initialized or already initializing
+		    if (!t) {
+
+		        if (i18nDeferred === undefined) {
+		            globalOptions.ns = globalOptions.ns || {};
+		            globalOptions.ns.namespaces = globalOptions.ns.namespaces || [];
+		            globalOptions.ns.namespaces.push(namespace);
+		            return optionsChange(globalOptions, globalOptions);
+		        } else {
+		            return i18nDeferred.promise.then(function () {
+		                $i18nextTanslate.loadNamespace(namespace);
+		            })
+		        }
+		    }
+
+
+		    var nsLoadDeferred = $q.defer();
+		    window.i18n.loadNamespace(namespace, function () {
+		        nsLoadDeferred.resolve();
+		    });
+
+		    return nsLoadDeferred.promise;
+		}
+
 		if (self.watchOptions) {
 		    $rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
 		        // Check whether there are new options and whether the new options are different from the old options.
