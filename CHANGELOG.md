@@ -1,5 +1,8 @@
 # Changelog #
 
+v0.3.4 - 2014/07/??
+ - use Gulp instead of Grunt
+
 v0.3.3 - 2014/07/18
 - fix tests
 - add repository field to `package.json`

@@ -1,7 +1,7 @@
 {
   "name": "ng-i18next",
   "version": "0.3.3",
-  "description": "AngularJS filter and directive for i18next by Jan Mühlemann",
+  "description": "AngularJS filter and directive for i18next (i18next by Jan Mühlemann)",
   "main": "./dist/ng-i18next.js",
   "author": {
     "name": "Andre Meyering"
@@ -17,20 +17,21 @@
     "url": "git://github.com/archer96/ng-i18next.git"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.5.0",
-    "grunt-contrib-concat": "^0.4.0",
-    "grunt-contrib-connect": "^0.8.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-uglify": "^0.5.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-karma": "^0.8.3",
-    "grunt-ngdocs": "^0.2.2",
     "jshint-stylish": "^0.4.0",
     "karma": "^0.12.17",
     "karma-jasmine": "^0.1.5",
-    "load-grunt-tasks": "^0.6.0",
-    "phantomjs": "^1.9.7-14",
-    "time-grunt": "^0.4.0"
+    "karma-phantomjs-launcher": "^0.1.4",
+    "phantomjs": "1.9.7-9",
+    "gulp": "^3.8.6",
+    "gulp-jshint": "^1.7.1",
+    "gulp-uglify": "^0.3.1",
+    "gulp-karma": "0.0.4",
+    "gulp-concat": "^2.3.3",
+    "gulp-rename": "^1.2.0",
+    "gulp-size": "^0.4.0",
+    "gulp-webserver": "^0.4.0",
+    "gulp-jasmine": "^0.2.0",
+    "gulp-header": "^1.0.5",
+    "gulp-rimraf": "^0.1.0"
   }
 }
