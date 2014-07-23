@@ -1,6 +1,10 @@
 # Changelog #
 
+<<<<<<< HEAD
 v0.3.4 - 2014/07/??
+=======
+v0.3.4 - 2014/07/23
+>>>>>>> 1c8bce7a1d5332af0605f07a690f95eb757fb429
  - use Gulp instead of Grunt
 
 v0.3.3 - 2014/07/18
