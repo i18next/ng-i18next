@@ -149,7 +149,7 @@ these special loading values will be used instead.
 		/* ... */
 		defaultLoadingValue: ''
 	};
-	
+
 	(in template)
 	<p>{{'hello' | i18next}}</p>
 => displays an empty string (visually nothing) until i18next is initialized, then translates `hello`
@@ -169,6 +169,7 @@ To contribute, you must have:
 
 - [Node.js](http://nodejs.org/)
 - [bower](http://bower.io/)
+- [Gulp](http://gulpjs.com/)
 
 installed.
 
@@ -177,9 +178,13 @@ Load all dependencies using [`npm`](https://npmjs.org/) and [`bower`](http://bow
 	npm install
 	bower install
 
-Build `ng-i18next.js` using Grunt:
+Build `ng-i18next.js` using Gulp:
 
-	grunt
+	gulp build
+
+Test `ng-i18next.js` using Gulp:
+
+	gulp test
 
 ---------
 
@@ -187,7 +192,7 @@ Build `ng-i18next.js` using Grunt:
 
 You can run the examples using:
 
-	grunt server
+	gulp serve
 
 _(note that you have to be in the root directory of this project)_
 

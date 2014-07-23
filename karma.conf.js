@@ -12,18 +12,13 @@ module.exports = function(config) {
 		// testing framework to use (jasmine/mocha/qunit/...)
 		frameworks: ['jasmine'],
 
-		// list of files / patterns to load in the browser
-		files: [
-			'bower_components/angular/angular.js',
-			'bower_components/angular-mocks/angular-mocks.js',
-			'bower_components/i18next/i18next.min.js',
-			'src/provider.js',
-			'src/**/*.js',
-			'test/**/*Spec.js'
-		],
-
 		// list of files to exclude
 		exclude: [],
+
+		plugins: [
+			'karma-jasmine',
+			'karma-phantomjs-launcher'
+		],
 
 		// web server port
 		port: 9876,
@@ -39,16 +34,10 @@ module.exports = function(config) {
 		logLevel: config.LOG_INFO,
 
 		// enable / disable watching file and executing tests whenever any file changes
-		autoWatch: true,
+		autoWatch: false,
 
-		// Start these browsers, currently available:
-		// - Chrome
-		// - ChromeCanary
-		// - Firefox
-		// - Opera
-		// - Safari (only Mac)
-		// - PhantomJS
-		// - IE (only Windows)
+		singleRun: true,
+
 		browsers: ['PhantomJS'],
 
 		// If browser does not capture in given timeout [ms], kill it
