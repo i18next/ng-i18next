@@ -1,3 +1,15 @@
+/*!
+ * ng-i18next - Version 0.3.3 - 2014-07-30
+ * Copyright (c) 2014 Andre Meyering
+ *
+ * AngularJS filter and directive for i18next (i18next by Jan Mühlemann)
+ *
+ * - Source: https://github.com/archer96/ng-i18next
+ * - Issues: https://github.com/archer96/ng-i18next/issues
+ *
+ * License: MIT - https://github.com/archer96/ng-i18next/LICENSE
+ *
+*/
 angular.module('jm.i18next', ['ng']);
 angular.module('jm.i18next').provider('$i18next', function () {
 
@@ -30,20 +42,22 @@ angular.module('jm.i18next').provider('$i18next', function () {
 						$rootScope.$digest();
 					}
 
-					$rootScope.$broadcast('i18nextLanguageChange');
+					$rootScope.$broadcast('i18nextLanguageChange', window.i18n.lng());
 
 				});
 
 			} else {
 
 				triesToLoadI18next++;
-
+				// only check 4 times for i18next
 				if (triesToLoadI18next < 5) {
 
 					$timeout(function () {
 						init(options);
 					}, 400);
 
+				} else {
+					throw new Error('[ng-i18next] Can\'t find i18next!');
 				}
 
 			}
