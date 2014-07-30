@@ -16,6 +16,12 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 - sprintf support (directive and provider)
 - support for default values to be displayed before i18next engine is initialized
 
+# Installation #
+You can install `ng-i18next` as a bower dependency:
+
+	bower install ng-i18next
+
+
 # Usage #
 First add
 
