@@ -30,7 +30,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 						$rootScope.$digest();
 					}
 
-					$rootScope.$broadcast('i18nextLanguageChange');
+					$rootScope.$broadcast('i18nextLanguageChange', window.i18n.lng());
 
 				});
 
