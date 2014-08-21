@@ -206,6 +206,19 @@ Do not just open the HTML files. That won't work.
 
 ---------
 
+# Supported browsers #
+
+`ng-i18next` is tested with these browsers:
+
+ - latest Firefox
+ - latest Chrome
+ - IE9 and above
+
+IE8 isn't supported.
+`ng-i18next` should work with every browser that is supported by AngularJS.
+
+---------
+
 # Changelog #
 
 For changelog file please see CHANGELOG.md
