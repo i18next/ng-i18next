@@ -16,6 +16,12 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 - sprintf support (directive and provider)
 - support for default values to be displayed before i18next engine is initialized
 
+# Installation #
+You can install `ng-i18next` as a bower dependency:
+
+	bower install ng-i18next
+
+
 # Usage #
 First add
 
@@ -197,6 +203,19 @@ You can run the examples using:
 _(note that you have to be in the root directory of this project)_
 
 Do not just open the HTML files. That won't work.
+
+---------
+
+# Supported browsers #
+
+`ng-i18next` is tested with these browsers:
+
+ - latest Firefox
+ - latest Chrome
+ - IE9 and above
+
+IE8 isn't supported.
+`ng-i18next` should work with every browser that is supported by AngularJS.
 
 ---------
 

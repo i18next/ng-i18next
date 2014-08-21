@@ -129,143 +129,123 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 });
 
-angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '$compile', '$parse', '$interpolate', function ($rootScope, $i18next, $compile, $parse, $interpolate) {
+angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$parse', '$interpolate', function ($i18next, $compile, $parse, $interpolate) {
 
 	'use strict';
 
-	var watchUnregister;
+	function parseOptions(options) {
+		var res = {
+			attr: 'text'
+		};
 
-	function parse(scope, element, key) {
-
-		var attr = 'text',
-			attrs = [attr],
-			string,
-			i;
-
-		// If there was a watched value, unregister it
-		if (watchUnregister) {
-			watchUnregister();
+		options = options.split(':');
+		for (var i = 0; i < options.length; ++i) {
+			if (options[i] === 'i18next') {
+				res[options[i]] = true;
+			} else {
+				res.attr = options[i];
+			}
 		}
+
+		return res;
+	}
+
+	function parseKey(key) {
+		var options = {
+			attr: 'text'
+		};
+		var i18nOptions = '{}';
+
+		var tmp;
 
 		key = key.trim();
 
-		/*
-		 * Check if we want to translate an attribute
-		 */
 		if (key.indexOf('[') === 0) {
-
-			var parts = key.split(']');
-
-			// If there are more than two parts because of multiple "]", concatenate them again.
-			if (parts.length > 2) {
-				for (i = 2; i < parts.length; i++) {
-					parts[1] += ']' + parts[i];
-					parts[i] = null;
-				}
-			}
-
-			key = parts[1];
-			attr = parts[0].substr(1, parts[0].length - 1);
-
-		}
-		/*
-		 * Cut of the ";" that might be at the end of the string
-		 */
-		if (key.indexOf(';') === key.length - 1) {
-			key = key.substr(0, key.length - 2).trim();
-		}
-		/*
-		 * If passing options, split attr
-		 */
-		if (attr.indexOf(':') >= 0) {
-			attrs = attr.split(':');
-			attr = attrs[0];
-		} else if (attr === 'i18next') {
-			attrs[1] = 'i18next';
-			attr = 'text';
+			tmp = key.split(']');
+			key = tmp.pop().trim();
+			options = parseOptions(tmp.join(']').substr(1));
 		}
 
-		if (attr !== 'i18next' && attrs[1] !== 'i18next') {
-
-			string = $i18next(key);
-
-		} else {
-
-			var options = {},
-				strippedKey = key;
-
-			if (key.indexOf('(') >= 0 && key.indexOf(')') >= 0) {
-
-				var keys = key.split(')');
-
-				keys[0] = keys[0].substr(1, keys[0].length);
-
-				if (keys.length > 2) {
-
-					strippedKey = keys.pop();
-
-					options = $parse(keys.join(')'))(scope);
-
-				} else {
-
-					options = $parse(keys[0])(scope);
-					strippedKey = keys[1].trim();
-
-				}
-
-				if (options.sprintf) {
-					options.postProcess = 'sprintf';
-				}
-
-			}
-
-			string = $i18next(strippedKey, options);
-
+		if (options.i18next && key.indexOf('(') === 0 && key.indexOf(')') >= 0) {
+			tmp = key.split(')');
+			key = tmp.pop().trim();
+			i18nOptions = tmp.join(')').substr(1).trim();
 		}
 
-		if (attr === 'html') {
-
-			element.empty().append(string);
-
-			/*
-			 * Now compile the content of the element and bind the variables to
-			 * the scope
-			 */
-			$compile(element.contents())(scope);
-
-		} else {
-			var insertText = element.text.bind(element);
-
-			if (attr !== 'text') {
-				insertText = element.attr.bind(element, attr);
-			}
-
-			watchUnregister = scope.$watch($interpolate(string), insertText);
-			insertText(string);
-		}
-
-		if (!$rootScope.$$phase) {
-			$rootScope.$digest();
-		}
+		return {
+			key: key,
+			options: options,
+			i18nOptions: $parse(i18nOptions)
+		};
 	}
 
+	function I18nextCtrl($scope, $element) {
+		var argsUnregister;
+		var stringUnregister;
 
-	function localize(scope, element, key) {
+		function parse(key) {
+			var parsedKey = parseKey(key);
 
-		if (key.indexOf(';') >= 0) {
-
-			var keys = key.split(';');
-
-			for (var i = 0; i < keys.length; i++) {
-				if (keys[i] !== '') {
-					parse(scope, element, keys[i]);
-				}
+			// If there are watched values, unregister them
+			if (argsUnregister) {
+				argsUnregister();
+			}
+			if (stringUnregister) {
+				stringUnregister();
 			}
 
-		} else {
-			parse(scope, element, key);
+			function render(i18nOptions) {
+				if (i18nOptions.sprintf) {
+					i18nOptions.postProcess = 'sprintf';
+				}
+
+				var string = $i18next(parsedKey.key, i18nOptions);
+
+				if (parsedKey.options.attr === 'html') {
+					$element.empty().append(string);
+
+					/*
+					 * Now compile the content of the element and bind the variables to
+					 * the scope
+					 */
+					$compile($element.contents())($scope);
+
+					return;
+				}
+
+				if (stringUnregister) {
+					stringUnregister();
+				}
+
+				var insertText = $element.text.bind($element);
+
+				if (parsedKey.options.attr !== 'text') {
+					insertText = $element.attr.bind($element, parsedKey.options.attr);
+				}
+
+				string = $interpolate(string);
+				stringUnregister = $scope.$watch(string, insertText);
+				insertText(string($scope));
+			}
+
+			argsUnregister = $scope.$watch(parsedKey.i18nOptions, render, true);
+			render(parsedKey.i18nOptions($scope));
 		}
 
+		this.localize = function localize(key) {
+			var keys = key.split(';');
+
+			for (var i = 0; i < keys.length; ++i) {
+				key = keys[i].trim();
+
+				if (key === '') {
+					continue;
+				}
+
+				parse(key);
+			}
+
+		};
 	}
 
 	return {
@@ -275,8 +255,11 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 
 		scope: false,
 
-		link: function postLink(scope, element, attrs) {
+		controller: ['$scope', '$element', I18nextCtrl],
 
+		require: 'ngI18next',
+
+		link: function postLink(scope, element, attrs, ctrl) {
 			var translationValue;
 
 			function observe(value) {
@@ -286,7 +269,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 					return setupWatcher();
 				}
 
-				localize(scope, element, translationValue);
+				ctrl.localize(translationValue);
 			}
 
 			function setupWatcher() {
@@ -306,7 +289,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$rootScope', '$i18next', '
 			attrs.$observe('ngI18next', observe);
 
 			scope.$on('i18nextLanguageChange', function () {
-				localize(scope, element, translationValue);
+				ctrl.localize(translationValue);
 			});
 		}
 
