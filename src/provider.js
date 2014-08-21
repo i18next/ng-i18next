@@ -26,10 +26,6 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 					t = localize;
 
-					if (!$rootScope.$$phase) {
-						$rootScope.$digest();
-					}
-
 					$rootScope.$broadcast('i18nextLanguageChange', window.i18n.lng());
 
 				});
