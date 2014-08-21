@@ -217,6 +217,8 @@ Do not just open the HTML files. That won't work.
 IE8 isn't supported.
 `ng-i18next` should work with every browser that is supported by AngularJS.
 
+However, last time we checked, just adding polyfills do the job on IE8.
+
 ---------
 
 # Changelog #
