@@ -1,5 +1,5 @@
 /*!
- * ng-i18next - Version 0.3.3 - 2014-08-21
+ * ng-i18next - Version 0.3.3 - 2014-08-25
  * Copyright (c) 2014 Andre Meyering
  *
  * AngularJS filter and directive for i18next (i18next by Jan Mühlemann)
@@ -260,7 +260,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 		require: 'ngI18next',
 
 		link: function postLink(scope, element, attrs, ctrl) {
-			var translationValue;
+			var translationValue = '';
 
 			function observe(value) {
 				translationValue = value.replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
