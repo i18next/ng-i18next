@@ -3,11 +3,13 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 	'use strict';
 
 	function parseOptions(options) {
+
 		var res = {
 			attr: 'text'
 		};
 
 		options = options.split(':');
+
 		for (var i = 0; i < options.length; ++i) {
 			if (options[i] === 'i18next') {
 				res[options[i]] = true;
@@ -20,9 +22,11 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 	}
 
 	function parseKey(key) {
+
 		var options = {
 			attr: 'text'
 		};
+
 		var i18nOptions = '{}';
 
 		var tmp;
