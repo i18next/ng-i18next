@@ -1,7 +1,11 @@
 # Changelog #
 
-v0.3.4 - 2014/07/??
- - use Gulp instead of Grunt
+v0.3.4 - 2014/08/29
+- use Gulp instead of Grunt
+- refactorize #55
+- return new language on broadcast after language change
+- remove useless $digest #56
+- fix a bug with default value
 
 v0.3.3 - 2014/07/18
 - fix tests
