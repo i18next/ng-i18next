@@ -1,4 +1,4 @@
-# ng-i18next - use i18next with Angularjs [![Build Status](https://travis-ci.org/archer96/ng-i18next.svg?branch=master)](https://travis-ci.org/archer96/ng-i18next) #
+# ng-i18next - use i18next with Angularjs [![Build Status](https://travis-ci.org/i18next/ng-i18next.svg?branch=master)](https://travis-ci.org/i18next/ng-i18next) #
 
 Project goal is to provide an easy way to use [i18next](http://i18next.com/) with [AngularJS](http://angularjs.org/):
 
@@ -130,7 +130,7 @@ Also options work perfectly together with html:
 ### Passing Options - sprintf
 You can use i18next sprintf feature:
 
-	<p ng-i18next="[i18next]({sprintf:['a','b','c','d']})sprintfString"">
+	<p ng-i18next="[i18next]({sprintf:['a','b','c','d']})sprintfString">
 
 where `sprintfString` could be `The first 4 letters of the english alphabet are: %s, %s, %s and %s` in your translation file.
 
@@ -142,7 +142,7 @@ For more, see examples.
 
 ---------
 
-# Default values while i18next is initializing #
+## Default values while i18next is initializing ##
 
 `i18next` supports providing a `defaultValue` when requesting any translation. But what happens when i18next hasn't been fully initialized yet?
 
@@ -150,7 +150,8 @@ For more, see examples.
 translation request just like you would `defaultValue`. If i18n strings need to be rendered before i18next is initialized,
 these special loading values will be used instead.
 
-## Examples
+## Examples ##
+
 	$i18nextProvider.options = {
 		/* ... */
 		defaultLoadingValue: ''
@@ -224,3 +225,9 @@ However, last time we checked, just adding polyfills do the job on IE8.
 # Changelog #
 
 For changelog file please see CHANGELOG.md
+
+---------
+
+# License #
+
+[MIT License](https://github.com/i18next/ng-i18next/blob/master/LICENSE)
