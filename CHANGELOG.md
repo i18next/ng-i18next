@@ -1,5 +1,8 @@
 # Changelog #
 
+v0.3.5 - 2014/09/04
+- fix major bug
+
 v0.3.4 - 2014/08/29
 - use Gulp instead of Grunt
 - refactorize #55

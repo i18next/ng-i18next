@@ -24,19 +24,17 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 	function parseKey(key) {
 
 		var options = {
-			attr: 'text'
-		};
-
-		var i18nOptions = '{}';
-
-		var tmp;
+				attr: 'text'
+			},
+			i18nOptions = '{}',
+			tmp;
 
 		key = key.trim();
 
 		if (key.indexOf('[') === 0) {
 			tmp = key.split(']');
-			key = tmp.pop().trim();
-			options = parseOptions(tmp.join(']').substr(1));
+			options = parseOptions(tmp.shift().substr(1).trim());
+			key = tmp.join(']');
 		}
 
 		if (options.i18next && key.indexOf('(') === 0 && key.indexOf(')') >= 0) {

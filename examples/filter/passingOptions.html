@@ -38,20 +38,16 @@
 			<br/>&lt;/ul&gt;
 		</code>
 
-		<p>&nbsp;</p>
-
 		<p ng-i18next="both.passingOptionsPlural"></p>
-		<p ng-i18next="{{'client.total' | i18next:{total:0} }}"></p>
-		<p ng-i18next="{{'client.total' | i18next:{total:1} }}"></p>
-		<p ng-i18next="{{'client.total' | i18next:{total:4} }}"></p>
+		<p>{{'client.total' | i18next:{total:0} }}</p>
+		<p>{{'client.total' | i18next:{total:1} }}</p>
+		<p>{{'client.total' | i18next:{total:4} }}</p>
 
 		<code ng-non-bindable>
-		  &lt;p ng-i18next="{{\'client.total\' | i18next:{total:0} }}"&gt;&lt;/p&gt;
-		  <br/>&lt;p ng-i18next="{{\'client.total\' | i18next:{total:1} }}"&gt;&lt;/p&gt;
-		  <br/>&lt;p ng-i18next="{{\'client.total\' | i18next:{total:4} }}"&gt;&lt;/p&gt;
+		  &lt;p&gt;{{'client.total' | i18next:{total:0} }}&lt;/p&gt;
+		  <br/>&lt;p&gt;{{'client.total' | i18next:{total:1} }}&lt;/p&gt;
+		  <br/>&lt;p&gt;{{'client.total' | i18next:{total:4} }}&lt;/p&gt;
 		</code>
-
-		<p>&nbsp;</p>
 
 		<p ng-i18next="both.passingOptionsPluralDynamic"></p>
 		<p>

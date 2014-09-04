@@ -14,7 +14,8 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 	/*jshint unused:true */
 
 	$i18nextProvider.options = {
-		lng: 'de',
+		lng: 'de', // If not given, i18n will detect the browser language.
+		fallbackLng: 'dev', // Default is dev
 		useCookie: false,
 		useLocalStorage: false,
 		resGetPath: '../locales/__lng__/__ns__.json'
@@ -54,7 +55,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 	};
 
 	$scope.sayHello = function sayHello() {
-		alert('hello');
+		alert($i18next('hello'));
 	};
 
 	$scope.changeLng = function (lng) {
