@@ -10,6 +10,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		t = null,
 		translations = {},
 		globalOptions = null,
+		translateOptions = null,
 		triesToLoadI18next = 0;
 
 	self.options = {};
@@ -56,6 +57,8 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			$i18nextTanslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
 
 			globalOptions = newOptions;
+			translateOptions = angular.copy(globalOptions);
+			delete translateOptions.lng;
 
 			init(globalOptions);
 
@@ -90,7 +93,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		function $i18nextTanslate(key, options) {
 
-			var mergedOptions = !!options ? angular.extend({}, globalOptions, options) : globalOptions;
+			var mergedOptions = !!options ? angular.extend({}, translateOptions, options) : translateOptions;
 
 			translate(key, mergedOptions, !!options);
 
