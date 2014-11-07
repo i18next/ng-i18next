@@ -1,5 +1,9 @@
 # Changelog #
 
+v0.3.6 - Coming soon
+- fix filter result (did not change after language has changed with angular 1.3.0+) (see #66 ) 
+- fix globalOptions.defaultNs bug (see #67 ) 
+
 v0.3.5 - 2014/09/04
 - fix major bug
 
