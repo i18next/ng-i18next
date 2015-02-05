@@ -1,4 +1,4 @@
-angular.module('jm.i18next', ['ng']);
+angular.module('jm.i18next', ['ng', 'ngSanitize']);
 angular.module('jm.i18next').provider('$i18next', function () {
 
 	'use strict';

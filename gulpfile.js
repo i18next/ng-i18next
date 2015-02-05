@@ -90,6 +90,7 @@ gulp.task('karma', function() {
 	gulp.src([
 			'bower_components/angular/angular.js',
 			'bower_components/angular-mocks/angular-mocks.js',
+			'bower_components/angular-sanitize/angular-sanitize.js',
 			'bower_components/i18next/i18next.min.js',
 			'src/provider.js',
 			'src/{,*/}*.js',

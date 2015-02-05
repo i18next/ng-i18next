@@ -1,4 +1,4 @@
-angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$parse', '$interpolate', function ($i18next, $compile, $parse, $interpolate) {
+angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$parse', '$interpolate', '$sanitize', function ($i18next, $compile, $parse, $interpolate, $sanitize) {
 
 	'use strict';
 
@@ -68,6 +68,12 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 			function render(i18nOptions) {
 				if (i18nOptions.sprintf) {
 					i18nOptions.postProcess = 'sprintf';
+				}
+
+				if (parsedKey.options.attr === 'html') {
+					angular.forEach(i18nOptions, function(value, key) {
+						i18nOptions[key] = $sanitize(value);
+					});
 				}
 
 				var string = $i18next(parsedKey.key, i18nOptions);

@@ -220,6 +220,13 @@ describe('Unit: jm.i18next - Directive', function () {
 			});
 		});
 
+		it('should translate "hello" into German and sanitize the substitution ("de-DE"; default language)', function () {
+			inject(function ($rootScope, $compile) {
+				var c = $compile('<p ng-i18next="[html:i18next]({name:\'<img src=1 onError=alert()>\'})helloNameHTML"></p>')($rootScope);
+				$rootScope.$apply();
+				expect(c.html()).toBe('<h1 class="ng-scope">Herzlich Willkommen, <img src="1">!</h1>');
+			});
+		});
 	});
 
 });
