@@ -93,6 +93,7 @@ gulp.task('karma', function() {
 			'bower_components/i18next/i18next.min.js',
 			'src/provider.js',
 			'src/{,*/}*.js',
+			'test/polyfills/*.js',
 			'test/{,*/}*Spec.js'
 		])
 		.pipe(karma({
