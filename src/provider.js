@@ -14,11 +14,16 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 	self.options = {};
 
-	self.$get = ['$rootScope', '$timeout', function ($rootScope, $timeout) {
+	self.watchOptions = true;
+
+	self.$get = ['$rootScope', '$timeout', '$q', function ($rootScope, $timeout, $q) {
+	
+	    var i18nDeferred;
 
 		function init(options) {
 
 			if (window.i18n) {
+			    i18nDeferred = $q.defer();
 
 				window.i18n.init(options, function (localize) {
 
@@ -32,16 +37,20 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 					$rootScope.$broadcast('i18nextLanguageChange', window.i18n.lng());
 
+					i18nDeferred.resolve();
 				});
+
+				return i18nDeferred.promise;
 
 			} else {
 
 				triesToLoadI18next++;
 				// only check 4 times for i18next
+
 				if (triesToLoadI18next < 5) {
 
 					$timeout(function () {
-						init(options);
+						return init(options);
 					}, 400);
 
 				} else {
@@ -57,7 +66,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			globalOptions = newOptions;
 
-			init(globalOptions);
+			return init(globalOptions);
 
 		}
 
@@ -115,20 +124,49 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		$i18nextTanslate.options = self.options;
 
-		if (self.options !== globalOptions) {
+		if (self.watchOptions && self.options !== globalOptions) {
 			optionsChange(self.options, globalOptions);
+		} else {
+		    globalOptions = self.options;
 		}
 
 		$i18nextTanslate.reInit = function () {
-			optionsChange(globalOptions, globalOptions);
+			return optionsChange(globalOptions, globalOptions);
 		};
 
-		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
-			// Check whether there are new options and whether the new options are different from the old options.
-			if (!!newOptions && oldOptions !== newOptions) {
-				optionsChange(newOptions, oldOptions);
-			}
-		}, true);
+		$i18nextTanslate.loadNamespace = function (namespace) {
+            // Check, if i18n is initialized or already initializing
+		    if (!t) {
+
+		        if (i18nDeferred === undefined) {
+		            globalOptions.ns = globalOptions.ns || {};
+		            globalOptions.ns.namespaces = globalOptions.ns.namespaces || [];
+		            globalOptions.ns.namespaces.push(namespace);
+		            return optionsChange(globalOptions, globalOptions);
+		        } else {
+		            return i18nDeferred.promise.then(function () {
+		                $i18nextTanslate.loadNamespace(namespace);
+		            })
+		        }
+		    }
+
+
+		    var nsLoadDeferred = $q.defer();
+		    window.i18n.loadNamespace(namespace, function () {
+		        nsLoadDeferred.resolve();
+		    });
+
+		    return nsLoadDeferred.promise;
+		}
+
+		if (self.watchOptions) {
+		    $rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
+		        // Check whether there are new options and whether the new options are different from the old options.
+		        if (!!newOptions && oldOptions !== newOptions) {
+		            optionsChange(newOptions, oldOptions);
+		        }
+		    }, true);
+		}
 
 		return $i18nextTanslate;
 
