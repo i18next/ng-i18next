@@ -1,0 +1,11 @@
+.travis.yml
+karma.conf.js
+gulpfile.js
+bower.json
+.jshintrc
+.editorconfig
+.bowerrc
+test/
+examples/
+releases/
+src/
