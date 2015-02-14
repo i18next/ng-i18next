@@ -9,7 +9,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		 */
 		t = null,
 		translations = {},
-		globalOptions = null,
+		globalOptions = {},
 		triesToLoadI18next = 0;
 
 	self.options = {};
@@ -125,7 +125,8 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
 			// Check whether there are new options and whether the new options are different from the old options.
-			if (!!newOptions && oldOptions !== newOptions) {
+			// Check if globalOptions
+			if (!!newOptions && (oldOptions !== newOptions || globalOptions!== newOptions)) {
 				optionsChange(newOptions, oldOptions);
 			}
 		}, true);
