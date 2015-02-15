@@ -12,7 +12,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		globalOptions = {},
 		triesToLoadI18next = 0;
 
-	self.options = {};
+	self.options = globalOptions;
 
 	self.$get = ['$rootScope', '$timeout', function ($rootScope, $timeout) {
 
