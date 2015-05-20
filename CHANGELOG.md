@@ -1,5 +1,9 @@
 # Changelog #
 
+v0.4 - ???
+- update README
+- add `bo-i18next` (bind once alternative to `ng-i18next`)
+
 v0.3.6 - 2014/11/22
 - fix filter result (did not change after language has changed with angular 1.3.0+) (see #66)
 - fix globalOptions.defaultNs bug (see #67)

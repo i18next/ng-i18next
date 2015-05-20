@@ -51,10 +51,11 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 	}
 
 	function I18nextCtrl($scope, $element) {
+
 		var argsUnregister;
 		var stringUnregister;
 
-		function parse(key) {
+		function parse(key, noWatch) {
 			var parsedKey = parseKey(key);
 
 			// If there are watched values, unregister them
@@ -95,15 +96,19 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 				}
 
 				string = $interpolate(string);
-				stringUnregister = $scope.$watch(string, insertText);
+				if (!noWatch) {
+					stringUnregister = $scope.$watch(string, insertText);
+				}
 				insertText(string($scope));
 			}
 
-			argsUnregister = $scope.$watch(parsedKey.i18nOptions, render, true);
+			if (!noWatch) {
+				argsUnregister = $scope.$watch(parsedKey.i18nOptions, render, true);
+			}
 			render(parsedKey.i18nOptions($scope));
 		}
 
-		this.localize = function localize(key) {
+		this.localize = function localize(key, noWatch) {
 			var keys = key.split(';');
 
 			for (var i = 0; i < keys.length; ++i) {
@@ -113,7 +118,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 					continue;
 				}
 
-				parse(key);
+				parse(key, noWatch);
 			}
 
 		};
@@ -157,11 +162,23 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 				setupWatcher.done = true;
 			}
 
-			attrs.$observe('ngI18next', observe);
+			translationValue = attrs.ngI18next.replace(/^\s+|\s+$/g, '');
+
+			if (translationValue.indexOf('__once__') < 0) {
+
+				attrs.$observe('ngI18next', observe);
+
+			} else {
+				// Remove '__once__'
+				translationValue = translationValue.split('__once__').join('');
+
+				ctrl.localize(translationValue, true);
+			}
 
 			scope.$on('i18nextLanguageChange', function () {
 				ctrl.localize(translationValue);
 			});
+
 		}
 
 	};

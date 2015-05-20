@@ -50,6 +50,10 @@
 		},
 		"defaultValue": {
 			"shouldBe": "The following line should contain \"Loading...\" and after one second it should contain \"Key not found!\"."
+		},
+		"bindOnce": {
+			"heading": "Bind Once - bo-i18next",
+			"description": "bind once alternative for ng-i18next. Still changes translation on language-change."
 		}
 	},
 

@@ -50,6 +50,10 @@
 		},
 		"defaultValue": {
 			"shouldBe": "In der nachfolgenden Zeile sollte zuerst \"Loading...\", dann nach einer Sekunde \"Key not found!\" enthalten."
+		},
+		"bindOnce": {
+			"heading": "Bind Once - bo-i18next",
+			"description": "Bind Once Alternative zu ng-i18next. Ändert die Übersetzung jedoch immer noch bei einem Sprachnwechsel."
 		}
 	},
 
