@@ -16,7 +16,7 @@ angular.module('jm.i18next').directive('boI18next', ['$i18next', '$compile', fun
 			newElement.attr('ng-i18next', '__once__' + attrs.boI18next);
 			newElement.removeAttr('bo-i18next');
 
-  			element.replaceWith($compile(newElement)(scope));
+			element.replaceWith($compile(newElement)(scope));
 
 		}
 

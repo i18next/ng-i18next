@@ -1,8 +1,8 @@
 /*!
- * ng-i18next - Version 0.3.6 - 2014-11-22
- * Copyright (c) 2014 Andre Meyering
+ * ng-i18next - Version 0.3.6 - 2015-05-20
+ * Copyright (c) 2015 Andre Meyering
  *
- * AngularJS filter and directive for i18next (i18next by Jan Mühlemann)
+ * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
  *
  * - Source: https://github.com/i18next/ng-i18next/
  * - Issues: https://github.com/i18next/ng-i18next/issues
@@ -21,16 +21,20 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		 */
 		t = null,
 		translations = {},
-		globalOptions = null,
+		globalOptions = {},
 		triesToLoadI18next = 0;
 
-	self.options = {};
+	self.options = globalOptions;
 
-	self.$get = ['$rootScope', '$timeout', function ($rootScope, $timeout) {
+	self.$get = ['$rootScope', '$timeout', '$q', function ($rootScope, $timeout, $q) {
+
+		var i18nDeferred;
 
 		function init(options) {
 
 			if (window.i18n) {
+
+				i18nDeferred = $q.defer();
 
 				window.i18n.init(options, function (localize) {
 
@@ -44,7 +48,11 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 					$rootScope.$broadcast('i18nextLanguageChange', window.i18n.lng());
 
+					i18nDeferred.resolve();
+
 				});
+
+				return i18nDeferred.promise;
 
 			} else {
 
@@ -53,7 +61,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 				if (triesToLoadI18next < 5) {
 
 					$timeout(function () {
-						init(options);
+						return init(options);
 					}, 400);
 
 				} else {
@@ -69,7 +77,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			globalOptions = newOptions;
 
-			init(globalOptions);
+			return init(globalOptions);
 
 		}
 
@@ -132,12 +140,13 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		}
 
 		$i18nextTanslate.reInit = function () {
-			optionsChange(globalOptions, globalOptions);
+			return optionsChange(globalOptions, globalOptions);
 		};
 
 		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
 			// Check whether there are new options and whether the new options are different from the old options.
-			if (!!newOptions && oldOptions !== newOptions) {
+			// Check if globalOptions
+			if (!!newOptions && (oldOptions !== newOptions || globalOptions!== newOptions)) {
 				optionsChange(newOptions, oldOptions);
 			}
 		}, true);
@@ -201,10 +210,11 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 	}
 
 	function I18nextCtrl($scope, $element) {
+
 		var argsUnregister;
 		var stringUnregister;
 
-		function parse(key) {
+		function parse(key, noWatch) {
 			var parsedKey = parseKey(key);
 
 			// If there are watched values, unregister them
@@ -245,15 +255,19 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 				}
 
 				string = $interpolate(string);
-				stringUnregister = $scope.$watch(string, insertText);
+				if (!noWatch) {
+					stringUnregister = $scope.$watch(string, insertText);
+				}
 				insertText(string($scope));
 			}
 
-			argsUnregister = $scope.$watch(parsedKey.i18nOptions, render, true);
+			if (!noWatch) {
+				argsUnregister = $scope.$watch(parsedKey.i18nOptions, render, true);
+			}
 			render(parsedKey.i18nOptions($scope));
 		}
 
-		this.localize = function localize(key) {
+		this.localize = function localize(key, noWatch) {
 			var keys = key.split(';');
 
 			for (var i = 0; i < keys.length; ++i) {
@@ -263,7 +277,7 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 					continue;
 				}
 
-				parse(key);
+				parse(key, noWatch);
 			}
 
 		};
@@ -307,11 +321,49 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 				setupWatcher.done = true;
 			}
 
-			attrs.$observe('ngI18next', observe);
+			translationValue = attrs.ngI18next.replace(/^\s+|\s+$/g, '');
+
+			if (translationValue.indexOf('__once__') < 0) {
+
+				attrs.$observe('ngI18next', observe);
+
+			} else {
+				// Remove '__once__'
+				translationValue = translationValue.split('__once__').join('');
+
+				ctrl.localize(translationValue, true);
+			}
 
 			scope.$on('i18nextLanguageChange', function () {
 				ctrl.localize(translationValue);
 			});
+
+		}
+
+	};
+
+}]);
+
+angular.module('jm.i18next').directive('boI18next', ['$i18next', '$compile', function ($i18next, $compile) {
+
+	'use strict';
+
+	return {
+
+		// 'A': only as attribute
+		restrict: 'A',
+
+		scope: false,
+
+		link: function postLink(scope, element, attrs) {
+
+			var newElement = element.clone();
+
+			newElement.attr('ng-i18next', '__once__' + attrs.boI18next);
+			newElement.removeAttr('bo-i18next');
+
+			element.replaceWith($compile(newElement)(scope));
+
 		}
 
 	};

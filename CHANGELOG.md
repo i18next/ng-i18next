@@ -1,6 +1,6 @@
 # Changelog #
 
-v0.4 - ???
+v0.4 - 2015/05/20
 - update README
 - add `bo-i18next` (bind once alternative to `ng-i18next`)
 
