@@ -1,4 +1,4 @@
-# ng-i18next - use i18next with Angularjs [![Build Status](https://travis-ci.org/i18next/ng-i18next.svg?branch=master)](https://travis-ci.org/i18next/ng-i18next) #
+# ng-i18next - use i18next with [AngularJS](https://www.angularjs.org/) [![Build Status](https://travis-ci.org/i18next/ng-i18next.svg?branch=master)](https://travis-ci.org/i18next/ng-i18next) #
 
 Project goal is to provide an easy way to use [i18next](http://i18next.com/) with [AngularJS](http://angularjs.org/):
 
@@ -8,10 +8,9 @@ Project goal is to provide an easy way to use [i18next](http://i18next.com/) wit
 First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 
 # Features #
-- AngularJS directive
-- AngularJS filter
-- variable binding (translates again, if variable changes)
-- nested translations (`$t('hello')`; see i18next documentation)
+- AngularJS provider, directive and filter
+- variable binding (translates again when variable changes)
+- nested translations (`$t('hello')`; see [i18next documentation](http://i18next.com/pages/doc_features.html))
 - scope variables in translations (if the translation contains directives of variables like `{{hello}}`, they'll get compiled)
 - sprintf support (directive and provider)
 - support for default values to be displayed before i18next engine is initialized
@@ -53,84 +52,125 @@ For more options visit the [i18next documentation](http://i18next.com/pages/doc_
 There are two ways to use `ng-i18next`:
 
 ## filter ##
-	<p>{{'hello' | i18next}}</p>
-=> translates `hello`
 
-	<p>{{hello | i18next}}</p>
+```html
+<p>{{'hello' | i18next}}</p>
+```
+
+=> translates `hello`
+```html
+<p>{{hello | i18next}}</p>
+```
+
 => translates `$scope.hello`
 
 ## directive ##
 
 ### Basics ###
 
-	<p ng-i18next="hello"></p>
+```html
+<p ng-i18next="hello"></p>
+```
 => translates `hello`
 
-	<p ng-i18next="{{hello}}"></p>
+```html
+<p ng-i18next="{{hello}}"></p>
+```
 => translates `$scope.hello`
 
-	<p ng-i18next>hello</p>
+```html
+<p ng-i18next>hello</p>
+```
 => translates `hello` (uses the content of the p-tag)
 
-	<p ng-i18next>{{hello}}</p>
+```html
+<p ng-i18next>{{hello}}</p>
+```
 => translates `$scope.hello` (uses the content of the p-tag)
 
 Note, that HTML isn't compiled!
 
 ### HTML ###
 
-	<p ng-i18next="[html]hello"></p>
+```html
+<p ng-i18next="[html]hello"></p>
+```
+
 => translates `hello` and compiles HTML
 
-	<p ng-i18next="[html]{{hello}}"></p>
+```html
+<p ng-i18next="[html]{{hello}}"></p>
+```
+
 => translates `$scope.hello` and compiles HTML
 
 ### Attributes ###
 
-	<a href="#" ng-i18next="[title]hello">This is a link.</a>
+```html
+<a href="#" ng-i18next="[title]hello">This is a link.</a>
+```
+
 => translates `hello` and sets it as the title
 
-	<a href="#" ng-i18next="[title]{{hello}}">This is a link.</a>
+```html
+<a href="#" ng-i18next="[title]{{hello}}">This is a link.</a>
+```
+
 => translates `$scope.hello` and sets it as the title
 
 You can combine both, too!
 
 ### Attributes + text content ###
 
-	<a href="#" ng-i18next="[title]hello;content"></a>
+```html
+<a href="#" ng-i18next="[title]hello;content"></a>
+```
+
 => translates `hello` and sets it as the title
 => translates `content` and sets it as the text of the link.
 
-	<a href="#" ng-i18next="[title]{{hello}};{{content}}"></a>
+```html
+<a href="#" ng-i18next="[title]{{hello}};{{content}}"></a>
+```
 => translates `$scope.hello` and sets it as the title
 => translates `$scope.content` and sets it as the text of the link.
 
 ### Attributes + HTML content ###
 
-	<a href="#" ng-i18next="[title]hello;[html]content"></a>
+```html
+<a href="#" ng-i18next="[title]hello;[html]content"></a>
+```
 => translates `hello` and sets it as the title
 => translates `content` and compiles the HTML as the content of the link.
 
-	<a href="#" ng-i18next="[title]{{hello}};[html]{{content}}"></a>
+```html
+<a href="#" ng-i18next="[title]{{hello}};[html]{{content}}"></a>
+```
 => translates `$scope.hello` and sets it as the title
 => translates `$scope.content` and compiles the HTML as the content of the link.
 
 ### Passing Options ###
 You can also pass options:
 
-	<p ng-i18next="[i18next]({lng:'de'})hello"></p>
+```html
+<p ng-i18next="[i18next]({lng:'de'})hello"></p>
+```
 => translates `hello` in German (`de`)
 
 ### Passing Options + HTML ###
 Also options work perfectly together with html:
 
-	<p ng-i18next="[html:i18next]({lng:'de'})hello"></p>
+```html
+<p ng-i18next="[html:i18next]({lng:'de'})hello"></p>
+```
 => translates `hello` in German (`de`) and compiles it to HTML code.
 
 ### Passing Options - sprintf
 You can use i18next sprintf feature:
 
-	<p ng-i18next="[i18next]({sprintf:['a','b','c','d']})sprintfString">
+```html
+<p ng-i18next="[i18next]({sprintf:['a','b','c','d']})sprintfString">
+```
 
 where `sprintfString` could be `The first 4 letters of the english alphabet are: %s, %s, %s and %s` in your translation file.
 
@@ -139,6 +179,24 @@ Using the directive, `postProcess:'sprintf'` isn't neccassary. The directive wil
 ---------
 
 For more, see examples.
+
+There are two ways to run the examples:
+
+```sh
+gulp serve
+```
+
+Run this inside your `ng-i18next` directory.
+(This requires you to have NodeJS and gulp to be installed.)
+
+```js
+python -m SimpleHTTPServer 8000
+```
+
+Create a simple pyhton HTTP server. Run this inside the `ng-i18next` folder.
+You must have python installed, of course.
+
+Then go to [`http://localhost:8000`](http://localhost:8000).
 
 ---------
 
@@ -151,20 +209,31 @@ translation request just like you would `defaultValue`. If i18n strings need to 
 these special loading values will be used instead.
 
 ## Default values - Examples ##
+```js
+$i18nextProvider.options = {
+	/* ... */
+	defaultLoadingValue: ''
+};
+```
 
-	$i18nextProvider.options = {
-		/* ... */
-		defaultLoadingValue: ''
-	};
+(in template)
 
-	(in template)
-	<p>{{'hello' | i18next}}</p>
+```html
+<p>{{'hello' | i18next}}</p>
+```
+
 => displays an empty string (visually nothing) until i18next is initialized, then translates `hello`
 
-	<p>{{'hello' | i18next:{'defaultLoadingValue':'Loading...'} }}</p>
+```html
+<p>{{'hello' | i18next:{'defaultLoadingValue':'Loading...'} }}</p>
+```
+
 => displays "Loading..." until i18next is loaded, then translates `hello`
 
-	<p>{{'not-translated-welcome-key' | i18next:{'defaultLoadingValue':'Loading...', 'defaultValue':'Welcome!'} }}</p>
+```html
+<p>{{'not-translated-welcome-key' | i18next:{'defaultLoadingValue':'Loading...', 'defaultValue':'Welcome!'} }}</p>
+```
+
 => displays "Loading..." until i18next is loaded, then translates `not-translated-welcome-key` with default of "Welcome!"
 if the key is not defined in your i18n file
 
