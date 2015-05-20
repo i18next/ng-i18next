@@ -102,7 +102,8 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			    hasOwnNsOption = hasOwnOptions && options.ns,
 			    hasGlobalNsObj = globalOptions && globalOptions.ns,
 			    defaultOptions = globalOptions,
-			    mergedOptions;
+			    mergedOptions,
+			    lng;
 
 			// https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
 			// Because of i18next read namespace from `options.ns`
@@ -113,9 +114,13 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, options) : defaultOptions;
 
+			// https://github.com/i18next/i18next/blob/7af53d5a01cc9942c0edae361bd2f65361e340c9/src/i18next.translate.js#L289
+			// lng will be deleted in some case
+			lng = mergedOptions.lng;
+
 			translate(key, mergedOptions, hasOwnOptions);
 
-			return !!mergedOptions.lng ? translations[mergedOptions.lng][key] : translations['auto'][key];
+			return !!lng ? translations[lng][key] : translations['auto'][key];
 
 		}
 
