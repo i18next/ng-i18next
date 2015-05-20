@@ -3,6 +3,7 @@
 v0.4 - 2015/05/20
 - update README
 - add `bo-i18next` (bind once alternative to `ng-i18next`)
+- fix bug where `options.lng` can be undefined
 
 v0.3.6 - 2014/11/22
 - fix filter result (did not change after language has changed with angular 1.3.0+) (see #66)
