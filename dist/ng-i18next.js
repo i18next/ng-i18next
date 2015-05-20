@@ -1,5 +1,5 @@
 /*!
- * ng-i18next - Version 0.4.0 - 2015-05-20
+ * ng-i18next - Version 0.4.1 - 2015-05-20
  * Copyright (c) 2015 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
@@ -32,11 +32,17 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		function init(options) {
 
-			if (window.i18n) {
+			if (options.noConflict && window.i18n) {
+				window.i18n.noConflict();
+			}
+
+			var i18n = window.i18next || window.i18n;
+
+			if (i18n) {
 
 				i18nDeferred = $q.defer();
 
-				window.i18n.init(options, function (localize) {
+				i18n.init(options, function (localize) {
 
 					translations = {};
 
@@ -46,7 +52,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 						$rootScope.$digest();
 					}
 
-					$rootScope.$broadcast('i18nextLanguageChange', window.i18n.lng());
+					$rootScope.$broadcast('i18nextLanguageChange', i18n.lng());
 
 					i18nDeferred.resolve();
 

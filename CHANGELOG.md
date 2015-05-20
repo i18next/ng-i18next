@@ -1,6 +1,9 @@
 # Changelog #
 
-v0.4 - 2015/05/20
+v0.4.1 - 2015/05/20
+- add `noConflict` mode
+
+v0.4.0 - 2015/05/20
 - update README
 - add `bo-i18next` (bind once alternative to `ng-i18next`)
 - fix bug where `options.lng` can be undefined
