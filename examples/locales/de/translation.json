@@ -66,6 +66,7 @@
 	"client": {
 		"client": "Klient",
 		"client_plural": "Klienten",
+		"client_plural_0": "keine Klienten",
 		"total": "__total__ $t(client.client, {\"count\": __total__ }) insgesamt.",
 		"increaseClients": "Anzahl an Klienten erhöhen",
 		"decreaseClients": "Anzahl an Klienten verringern"

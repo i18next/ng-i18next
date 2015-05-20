@@ -43,6 +43,9 @@
 		<p>{{'client.total' | i18next:{total:1} }}</p>
 		<p>{{'client.total' | i18next:{total:4} }}</p>
 
+		<p>Should be: {{'client.client' | i18next }}, {{'client.client_plural' | i18next }}, {{'client.client_plural_0' | i18next }}</p>
+		<p>{{'client.client' | i18next:{count:0} }}, {{'client.client' | i18next:{count:1} }}, {{'client.client' | i18next:{count:4} }}</p>
+
 		<code ng-non-bindable>
 		  &lt;p&gt;{{'client.total' | i18next:{total:0} }}&lt;/p&gt;
 		  <br/>&lt;p&gt;{{'client.total' | i18next:{total:1} }}&lt;/p&gt;
