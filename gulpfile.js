@@ -42,13 +42,13 @@ var headerMeta = ['/*!',
 		' * - Source: https://github.com/i18next/ng-i18next/',
 		' * - Issues: https://github.com/i18next/ng-i18next/issues',
 		' *',
-		' * License: <%= pkg.licenses[0].type %> - <%= pkg.licenses[0].url %>',
+		' * License: <%= pkg.license %> - https://github.com/i18next/ng-i18next/blob/master/LICENSE',
 		' *',
 		'*/\n'
 	].join('\n');
 
 var headerMetaMin = '/*! <%= pkg.name %> - <%= pkg.version %> - ' + getToday() +
-		' - Copyright (c) ' + new Date().getFullYear() + ' <%= pkg.author.name %>; Licensed <%= pkg.licenses[0].type %>*/';
+		' - Copyright (c) ' + new Date().getFullYear() + ' <%= pkg.author.name %>; Licensed <%= pkg.license %>*/';
 
 // JS hint task
 gulp.task('jshint', function() {
@@ -90,6 +90,7 @@ gulp.task('karma', function() {
 	gulp.src([
 			'node_modules/angular/angular.js',
 			'node_modules/angular-mocks/angular-mocks.js',
+			'bower_components/angular-sanitize/angular-sanitize.js',
 			'node_modules/i18next-client/i18next.min.js',
 			'src/provider.js',
 			'src/{,*/}*.js',

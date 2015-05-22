@@ -1,7 +1,11 @@
 # Changelog #
 
+v0.4.2 - 2015/05/22
+- sanitize user HTML input (#72)
+- update license attribute (#86)
+
 v0.4.1 - 2015/05/20
-- add `noConflict` mode
+- add `noConflict` mode (#81)
 
 v0.4.0 - 2015/05/20
 - update README
