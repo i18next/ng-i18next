@@ -24,11 +24,12 @@ You can install `ng-i18next` as a bower dependency:
 # Usage #
 First add
 
-- `AngularJS`
+- [`AngularJS`](https://angularjs.org)
+- [`ngSanitize`](https://docs.angularjs.org/api/ngSanitize#!)
 - `i18next`
 - `ng-i18next`
 
-to your HTML file. `AngularJS` and `i18next` have to be loaded **before** `ng-i18next`!
+to your HTML file. `AngularJS`, `ngSanitize` and `i18next` have to be loaded **before** `ng-i18next`!
 
 Make sure you require `jm.i18next` as a dependency of your AngularJS module. Also configurate the provider first:
 
