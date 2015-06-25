@@ -30,9 +30,16 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 				i18nDeferred = $q.defer();
 
-				i18n.init(options, function (localize) {
+				i18n.init(options, function (err, localize) {
 
 					translations = {};
+
+					if (typeof(localize) === 'undefined') {
+						localize = err;
+						err = undefined;
+					} else if (typeof(err) !== 'undefined') {
+						console.log('[ng-i18next] i18next error: ' + err);
+					}
 
 					t = localize;
 
@@ -66,7 +73,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		}
 
 		function optionsChange(newOptions, oldOptions) {
-			
+
 			t = null;
 
 			$i18nextTanslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
