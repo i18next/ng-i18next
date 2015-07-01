@@ -37,7 +37,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 					if (typeof(localize) === 'undefined') {
 						localize = err;
 						err = undefined;
-					} else if (typeof(err) !== 'undefined') {
+					} else if (!!err && typeof(err) !== 'undefined' && err !== null) {
 						console.log('[ng-i18next] i18next error: ' + err);
 					}
 

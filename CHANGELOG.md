@@ -1,5 +1,8 @@
 # Changelog #
 
+v0.5.1 - 2015/07/01
+- fixes #93
+
 v0.5.0 - 2015/06/25
 - [BREAKING] `ng-i18next` now requires `i18next >= 1.10.0` since there was a breaking change in `i18next` itself (see: (`i18next changelog 1.10.0`)[https://github.com/i18next/i18next/blob/master/CHANGELOG.md#1100])
 - fix error "Synchronous XMLHttpRequest on the main thread is deprecated..." (#89)

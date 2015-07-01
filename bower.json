@@ -1,7 +1,7 @@
 {
   "name": "ng-i18next",
   "main": "./dist/ng-i18next.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "dependencies": {
     "angular": ">=1.2",
     "angular-sanitize": ">=1.2",
