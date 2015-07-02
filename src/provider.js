@@ -123,7 +123,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			// https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
 			// Because of i18next read namespace from `options.ns`
 			if (!hasOwnNsOption && hasGlobalNsObj) {
-				defaultOptions = angular.copy(globalOptions);
+				defaultOptions = angular.extend({}, globalOptions);
 				defaultOptions.ns = defaultOptions.ns.defaultNs;
 			}
 
