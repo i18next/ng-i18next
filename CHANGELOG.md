@@ -1,5 +1,8 @@
 # Changelog #
 
+v0.5.2 - 2015/07/09
+- do shallow copy instead of deep copy (#94)
+
 v0.5.1 - 2015/07/01
 - fixes #93
 
