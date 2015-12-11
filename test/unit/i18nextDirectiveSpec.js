@@ -126,20 +126,44 @@ describe('Unit: jm.i18next - Directive', function () {
 
 	describe('plurals', function () {
 
-		it('should use the single form', function () {
-			inject(function ($rootScope, $compile) {
-				var c = $compile('<p ng-i18next="[i18next]({count: 1})woman"></p>')($rootScope);
-				$rootScope.$apply();
-				expect(c.text()).toEqual('Frau');
+		describe('as text', function () {
+
+			it('should use the single form', function () {
+				inject(function ($rootScope, $compile) {
+					var c = $compile('<p ng-i18next="[i18next]({count: 1})woman"></p>')($rootScope);
+					$rootScope.$apply();
+					expect(c.text()).toEqual('Frau');
+				});
 			});
+
+			it('should use the plural form', function () {
+				inject(function ($rootScope, $compile) {
+					var c = $compile('<p ng-i18next="[i18next]({count: 5})woman"></p>')($rootScope);
+					$rootScope.$apply();
+					expect(c.text()).toEqual('Frauen');
+				});
+			});
+
 		});
 
-		it('should use the plural form', function () {
-			inject(function ($rootScope, $compile) {
-				var c = $compile('<p ng-i18next="[i18next]({count: 5})woman"></p>')($rootScope);
-				$rootScope.$apply();
-				expect(c.text()).toEqual('Frauen');
+		describe('as html', function () {
+
+			it('should use the single form', function () {
+				inject(function ($rootScope, $compile) {
+					var c = $compile('<p ng-i18next="[html:i18next]({count: 1})woman"></p>')($rootScope);
+					$rootScope.$apply();
+					expect(c.text()).toEqual('Frau');
+				});
 			});
+
+			it('should use the plural form', function () {
+				inject(function ($rootScope, $compile) {
+					var c = $compile('<p ng-i18next="[html:i18next]({count: 5})woman"></p>')($rootScope);
+					$rootScope.$apply();
+					expect(c.text()).toEqual('Frauen');
+				});
+			});
+
 		});
 
 	});
