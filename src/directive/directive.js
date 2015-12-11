@@ -74,7 +74,9 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 
 				if (parsedKey.options.attr === 'html') {
 					angular.forEach(i18nOptions, function(value, key) {
-						i18nOptions[key] = $sanitize(value);
+						var sanitized = $sanitize(value);
+						var numeric = Number(value);
+						i18nOptions[key] = sanitized == numeric ? numeric : sanitized; // jshint ignore:line
 					});
 				}
 
