@@ -21,8 +21,8 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 	beforeEach(function () {
 
 		module('jm.i18next', function ($i18nextProvider) {
-            spyOn(jasmine.getGlobal().i18n, 'init');
-            $i18nextProvider.options = i18nextOptions;
+			spyOn(jasmine.getGlobal().i18n, 'init');
+			$i18nextProvider.options = i18nextOptions;
 		});
 
 		inject(function (_$i18next_) {
@@ -40,7 +40,7 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 
 		it('should return original key, because translation does not exist', function () {
 			inject(function () {
-                $i18next.options = i18nextOptions;
+				$i18next.options = i18nextOptions;
 				expect($i18next('Key_Not_Found')).toBe('A default value!');
 			});
 		});

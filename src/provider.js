@@ -114,11 +114,11 @@ angular.module('jm.i18next').provider('$i18next', function () {
 		function $i18nextTranslate(key, options) {
 
 			var hasOwnOptions = !!options,
-			    hasOwnNsOption = hasOwnOptions && options.ns,
-			    hasGlobalNsObj = globalOptions && globalOptions.ns,
-			    defaultOptions = globalOptions,
-			    mergedOptions,
-			    lng;
+				hasOwnNsOption = hasOwnOptions && options.ns,
+				hasGlobalNsObj = globalOptions && globalOptions.ns,
+				defaultOptions = globalOptions,
+				mergedOptions,
+				lng;
 
 			// https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
 			// Because of i18next read namespace from `options.ns`
