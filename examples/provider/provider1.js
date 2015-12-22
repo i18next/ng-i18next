@@ -3,18 +3,26 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 	'use strict';
 
 	/*jshint unused:false */
-	window.i18n.addPostProcessor('patrick', function (value, key, options) {
-		//https://www.youtube.com/watch?v=YSzOXtXm8p0
-		return 'No, this is Patrick!';
+	window.i18next.use({
+		name: 'patrick',
+		type: 'postProcessor',
+		process: function (value, key, options) {
+			//https://www.youtube.com/watch?v=YSzOXtXm8p0
+			return 'No, this is Patrick!';
+		}
 	});
 	/*jshint unused:true */
+
+	// Tell i18next to use the XHR backend
+	$i18nextProvider.use(window.i18nextXHRBackend);
+	$i18nextProvider.use(window.i18nextSprintfPostProcessor);
 
 	$i18nextProvider.options = {
 		lng: 'de', // If not given, i18n will detect the browser language.
 		fallbackLng: 'dev', // Default is dev
-		useCookie: false,
-		useLocalStorage: false,
-		resGetPath: '../locales/__lng__/__ns__.json'
+		backend: {
+			loadPath: '../locales/{{lng}}/{{ns}}.json'
+		}
 	};
 
 });

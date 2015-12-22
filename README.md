@@ -37,10 +37,10 @@ Make sure you require `jm.i18next` as a dependency of your AngularJS module. Als
 angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvider) {
 	$i18nextProvider.options = {
 		lng: 'de',
-		useCookie: false,
-		useLocalStorage: false,
 		fallbackLng: 'dev',
-		resGetPath: '../locales/__lng__/__ns__.json',
+		backend: {
+			loadPath: '../locales/{{lng}}/{{ns}}.json'
+		}
 		defaultLoadingValue: '' // ng-i18next option, *NOT* directly supported by i18next
 	};
 }]);

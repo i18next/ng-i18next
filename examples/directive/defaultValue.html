@@ -19,8 +19,10 @@
 		window.setTimeout(function() {
 
 			var fileEL = document.createElement('script');
+			fileEL.setAttribute('src', '../../bower_components/i18next/i18next.min.js')
 
-			fileEL.setAttribute('src', '../../bower_components/i18next/i18next.js')
+			var fileEL2 = document.createElement('script');
+			fileEL2.setAttribute('src', '../../bower_components/i18next-xhr-backend/i18nextXHRBackend.min.js')
 
 			document.getElementsByTagName('head')[0].appendChild(fileEL);
 

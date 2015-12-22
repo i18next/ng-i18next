@@ -14,17 +14,17 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 	self.options = globalOptions;
 
+	self.use = function (plugin) {
+		window.i18next.use(plugin);
+	};
+
 	self.$get = ['$rootScope', '$timeout', '$q', function ($rootScope, $timeout, $q) {
 
 		var i18nDeferred;
 
 		function init(options) {
 
-			if (options.noConflict && window.i18n) {
-				window.i18n.noConflict();
-			}
-
-			var i18n = window.i18next || window.i18n;
+			var i18n = window.i18next;
 
 			if (i18n) {
 
@@ -47,7 +47,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 						$rootScope.$digest();
 					}
 
-					$rootScope.$broadcast('i18nextLanguageChange', i18n.lng());
+					$rootScope.$broadcast('i18nextLanguageChange', i18n.language);
 
 					i18nDeferred.resolve();
 

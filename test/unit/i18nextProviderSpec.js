@@ -9,11 +9,11 @@ describe('Unit: jm.i18next - Provider', function () {
 		useCookie: false,
 		useLocalStorage: false,
 		fallbackLng: 'dev',
-		resStore: {
+		resources: {
 			'de-DE': {
 				translation: {
 					'hello': 'Herzlich Willkommen!',
-					'helloName': 'Herzlich Willkommen, __name__!',
+					'helloName': 'Herzlich Willkommen, {{name}}!',
 					'helloNesting': 'Weißt du was? Du bist $t(hello)',
 					'woman': 'Frau',
 					'woman_plural': 'Frauen',
@@ -26,7 +26,7 @@ describe('Unit: jm.i18next - Provider', function () {
 			'dev': {
 				translation: {
 					'hello': 'Welcome!',
-					'helloName': 'Welcome, __name__!',
+					'helloName': 'Welcome, {{name}}!',
 					'helloNesting': 'You know what? You\'re $t(hello)',
 					'woman': 'Woman',
 					'woman_plural': 'Women',
@@ -37,7 +37,6 @@ describe('Unit: jm.i18next - Provider', function () {
 				}
 			}
 		}
-		//resGetPath: '/test/locales/__lng__/__ns__.json'
 	};
 
 	beforeEach(function () {
@@ -86,22 +85,7 @@ describe('Unit: jm.i18next - Provider', function () {
 		});
 
 		it('should translate "hello" into German in default namespace ("de-DE"; default language)', function () {
-			inject(function () {
-				var originResStore = angular.copy(i18nextOptions.resStore);
-				i18nextOptions.resStore['de-DE'] = {
-					a: { 'hello': 'Herzlich Willkommen!' },
-					b: { 'helloName': 'Herzlich Willkommen, __name__!' }
-				};
-				i18nextOptions.ns = {
-					namespaces: ['a', 'b'],
-					defaultNs: 'a'
-				};
-
-				expect($i18next('hello')).toEqual('Herzlich Willkommen!');
-
-				delete i18nextOptions.ns;
-				i18nextOptions.resStore = originResStore;
-			});
+			// @TODO: Create test for namespaces
 		});
 
 	});
@@ -114,13 +98,13 @@ describe('Unit: jm.i18next - Provider', function () {
 			});
 		});
 
-		it('should replace "__name__" in the translation string with name given by options', function () {
+		it('should replace "{{name}}" in the translation string with name given by options', function () {
 			inject(function () {
 				expect($i18next('helloName', {name: 'Andre'})).toEqual('Herzlich Willkommen, Andre!');
 			});
 		});
 
-		it('should replace "__name__" in the translation string with name given by options and should use "dev" as language', function () {
+		it('should replace "{{name}}" in the translation string with name given by options and should use "dev" as language', function () {
 			inject(function () {
 				expect($i18next('helloName', {name: 'Andre', lng: 'dev'})).toEqual('Welcome, Andre!');
 			});

@@ -8,11 +8,11 @@ describe('Unit: jm.i18next - Directive', function () {
 		useCookie: false,
 		useLocalStorage: false,
 		fallbackLng: 'dev',
-		resStore: {
+		resources: {
 			'de-DE': {
 				translation: {
 					'hello': 'Herzlich Willkommen!',
-					'helloName': 'Herzlich Willkommen, __name__!',
+					'helloName': 'Herzlich Willkommen, {{name}}!',
 					'helloNesting': 'Weißt du was? Du bist $t(hello)',
 					'woman': 'Frau',
 					'woman_plural': 'Frauen',
@@ -22,13 +22,13 @@ describe('Unit: jm.i18next - Directive', function () {
 					'friend_female': 'Feste Freundin',
 
 					'helloHTML': '<h1>Herzlich Willkommen!</h1>',
-					'helloNameHTML': '<h1>Herzlich Willkommen, __name__!</h1>'
+					'helloNameHTML': '<h1>Herzlich Willkommen, {{name}}!</h1>'
 				}
 			},
 			'dev': {
 				translation: {
 					'hello': 'Welcome!',
-					'helloName': 'Welcome, __name__!',
+					'helloName': 'Welcome, {{name}}!',
 					'helloNesting': 'You know what? You\'re $t(hello)',
 					'woman': 'Woman',
 					'woman_plural': 'Women',
@@ -38,11 +38,10 @@ describe('Unit: jm.i18next - Directive', function () {
 					'friend_female': 'Girlfriend',
 
 					'helloHTML': '<h1>Welcome!</h1>',
-					'helloNameHTML': '<h1>Welcome, __name__!</h1>'
+					'helloNameHTML': '<h1>Welcome, {{name}}!</h1>'
 				}
 			}
 		}
-		//resGetPath: '/test/locales/__lng__/__ns__.json'
 	};
 
 	beforeEach(function () {
@@ -100,7 +99,7 @@ describe('Unit: jm.i18next - Directive', function () {
 			});
 		});
 
-		it('should replace "__name__" in the translation string with name given by options', function () {
+		it('should replace "{{name}}" in the translation string with name given by options', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\'})helloName"></p>')($rootScope);
 				$rootScope.$apply();
@@ -108,7 +107,7 @@ describe('Unit: jm.i18next - Directive', function () {
 			});
 		});
 
-		it('should replace "__name__" in the translation string with name given by options and should use "dev" as language', function () {
+		it('should replace "{{name}}" in the translation string with name given by options and should use "dev" as language', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\',lng:\'dev\'})helloName"></p>')($rootScope);
 				$rootScope.$apply();
@@ -248,7 +247,7 @@ describe('Unit: jm.i18next - Directive', function () {
 			inject(function ($rootScope, $compile) {
 				var c = $compile('<p ng-i18next="[html:i18next]({name:\'<img src=1 onError=alert()>\'})helloNameHTML"></p>')($rootScope);
 				$rootScope.$apply();
-				expect(c.html()).toBe('<h1 class="ng-scope">Herzlich Willkommen, <img src="1">!</h1>');
+				expect(c.html()).toBe('<h1 class="ng-scope">Herzlich Willkommen, &lt;img src="1"/&gt;!</h1>');
 			});
 		});
 

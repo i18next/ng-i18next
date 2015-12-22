@@ -7,11 +7,11 @@ describe('Unit: jm.i18next - Filter', function () {
 		useCookie: false,
 		useLocalStorage: false,
 		fallbackLng: 'dev',
-		resStore: {
+		resources: {
 			'de-DE': {
 				translation: {
 					'hello': 'Herzlich Willkommen!',
-					'helloName': 'Herzlich Willkommen, __name__!',
+					'helloName': 'Herzlich Willkommen, {{name}}!',
 					'helloNesting': 'Weißt du was? Du bist $t(hello)',
 					'woman': 'Frau',
 					'woman_plural': 'Frauen',
@@ -24,7 +24,7 @@ describe('Unit: jm.i18next - Filter', function () {
 			'dev': {
 				translation: {
 					'hello': 'Welcome!',
-					'helloName': 'Welcome, __name__!',
+					'helloName': 'Welcome, {{name}}!',
 					'helloNesting': 'You know what? You\'re $t(hello)',
 					'woman': 'Woman',
 					'woman_plural': 'Women',
@@ -35,7 +35,6 @@ describe('Unit: jm.i18next - Filter', function () {
 				}
 			}
 		}
-		//resGetPath: '/test/locales/__lng__/__ns__.json'
 	};
 
 	beforeEach(function () {
@@ -83,13 +82,13 @@ describe('Unit: jm.i18next - Filter', function () {
 			});
 		});
 
-		it('should replace "__name__" in the translation string with name given by options', function () {
+		it('should replace "{{name}}" in the translation string with name given by options', function () {
 			inject(function ($filter) {
 				expect($filter('i18next')('helloName', {name: 'Andre'})).toEqual('Herzlich Willkommen, Andre!');
 			});
 		});
 
-		it('should replace "__name__" in the translation string with name given by options and should use "dev" as language', function () {
+		it('should replace "{{name}}" in the translation string with name given by options and should use "dev" as language', function () {
 			inject(function ($filter) {
 				expect($filter('i18next')('helloName', {name: 'Andre', lng: 'dev'})).toEqual('Welcome, Andre!');
 			});

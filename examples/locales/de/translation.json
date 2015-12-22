@@ -5,7 +5,7 @@
 	},
 
 	"both": {
-		"basicUsage": "Basic Usage",
+		"basicUsage": "Grundlagen - Basic Usage",
 		"ngRepeat": "Übersetzung mit ng-repeat",
 		"passingOptions": "Optionen übergeben",
 		"passingOptionsHTMLDescription": "Du kannst Optionen in Verbindung mit HTML übergeben [html:i18next]",
@@ -67,7 +67,7 @@
 		"client": "Klient",
 		"client_plural": "Klienten",
 		"client_plural_0": "keine Klienten",
-		"total": "__total__ $t(client.client, {\"count\": __total__ }) insgesamt.",
+		"total": "{{total}} $t(client.client, {\"count\": {{total}} }) insgesamt.",
 		"increaseClients": "Anzahl an Klienten erhöhen",
 		"decreaseClients": "Anzahl an Klienten verringern"
 	},
