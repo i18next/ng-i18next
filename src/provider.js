@@ -76,7 +76,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			t = null;
 
-			$i18nextTanslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
+			$i18nextTranslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
 
 			globalOptions = newOptions;
 
@@ -111,7 +111,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		function $i18nextTanslate(key, options) {
+		function $i18nextTranslate(key, options) {
 
 			var hasOwnOptions = !!options,
 			    hasOwnNsOption = hasOwnOptions && options.ns,
@@ -139,19 +139,19 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		$i18nextTanslate.debugMsg = [];
+		$i18nextTranslate.debugMsg = [];
 
-		$i18nextTanslate.options = self.options;
+		$i18nextTranslate.options = self.options;
 
 		if (self.options !== globalOptions) {
 			optionsChange(self.options, globalOptions);
 		}
 
-		$i18nextTanslate.reInit = function () {
+		$i18nextTranslate.reInit = function () {
 			return optionsChange(globalOptions, globalOptions);
 		};
 
-		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
+		$rootScope.$watch(function () { return $i18nextTranslate.options; }, function (newOptions, oldOptions) {
 			// Check whether there are new options and whether the new options are different from the old options.
 			// Check if globalOptions
 			if (!!newOptions && (oldOptions !== newOptions || globalOptions!== newOptions)) {
@@ -159,7 +159,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			}
 		}, true);
 
-		return $i18nextTanslate;
+		return $i18nextTranslate;
 
 	}];
 
