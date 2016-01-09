@@ -7,12 +7,12 @@ var pkg = require('./package.json');
 var jshint    = require('gulp-jshint');
 var uglify    = require('gulp-uglify');
 var webserver = require('gulp-webserver');
-var karma     = require('gulp-karma');
 var concat    = require('gulp-concat');
 var rename    = require('gulp-rename');
 var size      = require('gulp-size');
 var header    = require('gulp-header');
 var rimraf    = require('gulp-rimraf');
+var Server    = require('karma').Server;
 
 var getToday = function() {
 
@@ -85,27 +85,11 @@ gulp.task('build', function() {
 });
 
 //run tests
-gulp.task('karma', function() {
-
-	gulp.src([
-			'node_modules/angular/angular.js',
-			'node_modules/angular-mocks/angular-mocks.js',
-			'bower_components/angular-sanitize/angular-sanitize.js',
-			'node_modules/i18next-client/i18next.min.js',
-			'src/provider.js',
-			'src/{,*/}*.js',
-			'test/polyfills/*.js',
-			'test/{,*/}*Spec.js'
-		])
-		.pipe(karma({
-			configFile: 'karma.conf.js',
-			action: 'run' //Run once
-		}))
-		.on('error', function(err) {
-			// Make sure failed tests cause gulp to exit non-zero
-			throw err;
-		});
-
+gulp.task('karma', function(done) {
+	new Server({
+		configFile: __dirname + '/karma.conf.js',
+		singleRun: true
+	}, done).start();
 });
 
 //TODO: documentation
