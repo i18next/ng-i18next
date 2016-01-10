@@ -35,6 +35,9 @@ Make sure you require `jm.i18next` as a dependency of your AngularJS module. Als
 
 ```js
 angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvider) {
+	// Optionally specify the instance of i18next to use; otherwise, it's obtained from `window`
+	$i18nextProvider.i18next = require('i18next');
+
 	$i18nextProvider.options = {
 		lng: 'de',
 		useCookie: false,
@@ -237,6 +240,18 @@ $i18nextProvider.options = {
 
 => displays "Loading..." until i18next is loaded, then translates `not-translated-welcome-key` with default of "Welcome!"
 if the key is not defined in your i18n file
+
+# Specifying an i18next instance #
+
+`ng-i18next` has an `i18next` property that can be provided to specify the instance of i18next to use. This is particularly useful when i18next is included through a module loader and hasn't been added to `window`.
+
+## i18next instance - Examples ##
+```js
+$i18nextProvider.i18next = require('i18next')
+$i18nextProvider.options = {
+	/* ... */
+};
+```
 
 ---------
 
