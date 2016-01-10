@@ -23,7 +23,6 @@
     "gulp-header": "^1.0.5",
     "gulp-jasmine": "^0.2.0",
     "gulp-jshint": "^1.7.1",
-    "gulp-karma": "0.0.4",
     "gulp-rename": "^1.2.0",
     "gulp-rimraf": "^0.1.0",
     "gulp-size": "^0.4.0",
