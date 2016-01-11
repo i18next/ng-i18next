@@ -24,7 +24,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 				window.i18n.noConflict();
 			}
 
-			var i18n = window.i18next || window.i18n;
+			var i18n = self.i18next || window.i18next || window.i18n;
 
 			if (i18n) {
 
