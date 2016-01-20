@@ -1,8 +1,8 @@
 /*!
- * ng-i18next - Version 0.5.2 - 2015-07-09
- * Copyright (c) 2015 Andre Meyering
+ * ng-i18next - Version 0.6.0 - 2016-01-20
+ * Copyright (c) 2016 Andre Meyering
  *
- * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
+ * AngularJS provider, filter and directive for `i18next` 2 (`i18next` by Jan Mühlemann)
  *
  * - Source: https://github.com/i18next/ng-i18next/
  * - Issues: https://github.com/i18next/ng-i18next/issues
@@ -26,17 +26,17 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 	self.options = globalOptions;
 
+	self.use = function (plugin) {
+		window.i18next.use(plugin);
+	};
+
 	self.$get = ['$rootScope', '$timeout', '$q', function ($rootScope, $timeout, $q) {
 
 		var i18nDeferred;
 
 		function init(options) {
 
-			if (options.noConflict && window.i18n) {
-				window.i18n.noConflict();
-			}
-
-			var i18n = window.i18next || window.i18n;
+			var i18n = window.i18next;
 
 			if (i18n) {
 
@@ -59,7 +59,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 						$rootScope.$digest();
 					}
 
-					$rootScope.$broadcast('i18nextLanguageChange', i18n.lng());
+					$rootScope.$broadcast('i18nextLanguageChange', i18n.language);
 
 					i18nDeferred.resolve();
 
@@ -177,23 +177,6 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 });
 
-angular.module('jm.i18next').filter('i18next', ['$i18next', function ($i18next) {
-
-	'use strict';
-
-	function i18nextFilter(string, options) {
-
-		return $i18next(string, options);
-
-	}
-
-	// https://docs.angularjs.org/guide/filter#stateful-filters
-	i18nextFilter.$stateful = true;
-
-	return i18nextFilter;
-
-}]);
-
 angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$parse', '$interpolate', '$sanitize',
 	function ($i18next, $compile, $parse, $interpolate, $sanitize) {
 
@@ -270,7 +253,9 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 
 				if (parsedKey.options.attr === 'html') {
 					angular.forEach(i18nOptions, function(value, key) {
-						i18nOptions[key] = $sanitize(value);
+						var sanitized = $sanitize(value);
+						var numeric = Number(value);
+						i18nOptions[key] = sanitized == numeric ? numeric : sanitized; // jshint ignore:line
 					});
 				}
 
@@ -411,5 +396,22 @@ angular.module('jm.i18next').directive('boI18next', ['$i18next', '$compile', fun
 		}
 
 	};
+
+}]);
+
+angular.module('jm.i18next').filter('i18next', ['$i18next', function ($i18next) {
+
+	'use strict';
+
+	function i18nextFilter(string, options) {
+
+		return $i18next(string, options);
+
+	}
+
+	// https://docs.angularjs.org/guide/filter#stateful-filters
+	i18nextFilter.$stateful = true;
+
+	return i18nextFilter;
 
 }]);
