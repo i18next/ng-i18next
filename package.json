@@ -1,6 +1,6 @@
 {
   "name": "ng-i18next",
-  "version": "0.6",
+  "version": "0.6.0",
   "description": "AngularJS provider, filter and directive for `i18next` 2 (`i18next` by Jan Mühlemann)",
   "keywords": ["translation", "angular", "i18next"],
   "repository" : {
