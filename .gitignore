@@ -3,3 +3,15 @@ node_modules
 bower_components
 *.log
 .directory
+.idea/.name
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/encodings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+ng-i18next.iml
+.idea/dictionaries/kguo.xml
