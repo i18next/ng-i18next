@@ -151,13 +151,15 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			return optionsChange(globalOptions, globalOptions);
 		};
 
-		$rootScope.$watch(function () { return $i18nextTranslate.options; }, function (newOptions, oldOptions) {
-			// Check whether there are new options and whether the new options are different from the old options.
-			// Check if globalOptions
-			if (!!newOptions && (oldOptions !== newOptions || globalOptions!== newOptions)) {
-				optionsChange(newOptions, oldOptions);
-			}
-		}, true);
+		if($i18nextTranslate.options.watchOptions){
+			$rootScope.$watch(function () { return $i18nextTranslate.options; }, function (newOptions, oldOptions) {
+				// Check whether there are new options and whether the new options are different from the old options.
+				// Check if globalOptions
+				if (!!newOptions && (oldOptions !== newOptions || globalOptions!== newOptions)) {
+					optionsChange(newOptions, oldOptions);
+				}
+			}, true);
+		}
 
 		return $i18nextTranslate;
 
