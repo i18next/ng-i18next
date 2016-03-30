@@ -1,5 +1,7 @@
 # ng-i18next - use i18next with [AngularJS](https://www.angularjs.org/) [![Build Status](https://travis-ci.org/i18next/ng-i18next.svg?branch=master)](https://travis-ci.org/i18next/ng-i18next) #
 
+# This project needs a [new maintainer](https://github.com/i18next/ng-i18next/issues/104). #
+
 Project goal is to provide an easy way to use [i18next](http://i18next.com/) with [AngularJS](http://angularjs.org/):
 
 - `ng-i18next` directive
