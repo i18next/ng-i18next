@@ -47,7 +47,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 						$rootScope.$digest();
 					}
 
-					$rootScope.$broadcast('i18nextLanguageChange', i18n.lng());
+					$rootScope.$broadcast('i18nextLanguageChange', i18n.language);
 
 					i18nDeferred.resolve();
 
