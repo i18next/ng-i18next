@@ -1,5 +1,5 @@
 /*!
- * ng-i18next - Version 0.5.2 - 2016-07-21
+ * ng-i18next - Version 0.5.4 - 2016-07-22
  * Copyright (c) 2016 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
