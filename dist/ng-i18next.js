@@ -1,6 +1,6 @@
 /*!
- * ng-i18next - Version 0.5.2 - 2015-07-09
- * Copyright (c) 2015 Andre Meyering
+ * ng-i18next - Version 0.5.4 - 2016-07-22
+ * Copyright (c) 2016 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
  *
@@ -36,7 +36,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 				window.i18n.noConflict();
 			}
 
-			var i18n = window.i18next || window.i18n;
+			var i18n = self.i18next || window.i18next || window.i18n;
 
 			if (i18n) {
 
@@ -59,7 +59,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 						$rootScope.$digest();
 					}
 
-					$rootScope.$broadcast('i18nextLanguageChange', i18n.lng());
+					$rootScope.$broadcast('i18nextLanguageChange', i18n.language);
 
 					i18nDeferred.resolve();
 
@@ -88,7 +88,7 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 			t = null;
 
-			$i18nextTanslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
+			$i18nextTranslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
 
 			globalOptions = newOptions;
 
@@ -123,14 +123,14 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		function $i18nextTanslate(key, options) {
+		function $i18nextTranslate(key, options) {
 
 			var hasOwnOptions = !!options,
-			    hasOwnNsOption = hasOwnOptions && options.ns,
-			    hasGlobalNsObj = globalOptions && globalOptions.ns,
-			    defaultOptions = globalOptions,
-			    mergedOptions,
-			    lng;
+				hasOwnNsOption = hasOwnOptions && options.ns,
+				hasGlobalNsObj = globalOptions && globalOptions.ns,
+				defaultOptions = globalOptions,
+				mergedOptions,
+				lng;
 
 			// https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
 			// Because of i18next read namespace from `options.ns`
@@ -151,19 +151,19 @@ angular.module('jm.i18next').provider('$i18next', function () {
 
 		}
 
-		$i18nextTanslate.debugMsg = [];
+		$i18nextTranslate.debugMsg = [];
 
-		$i18nextTanslate.options = self.options;
+		$i18nextTranslate.options = self.options;
 
 		if (self.options !== globalOptions) {
 			optionsChange(self.options, globalOptions);
 		}
 
-		$i18nextTanslate.reInit = function () {
+		$i18nextTranslate.reInit = function () {
 			return optionsChange(globalOptions, globalOptions);
 		};
 
-		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
+		$rootScope.$watch(function () { return $i18nextTranslate.options; }, function (newOptions, oldOptions) {
 			// Check whether there are new options and whether the new options are different from the old options.
 			// Check if globalOptions
 			if (!!newOptions && (oldOptions !== newOptions || globalOptions!== newOptions)) {
@@ -171,28 +171,11 @@ angular.module('jm.i18next').provider('$i18next', function () {
 			}
 		}, true);
 
-		return $i18nextTanslate;
+		return $i18nextTranslate;
 
 	}];
 
 });
-
-angular.module('jm.i18next').filter('i18next', ['$i18next', function ($i18next) {
-
-	'use strict';
-
-	function i18nextFilter(string, options) {
-
-		return $i18next(string, options);
-
-	}
-
-	// https://docs.angularjs.org/guide/filter#stateful-filters
-	i18nextFilter.$stateful = true;
-
-	return i18nextFilter;
-
-}]);
 
 angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$parse', '$interpolate', '$sanitize',
 	function ($i18next, $compile, $parse, $interpolate, $sanitize) {
@@ -270,7 +253,9 @@ angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$p
 
 				if (parsedKey.options.attr === 'html') {
 					angular.forEach(i18nOptions, function(value, key) {
-						i18nOptions[key] = $sanitize(value);
+						var sanitized = $sanitize(value);
+						var numeric = Number(value);
+						i18nOptions[key] = sanitized == numeric ? numeric : sanitized; // jshint ignore:line
 					});
 				}
 
@@ -411,5 +396,22 @@ angular.module('jm.i18next').directive('boI18next', ['$i18next', '$compile', fun
 		}
 
 	};
+
+}]);
+
+angular.module('jm.i18next').filter('i18next', ['$i18next', function ($i18next) {
+
+	'use strict';
+
+	function i18nextFilter(string, options) {
+
+		return $i18next(string, options);
+
+	}
+
+	// https://docs.angularjs.org/guide/filter#stateful-filters
+	i18nextFilter.$stateful = true;
+
+	return i18nextFilter;
 
 }]);

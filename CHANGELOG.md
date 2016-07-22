@@ -1,5 +1,11 @@
 # Changelog #
 
+v0.5.4 - 2016/07/22
+- bumped version number and updated CHANGELOG
+
+v0.5.3 - 2016/07/21
+- upgrade dependent libraries
+
 v0.5.2 - 2015/07/09
 - do shallow copy instead of deep copy (#94)
 
