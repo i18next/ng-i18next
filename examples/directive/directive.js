@@ -2,24 +2,27 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 	'use strict';
 
-	/*jshint unused:false */
-	window.i18n.addPostProcessor('patrick', function (value, key, options) {
-		//https://www.youtube.com/watch?v=YSzOXtXm8p0
-		return 'No, this is Patrick!';
-	});
+	// /*jshint unused:false */
+	// window.i18n.addPostProcessor('patrick', function (value, key, options) {
+	// 	//https://www.youtube.com/watch?v=YSzOXtXm8p0
+	// 	return 'No, this is Patrick!';
+	// });
 
-	window.i18n.addPostProcessor('test', function (value, key, options) {
-		return 'PostProcessor is working!';
-	});
-	/*jshint unused:true */
+	// window.i18n.addPostProcessor('test', function (value, key, options) {
+	// 	return 'PostProcessor is working!';
+	// });
+	// /*jshint unused:true */
 
 	$i18nextProvider.options = {
+		compatibilityAPI: 'v1',
 		lng: 'de', // If not given, i18n will detect the browser language.
 		fallbackLng: 'dev', // Default is dev
 		useCookie: false,
 		useLocalStorage: false,
 		resGetPath: '../locales/__lng__/__ns__.json'
 	};
+
+	$i18nextProvider.modules = [window.i18nextXHRBackend]
 
 });
 
@@ -38,13 +41,13 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 		}
 	});
 
-	$scope.numbers =  ['one', 'two', 'three'];
+	$scope.numbers = ['one', 'two', 'three'];
 
 	$scope.bindingVariable = $scope.dynamicBindingVariable = 'helloHTML';
 
 	$scope.date = new Date();
 
-	$scope.clientsTotal =  2;
+	$scope.clientsTotal = 2;
 
 	$scope.increaseClients = function () {
 		$scope.clientsTotal++;
@@ -59,13 +62,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 	};
 
 	$scope.changeLng = function (lng) {
-		if (lng === 'patrick') {
-			$i18next.options.postProcess = 'patrick';
-		} else {
-			$i18next.options.postProcess = '';
-			$i18next.options.lng = lng;
-			console.log($i18next.debugMsg[$i18next.debugMsg.length - 1]);
-		}
+		$i18next.changeLanguage(lng);
 	};
 
 	$timeout(function () {
