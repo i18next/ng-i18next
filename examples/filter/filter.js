@@ -11,7 +11,7 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 		resGetPath: '../locales/__lng__/__ns__.json'
 	};
 
-	$i18nextProvider.modules = [ window.i18nextXHRBackend ]
+	$i18nextProvider.modules = [window.i18nextXHRBackend];
 
 });
 

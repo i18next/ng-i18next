@@ -7,8 +7,7 @@ class I18nFilter {
 	public static factory() {
 		let filter = ($i18next: Ii18nTranslateService) => {
 			function i18nextFilter(key: string, options: I18next.TranslationOptions) {
-				let hasOptions: boolean = angular.isDefined(options);
-				return $i18next.i18nextTranslate(key, options);
+				return $i18next.t(key, options);
 			}
 			(i18nextFilter as any).$stateful = true;
 			return i18nextFilter;

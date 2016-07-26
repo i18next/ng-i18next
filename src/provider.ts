@@ -31,7 +31,7 @@ export default I18nProvider;
 angular.module('jm.i18next', ['ng', 'ngSanitize'])
     .provider('$i18next', I18nProvider)
     .directive('ngI18next', I18nDirective.factory())
-	.directive('ngI18nextBindOnce', I18nBindOnceDirective.factory())
+	.directive('boI18next', I18nBindOnceDirective.factory())
     .controller('NgI18nextController', I18nDirectiveController)
     .filter('i18next', I18nFilter.factory());
 

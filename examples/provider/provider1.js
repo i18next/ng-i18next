@@ -18,7 +18,7 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 		resGetPath: '../locales/__lng__/__ns__.json'
 	};
 
-	$i18nextProvider.modules = [ window.i18nextXHRBackend ]
+	$i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
 
 });
 
@@ -30,10 +30,8 @@ angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($
 
 	$rootScope.$on('i18nextLanguageChange', function () {
 
-		$scope.$apply(function () {
-			$scope.hello = $i18next('hello');
-			$scope.sprintf = $i18next('both.sprintf', {postProcess: 'sprintf', sprintf: ['a','b','c','d']});
-		});
+			$scope.hello = $i18next.t('hello');
+			$scope.sprintf = $i18next.t('both.sprintf', {postProcess: 'sprintf', sprintf: ['a','b','c','d']});
 
 		console.log($scope.hello);
 

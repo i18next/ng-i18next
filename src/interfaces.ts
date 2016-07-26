@@ -8,6 +8,11 @@ declare var window: Window;
 
 interface Ii18nTranslateService {
     init: (options: any, modules: Array<any>) => ng.IPromise<any>;
-    i18nextTranslate: (key: string, options: I18next.TranslationOptions) => string;
-    translate: (key: string, options: I18next.TranslationOptions, hasOwnOptions: boolean) => void;
+    t: (key: string, options: I18next.TranslationOptions) => string;
+    changeLanguage: (lng: string) => void;
+    changeOptions: (options: I18next.Options) => void;
+}
+
+interface Ii18nDirectiveController {
+    localize: (key: string, noWatch: boolean) => void;
 }

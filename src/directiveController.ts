@@ -8,11 +8,11 @@ interface IParsedKey {
     i18nOptions: any;
 }
 
-class I18nDirectiveController {
+class I18nDirectiveController implements Ii18nDirectiveController {
     argsUnregister: any;
     stringUnregister: any;
 
-    static $inject = ['$scope', '$element', '$compile', '$parse', '$interpolate', '$sanitize'];
+    static $inject = ['$scope', '$element', '$compile', '$parse', '$interpolate', '$sanitize', '$i18next'];
 
     constructor(
         private $scope: ng.IScope,
@@ -20,28 +20,43 @@ class I18nDirectiveController {
         private $compile: ng.ICompileService,
         private $parse: ng.IParseService,
         private $interpolate: ng.IInterpolateService,
-        private $sanitize: ng.sanitize.ISanitizeService) { }
-
-    parseOptions(options: string) {
-
-        let res: any = {
-            attr: 'text'
-        };
-
-        let optionsSplit: string[] = options.split(':');
-
-        for (let i = 0; i < optionsSplit.length; ++i) {
-            if (optionsSplit[i] === 'i18next') {
-                res[optionsSplit[i]] = true;
-            } else {
-                res.attr = options;
-            }
-        }
-
-        return res;
+        private $sanitize: ng.sanitize.ISanitizeService,
+        private $i18next: Ii18nTranslateService) {
     }
 
-    parseKey(key: string): IParsedKey {
+    public localize(key: string, noWatch: boolean): void {
+        let keys = key.split(';');
+
+        for (let i = 0; i < keys.length; ++i) {
+            key = keys[i].trim();
+
+            if (key === '') {
+                continue;
+            }
+
+            this.parse(key, noWatch);
+        }
+    };
+
+    private parse(key: string, noWatch: boolean) {
+        let parsedKey: IParsedKey = this.parseKey(key);
+
+        // If there are watched values, unregister them
+        if (this.argsUnregister) {
+            this.argsUnregister();
+        }
+        if (this.stringUnregister) {
+            this.stringUnregister();
+        }
+
+        if (!noWatch) {
+            this.argsUnregister = this.$scope.$watch(parsedKey.i18nOptions, this.render, true);
+        }
+
+        this.render(parsedKey, noWatch);
+    }
+
+    private parseKey(key: string): IParsedKey {
 
         let options: any = {
             attr: 'text'
@@ -70,42 +85,27 @@ class I18nDirectiveController {
         };
     }
 
+    private parseOptions(options: string) {
 
+        let res: any = {
+            attr: 'text'
+        };
 
-    parse(key: string, noWatch: boolean) {
-        let parsedKey: IParsedKey = this.parseKey(key);
+        let optionsSplit: string[] = options.split(':');
 
-        // If there are watched values, unregister them
-        if (this.argsUnregister) {
-            this.argsUnregister();
+        for (let i = 0; i < optionsSplit.length; ++i) {
+            if (optionsSplit[i] === 'i18next') {
+                res[optionsSplit[i]] = true;
+            } else {
+                res.attr = optionsSplit[i];
+            }
         }
-        if (this.stringUnregister) {
-            this.stringUnregister();
-        }
 
-        if (!noWatch) {
-            this.argsUnregister = this.$scope.$watch(parsedKey.i18nOptions, this.render, true);
-        }
-
-        this.render(parsedKey, noWatch);
+        return res;
     }
 
-    public localize(key: string, noWatch: boolean) {
-        let keys = key.split(';');
-
-        for (let i = 0; i < keys.length; ++i) {
-            key = keys[i].trim();
-
-            if (key === '') {
-                continue;
-            }
-
-            this.parse(key, noWatch);
-        }
-    };
-
-    render(parsedKey: any, noWatch: boolean) {
-        if (angular.isDefined(this.$scope)) {
+    private render(parsedKey: any, noWatch: boolean) {
+        if (angular.isDefined(this) && angular.isDefined(this.$scope)) {
             let i18nOptions = parsedKey.i18nOptions(this.$scope);
 
             if (i18nOptions.sprintf) {
@@ -117,38 +117,40 @@ class I18nDirectiveController {
                     let sanitized = this.$sanitize(value);
                     let numeric = Number(value);
                     i18nOptions[key] = sanitized === numeric ? numeric : sanitized; // jshint ignore:line
-                });
+                }, this);
             }
 
-            let localizeString = window.i18next.t(parsedKey.key, i18nOptions);
+            let localizedString = this.$i18next.t(parsedKey.key, i18nOptions);
 
-            if (parsedKey.options.attr === 'html') {
-                this.$element.empty().append(localizeString);
+            if (angular.isDefined(localizedString)) {
+                if (parsedKey.options.attr === 'html') {
+                    this.$element.empty().append(localizedString);
 
-                /*
-                 * Now compile the content of the element and bind the variables to
-                 * the scope
-                 */
-                this.$compile(this.$element.contents())(this.$scope);
+                    /*
+                     * Now compile the content of the element and bind the variables to
+                     * the scope
+                     */
+                    this.$compile(this.$element.contents())(this.$scope);
 
-                return;
+                    return;
+                }
+
+                if (this.stringUnregister) {
+                    this.stringUnregister();
+                }
+
+                let insertText = this.$element.text.bind(this.$element);
+
+                if (parsedKey.options.attr !== 'text') {
+                    insertText = this.$element.attr.bind(this.$element, parsedKey.options.attr);
+                }
+
+                let localizedStringInterpolation = this.$interpolate(localizedString);
+                if (!noWatch) {
+                    this.stringUnregister = this.$scope.$watch(localizedStringInterpolation, insertText);
+                }
+                insertText(localizedStringInterpolation(this.$scope));
             }
-
-            if (this.stringUnregister) {
-                this.stringUnregister();
-            }
-
-            let insertText = this.$element.text.bind(this.$element);
-
-            if (parsedKey.options.attr !== 'text') {
-                insertText = this.$element.attr.bind(this.$element, parsedKey.options.attr);
-            }
-
-            localizeString = this.$interpolate(localizeString);
-            if (!noWatch) {
-                this.stringUnregister = this.$scope.$watch(localizeString, insertText);
-            }
-            insertText(localizeString(this.$scope));
         }
     }
 }

@@ -24,6 +24,7 @@ export class I18nDirective implements ng.IDirective {
 	public scope: boolean = false;
 	public controller: string = 'NgI18nextController';
 	public link: ng.IDirectiveLinkFn = ($scope: ng.IScope, $element: ng.IAugmentedJQuery, $attrs: I18nttributes, ctrl: I18nController) => {
+		let self = this;
 		let translationValue = '';
 		let isTransformed = false;
 
@@ -45,13 +46,15 @@ export class I18nDirective implements ng.IDirective {
 		});
 
 		function observe(value: any) {
-			translationValue = value.replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
+			if (angular.isDefined(value)) {
+				translationValue = value.replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
 
-			if (translationValue === '') {
-				return setupWatcher();
+				if (translationValue === '') {
+					return setupWatcher();
+				}
+
+				ctrl.localize(translationValue);
 			}
-
-			ctrl.localize(translationValue);
 		}
 
 		function setupWatcher() {
@@ -61,7 +64,7 @@ export class I18nDirective implements ng.IDirective {
 			}
 
 			// interpolate is allowing to transform {{expr}} into text
-			let interpolation = this.$interpolate($element.html());
+			let interpolation = self.$interpolate($element.html());
 
 			$scope.$watch(interpolation, observe);
 
@@ -74,7 +77,7 @@ export class I18nDirective implements ng.IDirective {
 
 	public static factory() {
 		let directive = ($compile: ng.ICompileService, $parse: ng.IParseService, $interpolate: ng.IInterpolateService, $sanitize: ng.sanitize.ISanitizeService) => new I18nDirective($compile, $parse, $interpolate, $sanitize);
-		directive.$inject = ['$i18next', '$compile', '$parse', '$interpolate', '$sanitize'];
+		directive.$inject = ['$compile', '$parse', '$interpolate', '$sanitize'];
 		return directive;
 	}
 
