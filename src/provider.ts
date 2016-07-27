@@ -1,11 +1,11 @@
 /// <reference path="../typings/index.d.ts" />
 /// <reference path="./interfaces.ts" />
 
-import I18nTranslateService from './translateService.ts';
-import I18nDirective from './directive.ts';
-import I18nBindOnceDirective from './directiveBindOnce.ts';
-import I18nDirectiveController from './directiveController.ts';
-import I18nFilter from './filter.ts';
+import I18nTranslateService from './translateService';
+import I18nDirective from './directive';
+import I18nBindOnceDirective from './directiveBindOnce';
+import I18nDirectiveController from './directiveController';
+import I18nFilter from './filter';
 
 class I18nProvider implements ng.IServiceProvider {
 

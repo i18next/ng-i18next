@@ -4,6 +4,7 @@ describe('Unit: jm.i18next - Directive', function () {
 
 	var $rootScope, $compile;
 	var i18nextOptions = {
+		compatibilityAPI: 'v1',
 		lng: 'de-DE',
 		useCookie: false,
 		useLocalStorage: false,

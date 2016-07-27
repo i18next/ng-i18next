@@ -4,6 +4,7 @@ describe('Unit: jm.i18next - Provider', function () {
 
 	var $i18next;
 	var i18nextOptions = {
+		compatibilityAPI: 'v1',
 		defaultLoadingValue: 'A default value!',
 		lng: 'de-DE',
 		useCookie: false,

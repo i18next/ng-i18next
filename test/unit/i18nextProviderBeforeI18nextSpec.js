@@ -4,6 +4,7 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 
 	var $i18next;
 	var i18nextOptions = {
+		compatibilityAPI: 'v1',
 		lng: 'de-DE',
 		useCookie: false,
 		useLocalStorage: false,

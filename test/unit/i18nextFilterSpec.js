@@ -3,6 +3,7 @@ describe('Unit: jm.i18next - Filter', function () {
 	'use strict';
 
 	var i18nextOptions = {
+		compatibilityAPI: 'v1',
 		lng: 'de-DE',
 		useCookie: false,
 		useLocalStorage: false,

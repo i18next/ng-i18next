@@ -59,7 +59,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 	};
 
 	$scope.sayHello = function sayHello() {
-		alert($i18next.i18nextTranslate('hello'));
+		alert($i18next.t('hello'));
 	};
 
 	$scope.changeLng = function (lng) {

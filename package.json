@@ -26,6 +26,7 @@
     "gulp-jshint": "^2.0.1",
     "gulp-rename": "^1.2.0",
     "gulp-rimraf": "^0.2.0",
+    "gulp-rollup": "^2.3.0",
     "gulp-size": "^2.1.0",
     "gulp-typescript": "^2.13.6",
     "gulp-uglify": "^1.5.4",

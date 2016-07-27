@@ -13,11 +13,14 @@ var size = require('gulp-size');
 var header = require('gulp-header');
 var rimraf = require('gulp-rimraf');
 var ts = require('gulp-typescript');
+
+var rollup = require('gulp-rollup');
+var typescript = require('rollup-plugin-typescript');
+
 var flatten = require('gulp-flatten');
 var Server = require('karma').Server;
 
 var tsconfig = require("./tsconfig.json");
-
 
 var getToday = function () {
 
@@ -55,7 +58,7 @@ var headerMeta = ['/*!',
 var headerMetaMin = '/*! <%= pkg.name %> - <%= pkg.version %> - ' + getToday() +
 	' - Copyright (c) ' + new Date().getFullYear() + ' <%= pkg.author.name %>; Licensed <%= pkg.license %>*/';
 
-gulp.task('clean', [], function() {
+gulp.task('clean', [], function () {
 	//remove old files
 	return gulp.src(['./dist/*', './build/*'], { read: false })
 		.pipe(rimraf());
@@ -64,24 +67,23 @@ gulp.task('clean', [], function() {
 
 gulp.task('build', ['clean'], function () {
 	var tsResult = gulp.src(['./src/*.ts'])
-		.pipe(flatten())
 		.pipe(ts(tsconfig.compilerOptions));
 
 	tsResult.dts.pipe(gulp.dest('./build/typings'));
-	return tsResult.js.pipe(gulp.dest('./build/js'));
+	return tsResult.js.pipe(gulp.dest('./build'));
 });
 
-gulp.task('concat', ['clean', 'build'], function() {
+gulp.task('concat', ['clean', 'build'], function () {
 	return gulp.src('./build/js/*.js')
-	 .pipe(concat(pkg.name + '.js'))
-	 .pipe(header(headerMeta, {pkg: pkg}))
-	 .pipe(gulp.dest('./dist/'))
+		.pipe(concat(pkg.name + '.js'))
+		.pipe(header(headerMeta, { pkg: pkg }))
+		.pipe(gulp.dest('./dist/'))
 
-	 .pipe(rename(pkg.name + '.min.js'))
-	 .pipe(uglify())
-	 .pipe(header(headerMetaMin, {pkg: pkg}))
-	 .pipe(size())
-	 .pipe(gulp.dest('./dist/'));
+		.pipe(rename(pkg.name + '.min.js'))
+		.pipe(uglify())
+		.pipe(header(headerMetaMin, { pkg: pkg }))
+		.pipe(size())
+		.pipe(gulp.dest('./dist/'));
 
 });
 

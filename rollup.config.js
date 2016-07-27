@@ -6,12 +6,6 @@ export default {
     moduleName: 'ngI18next',
     dest: 'dist/ng-i18next.js',
     external: [
-        'compare-versions',
-        'path',
-        'fs',
-        'object-assign',
-        'rollup-pluginutils',
-        'tippex',
         'typescript'
     ],
     plugins: [
