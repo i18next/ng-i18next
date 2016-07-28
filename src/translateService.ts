@@ -1,7 +1,7 @@
 /// <reference path="../typings/index.d.ts" />
 /// <reference path="./interfaces.ts" />
 
-class I18nTranslateService implements Ii18nTranslateService {
+export class I18nTranslateService implements Ii18nTranslateService {
     initOptions: I18next.Options = {};
     tOptions: I18next.TranslationOptions = {};
     interpolationOptions: I18next.InterpolationOptions;
@@ -83,11 +83,9 @@ class I18nTranslateService implements Ii18nTranslateService {
         // lng will be deleted in some case
         lng = mergedOptions.lng;
 
-        if (this.localesLoaded) {
-            this.translate(key, mergedOptions, hasOwnOptions);
+        this.translate(key, mergedOptions, hasOwnOptions);
 
-            return angular.isDefined(lng) ? this.translations[lng][key] : this.translations['auto'][key];
-        }
+        return angular.isDefined(lng) && this.localesLoaded ? this.translations[lng][key] : this.translations['auto'][key];
     }
 
     public changeLanguage(lng: string) {
@@ -120,9 +118,9 @@ class I18nTranslateService implements Ii18nTranslateService {
         }
     }
 
-    private handleError(error: Error) {
-        console.log(error.message);
+    private handleError(error: any) {
+        let message = angular.isDefined(error.message) ? error.message : error[0];
+        console.log(message);
     }
 }
 
-export default I18nTranslateService;

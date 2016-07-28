@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = function(config) {
+module.exports = function (config) {
 
 	config.set({
 
@@ -17,8 +17,9 @@ module.exports = function(config) {
 			'bower_components/angular-mocks/angular-mocks.js',
 			'bower_components/angular-sanitize/angular-sanitize.js',
 			'bower_components/i18next/i18next.js',
+			'bower_components/i18next-xhr-backend/i18nextXHRBackend.js',
+			'bower_components/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js',
 			'./dist/ng-i18next.js',
-			'test/polyfills/*.js',
 			'test/{,*/}*Spec.js'
 		],
 

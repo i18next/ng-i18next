@@ -13,12 +13,11 @@ var size = require('gulp-size');
 var header = require('gulp-header');
 var rimraf = require('gulp-rimraf');
 var ts = require('gulp-typescript');
-
 var rollup = require('gulp-rollup');
 var typescript = require('rollup-plugin-typescript');
 
 var flatten = require('gulp-flatten');
-var Server = require('karma').Server;
+var karma = require('karma').Server;
 
 var tsconfig = require("./tsconfig.json");
 
@@ -65,17 +64,27 @@ gulp.task('clean', [], function () {
 
 });
 
-gulp.task('build', ['clean'], function () {
-	var tsResult = gulp.src(['./src/*.ts'])
-		.pipe(ts(tsconfig.compilerOptions));
-
-	tsResult.dts.pipe(gulp.dest('./build/typings'));
-	return tsResult.js.pipe(gulp.dest('./build'));
+gulp.task('rollup', ['clean'], function () {
+	return gulp.src(['./src/*.ts'])
+		.pipe(rollup({
+			allowRealFiles: true,
+			entry: 'src/provider.ts',
+			format: 'umd',
+			moduleName: 'ngI18next',
+			dest: 'dist/ng-i18next.js',
+			external: [
+				'typescript'
+			],
+			plugins: [
+				typescript()
+			]
+		}))
+		.pipe(rename('ng-i18next.js'))
+		.pipe(gulp.dest('./build/'));
 });
 
-gulp.task('concat', ['clean', 'build'], function () {
-	return gulp.src('./build/js/*.js')
-		.pipe(concat(pkg.name + '.js'))
+gulp.task('concat', ['clean', 'rollup'], function () {
+	return gulp.src('./build/ng-i18next.js')
 		.pipe(header(headerMeta, { pkg: pkg }))
 		.pipe(gulp.dest('./dist/'))
 
@@ -84,17 +93,25 @@ gulp.task('concat', ['clean', 'build'], function () {
 		.pipe(header(headerMetaMin, { pkg: pkg }))
 		.pipe(size())
 		.pipe(gulp.dest('./dist/'));
-
 });
 
 //run tests
-gulp.task('karma', ['clean', 'build', 'concat'], function (done) {
-	new Server({
+gulp.task('karma', ['clean', 'rollup', 'concat'], function () {
+	return karma.start({
+		configFile: __dirname + '/karma.conf.js',
+	});
+});
+
+//watch tests
+gulp.task('karma-watch', ['clean', 'rollup', 'concat'], function () {
+	return karma.start({
 		configFile: __dirname + '/karma.conf.js',
 		browsers: ['Chrome'],
-		singleRun: false
-	}, done).start();
+		singleRun: false,
+		autoWatch: true
+	});
 });
+
 
 //TODO: documentation
 
@@ -103,21 +120,21 @@ gulp.task('default', function () {
 	var info = [
 		'',
 		'  Usage:',
-		'    - build: `gulp build`',
+		'    - build: `gulp rollup`',
 		'    - watch & test: `gulp watch`',
 		'    - run examples: `gulp serve`',
 		'      - Then open http://localhost:8000',
 		'',
 		'  For pull requests please run:',
 		'    gulp test',
-		'    gulp build',
+		'    gulp rollup',
 		''
 	].join('\n');
 
 	console.info(info);
 });
 
-gulp.task('test', ['clean', 'build', 'concat', 'karma']);
+gulp.task('test', ['clean', 'rollup', 'concat', 'karma']);
 
 gulp.task('serve', [], function () {
 
@@ -129,7 +146,7 @@ gulp.task('serve', [], function () {
 
 });
 
-gulp.task('watch', ['clean', 'build', 'concat', 'karma'], function () {
+gulp.task('watch', ['clean', 'rollup', 'concat', 'karma'], function () {
 
 	// watch for JS changes
 	gulp.watch('./dist/js/{,*/}*.js', function () {
@@ -138,4 +155,4 @@ gulp.task('watch', ['clean', 'build', 'concat', 'karma'], function () {
 
 });
 
-gulp.task('ci', ['clean', 'build', 'concat', 'test']);
+gulp.task('ci', ['clean', 'rollup', 'concat', 'test']);

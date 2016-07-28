@@ -1,9 +1,6 @@
 /// <reference path="./interfaces.ts" />
 
-class I18nFilter {
-	$stateful: boolean = true;
-
-
+export class I18nFilter {
 	public static factory() {
 		let filter = ($i18next: Ii18nTranslateService) => {
 			function i18nextFilter(key: string, options: I18next.TranslationOptions) {
@@ -17,5 +14,4 @@ class I18nFilter {
 	}
 }
 
-export default I18nFilter;
 

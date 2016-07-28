@@ -1,8 +1,8 @@
 {
     "compilerOptions": {
         "noImplicitAny": true,
-        "module": "es2015",
-        "target": "es2015"
+        "module": "umd",
+        "target": "es5"
     },
     "filesGlob": [
         "!node_modules",

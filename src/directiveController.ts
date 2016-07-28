@@ -8,7 +8,7 @@ interface IParsedKey {
     i18nOptions: any;
 }
 
-class I18nDirectiveController implements Ii18nDirectiveController {
+export class I18nDirectiveController implements Ii18nDirectiveController {
     argsUnregister: any;
     stringUnregister: any;
 
@@ -114,9 +114,15 @@ class I18nDirectiveController implements Ii18nDirectiveController {
 
             if (parsedKey.options.attr === 'html') {
                 angular.forEach(i18nOptions, function (value, key) {
+                    let newValue: any = undefined;
                     let sanitized = this.$sanitize(value);
                     let numeric = Number(value);
-                    i18nOptions[key] = sanitized === numeric ? numeric : sanitized; // jshint ignore:line
+                    if (typeof numeric === 'number') {
+                        newValue = numeric;
+                    } else {
+                        newValue = sanitized;
+                    }
+                    i18nOptions[key] = newValue; // jshint ignore:line
                 }, this);
             }
 
@@ -155,4 +161,3 @@ class I18nDirectiveController implements Ii18nDirectiveController {
     }
 }
 
-export default I18nDirectiveController;

@@ -1,11 +1,12 @@
 /// <reference path="../typings/index.d.ts" />
 /// <reference path="./interfaces.ts" />
 
-import I18nTranslateService from './translateService';
-import I18nDirective from './directive';
-import I18nBindOnceDirective from './directiveBindOnce';
-import I18nDirectiveController from './directiveController';
-import I18nFilter from './filter';
+import { I18nDirective } from './directive';
+import { I18nBindOnceDirective } from './directiveBindOnce';
+import { I18nDirectiveController } from './directiveController';
+import { I18nFilter } from './filter';
+import { I18nTranslateService } from './translateService';
+
 
 class I18nProvider implements ng.IServiceProvider {
 
@@ -26,7 +27,7 @@ class I18nProvider implements ng.IServiceProvider {
 	};
 }
 
-export default I18nProvider;
+export { I18nProvider };
 
 angular.module('jm.i18next', ['ng', 'ngSanitize'])
     .provider('$i18next', I18nProvider)

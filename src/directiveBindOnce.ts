@@ -1,6 +1,6 @@
 /// <reference path="./interfaces.ts" />
 
-class I18nBindOnceDirective implements ng.IDirective {
+export class I18nBindOnceDirective implements ng.IDirective {
 	constructor(
 		private $compile: ng.ICompileService) { }
 
@@ -23,4 +23,3 @@ class I18nBindOnceDirective implements ng.IDirective {
 	}
 }
 
-export default I18nBindOnceDirective;

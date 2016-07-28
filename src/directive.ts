@@ -2,7 +2,7 @@
 /// <reference path="./interfaces.ts" />
 
 
-export interface I18nttributes extends ng.IAttributes {
+interface I18nttributes extends ng.IAttributes {
 	ngI18next: string;
 }
 
@@ -14,10 +14,7 @@ interface I18nController {
 export class I18nDirective implements ng.IDirective {
 
 	constructor(
-		private $compile: ng.ICompileService,
-		private $parse: ng.IParseService,
-		private $interpolate: ng.IInterpolateService,
-		private $sanitize: ng.sanitize.ISanitizeService) {
+		private $interpolate: ng.IInterpolateService) {
 	}
 
 	public restrict: string = 'A';
@@ -76,11 +73,10 @@ export class I18nDirective implements ng.IDirective {
 	}
 
 	public static factory() {
-		let directive = ($compile: ng.ICompileService, $parse: ng.IParseService, $interpolate: ng.IInterpolateService, $sanitize: ng.sanitize.ISanitizeService) => new I18nDirective($compile, $parse, $interpolate, $sanitize);
-		directive.$inject = ['$compile', '$parse', '$interpolate', '$sanitize'];
+		let directive = ($interpolate: ng.IInterpolateService) => new I18nDirective($interpolate);
+		directive.$inject = ['$interpolate'];
 		return directive;
 	}
 
 }
 
-export default I18nDirective;
