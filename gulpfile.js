@@ -24,9 +24,9 @@ var tsconfig = require("./tsconfig.json");
 var getToday = function () {
 
 	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth() + 1; //January is 0!
-	var yyyy = today.getFullYear();
+	var dd    = today.getDate();
+	var mm    = today.getMonth() + 1; //January is 0!
+	var yyyy  = today.getFullYear();
 
 	if (dd < 10) {
 		dd = '0' + dd;
@@ -61,7 +61,6 @@ gulp.task('clean', [], function () {
 	//remove old files
 	return gulp.src(['./dist/*', './build/*'], { read: false })
 		.pipe(rimraf());
-
 });
 
 gulp.task('rollup', ['clean'], function () {
@@ -87,7 +86,6 @@ gulp.task('concat', ['clean', 'rollup'], function () {
 	return gulp.src('./build/ng-i18next.js')
 		.pipe(header(headerMeta, { pkg: pkg }))
 		.pipe(gulp.dest('./dist/'))
-
 		.pipe(rename(pkg.name + '.min.js'))
 		.pipe(uglify())
 		.pipe(header(headerMetaMin, { pkg: pkg }))
@@ -143,15 +141,6 @@ gulp.task('serve', [], function () {
 			livereload: true,
 			fallback: './examples/index.html'
 		}));
-
-});
-
-gulp.task('watch', ['clean', 'rollup', 'concat', 'karma'], function () {
-
-	// watch for JS changes
-	gulp.watch('./dist/js/{,*/}*.js', function () {
-		gulp.run('karma');
-	});
 
 });
 
