@@ -10,7 +10,7 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 		useLocalStorage: false,
 		fallbackLng: 'dev',
 		debug: false,
-		resStore: {
+		resources: {
 			'de-DE': {
 				translation: {}
 			},

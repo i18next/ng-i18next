@@ -12,7 +12,7 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 		postProcess: 'sprintf'
 	};
 
-	$i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
+	$i18nextProvider.modules = [window.i18nextSprintfPostProcessor];
 
 
 	// /*jshint unused:false */

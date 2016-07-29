@@ -10,14 +10,51 @@ describe('Unit: jm.i18next - Provider', function () {
 		useLocalStorage: false,
 		fallbackLng: 'dev',
 		debug: false,
-		resGetPath: '/base/test/locales/__lng__/__ns__.json'
+		resources: {
+			de: {
+				translation: {
+					"hello": "Herzlich Willkommen!",
+					"helloHTML": "<h3>Hallo Welt</h3>",
+					"content": "Dies ist Inhalt.",
+					"contentHTML": "Dies ist <strong>Inhalt</strong>.",
+					"dynamicDate": "Aktuelles Datum: {{date}}",
+					"helloName": "Herzlich Willkommen, __name__!",
+					"helloNesting": "Weißt du was? Du bist $t(hello)",
+					"woman": "Frau",
+					"woman_plural": "Frauen",
+					"woman_plural_0": "Keine Frauen",
+					"friend": "Freund",
+					"friend_male": "Fester Freund",
+					"friend_female": "Feste Freundin",
+					"helloNameHTML": "<h1>Herzlich Willkommen, __name__!</h1>"
+				}
+			},
+			dev: {
+				translation: {
+					"hello": "Herzlich Willkommen!",
+					"helloHTML": "<h3>Hallo Welt</h3>",
+					"content": "Dies ist Inhalt.",
+					"contentHTML": "Dies ist <strong>Inhalt</strong>.",
+					"dynamicDate": "Aktuelles Datum: {{date}}",
+					"helloName": "Herzlich Willkommen, __name__!",
+					"helloNesting": "Weißt du was? Du bist $t(hello)",
+					"woman": "Frau",
+					"woman_plural": "Frauen",
+					"woman_plural_0": "Keine Frauen",
+					"friend": "Freund",
+					"friend_male": "Fester Freund",
+					"friend_female": "Feste Freundin",
+					"helloNameHTML": "<h1>Herzlich Willkommen, __name__!</h1>"
+				}
+			}
+		}
 	};
 
 	beforeEach(function () {
 
 		module('jm.i18next', function ($i18nextProvider) {
 			$i18nextProvider.options = i18nextOptions;
-			$i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
+			$i18nextProvider.modules = [window.i18nextSprintfPostProcessor];
 		});
 
 		inject(function (_$i18next_, _$timeout_) {
