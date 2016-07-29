@@ -4,7 +4,6 @@ describe('Unit: jm.i18next - Directive', function () {
 
 	var $rootScope, $compile, $timeout;
 	var i18nextOptions = {
-		compatibilityAPI: 'v1',
 		lng: 'de',
 		useCookie: false,
 		useLocalStorage: false,
@@ -14,11 +13,10 @@ describe('Unit: jm.i18next - Directive', function () {
 			de: {
 				translation: {
 					"hello": "Herzlich Willkommen!",
-					"helloHTML": "<h3>Hallo Welt</h3>",
 					"content": "Dies ist Inhalt.",
 					"contentHTML": "Dies ist <strong>Inhalt</strong>.",
 					"dynamicDate": "Aktuelles Datum: {{date}}",
-					"helloName": "Herzlich Willkommen, __name__!",
+					"helloName": "Herzlich Willkommen, {{name}}!",
 					"helloNesting": "Weißt du was? Du bist $t(hello)",
 					"woman": "Frau",
 					"woman_plural": "Frauen",
@@ -26,25 +24,24 @@ describe('Unit: jm.i18next - Directive', function () {
 					"friend": "Freund",
 					"friend_male": "Fester Freund",
 					"friend_female": "Feste Freundin",
-					"helloNameHTML": "<h1>Herzlich Willkommen, __name__!</h1>"
+					"helloNameHTML": "<h1>Herzlich Willkommen, {{name}}!</h1>"
 				}
 			},
 			dev: {
 				translation: {
-					"hello": "Herzlich Willkommen!",
-					"helloHTML": "<h3>Hallo Welt</h3>",
-					"content": "Dies ist Inhalt.",
-					"contentHTML": "Dies ist <strong>Inhalt</strong>.",
-					"dynamicDate": "Aktuelles Datum: {{date}}",
-					"helloName": "Herzlich Willkommen, __name__!",
-					"helloNesting": "Weißt du was? Du bist $t(hello)",
-					"woman": "Frau",
-					"woman_plural": "Frauen",
-					"woman_plural_0": "Keine Frauen",
-					"friend": "Freund",
-					"friend_male": "Fester Freund",
-					"friend_female": "Feste Freundin",
-					"helloNameHTML": "<h1>Herzlich Willkommen, __name__!</h1>"
+					"hello": "Welcome!",
+					"content": "This is content.",
+					"contentHTML": "This is <strong>content</strong>.",
+					"dynamicDate": "Current date: {{date}}",
+					"helloName": "Welcome, {{name}}!",
+					"helloNesting": "You know what? You\'re $t(hello)",
+					"woman": "Woman",
+					"woman_plural": "Women",
+					"woman_plural_0": "No women",
+					"friend": "Friend",
+					"friend_male": "Boyfriend",
+					"friend_female": "Girlfriend",
+					"helloNameHTML": "<h1>Welcome, {{name}}!</h1>"
 				}
 			}
 		}
@@ -82,7 +79,7 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should return original key, because translation does not exist', function () {
 			var c = $compile('<p ng-i18next="Key_Not_Found"></p>')($rootScope);
 			$rootScope.$apply();
-			expect(c.text()).toBe('translation:Key_Not_Found');
+			expect(c.text()).toBe('Key_Not_Found');
 		});
 
 		it('should translate "hello" into German ("de-DE"; default language)', function () {
@@ -102,19 +99,15 @@ describe('Unit: jm.i18next - Directive', function () {
 		});
 
 		it('should replace "{{name}}" in the translation string with name given by options', function () {
-			inject(function ($rootScope, $compile) {
-				var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\'})helloName"></p>')($rootScope);
-				$rootScope.$apply();
-				expect(c.text()).toEqual('Herzlich Willkommen, Andre!');
-			});
+			var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\'})helloName"></p>')($rootScope);
+			$rootScope.$apply();
+			expect(c.text()).toEqual('Herzlich Willkommen, Andre!');
 		});
 
 		it('should replace "{{name}}" in the translation string with name given by options and should use "dev" as language', function () {
-			inject(function ($rootScope, $compile) {
-				var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\',lng:\'dev\'})helloName"></p>')($rootScope);
-				$rootScope.$apply();
-				expect(c.text()).toEqual('Welcome, Andre!');
-			});
+			var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\',lng:\'dev\'})helloName"></p>')($rootScope);
+			$rootScope.$apply();
+			expect(c.text()).toEqual('Welcome, Andre!');
 		});
 
 	});
@@ -210,25 +203,23 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should return original key, because translation does not exist', function () {
 			var c = $compile('<p ng-i18next="[html]helloHTML"></p>')($rootScope);
 			$rootScope.$apply();
-			expect(c.html()).toBe('<h1 class="ng-scope">Herzlich Willkommen!</h1>');
+			expect(c.html()).toBe('<span class="ng-scope">helloHTML</span>');
 		});
 
 	});
 
 	describe('simple HTML + options', function () {
 
-		it('should translate "hello" into German ("de-DE"; default language)', function () {
+		it('should translate "hello" into German ("de"; default language)', function () {
 			var c = $compile('<p ng-i18next="[html:i18next]({name:\'Andre\'})helloNameHTML"></p>')($rootScope);
 			$rootScope.$apply();
 			expect(c.html()).toBe('<h1 class="ng-scope">Herzlich Willkommen, Andre!</h1>');
 		});
 
-		it('should translate "hello" into German and sanitize the substitution ("de-DE"; default language)', function () {
-			inject(function ($rootScope, $compile) {
-				var c = $compile('<p ng-i18next="[html:i18next]({name:\'<img src=1 onError=alert()>\'})helloNameHTML"></p>')($rootScope);
-				$rootScope.$apply();
-				expect(c.html()).toBe('<h1 class="ng-scope">Herzlich Willkommen, &lt;img src="1"/&gt;!</h1>');
-			});
+		it('should translate "hello" into German and sanitize the substitution ("de"; default language)', function () {
+			var c = $compile('<p ng-i18next="[html:i18next]({name:\'<img src=1 onError=alert()>\'})helloNameHTML"></p>')($rootScope);
+			$rootScope.$apply();
+			expect(c.html()).toBe('<h1 class="ng-scope">Herzlich Willkommen, &lt;img src="1"&gt;!</h1>');
 		});
 
 	});

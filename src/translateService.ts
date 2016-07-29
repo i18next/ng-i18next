@@ -2,29 +2,33 @@
 /// <reference path="./interfaces.ts" />
 
 export class I18nTranslateService implements Ii18nTranslateService {
-    initOptions: I18next.Options = {};
+    public options: I18next.Options = {};
     tOptions: I18next.TranslationOptions = {};
     interpolationOptions: I18next.InterpolationOptions;
 
-    i18nextModules: Array<any> = [];
+    public modules: Array<any> = [];
+
     localesLoaded: boolean = false;
     translations: any = {};
 
     i18n: I18next.I18n = window.i18next;
 
     constructor(private $rootScope: ng.IRootScopeService, private $timeout: ng.ITimeoutService, private $q: ng.IQService, options: I18next.Options, modules: Array<any>) {
-        this.initOptions = options;
-        this.i18nextModules = modules;
+        this.options = options;
+        this.modules = modules;
 
-        this.init(this.initOptions, this.i18nextModules)
-            .then((response) => {
-                this.localesLoaded = true;
-                this.$rootScope.$broadcast('i18nextLanguageChange', this.i18n.language);
-                console.log('i18nextLanguageChange: ' + this.i18n.language);
-            });
+        this.initializeI18next(this.options, this.modules)
+            .then((response: ng.IPromise<{}>) => { this.initializeI18nextComplete(response); })
+
+        this.$rootScope.$watch(() => { return this.options }, (newOptions: I18next.Options, oldOptions: I18next.Options) => {
+            if (newOptions !== oldOptions) {
+                this.initializeI18next(newOptions, this.modules)
+                    .then((response: ng.IPromise<{}>) => { this.initializeI18nextComplete(response) });
+            }
+        });
     }
 
-    public init(options: any, modules: Array<any>) {
+    private initializeI18next(options: any, modules: Array<any>) {
         let i18nDeferred = this.$q.defer();
 
         if (window.i18next && angular.isDefined(modules)) {
@@ -62,22 +66,29 @@ export class I18nTranslateService implements Ii18nTranslateService {
         return i18nDeferred.promise;
     }
 
-    public t(key: string, options: I18next.TranslationOptions) {
-        let hasOwnOptions: boolean = angular.isDefined(options);
-        let hasOwnNsOption: boolean = hasOwnOptions && angular.isDefined(options.ns);
-        let hasInitNsObj: boolean = angular.isDefined(this.initOptions) && angular.isDefined(this.initOptions.ns);
-        let defaultOptions: I18next.Options = this.initOptions;
+    private initializeI18nextComplete(response: ng.IPromise<{}>) {
+        this.$timeout(() => {
+            this.$rootScope.$broadcast('i18nextLanguageChange', this.options.lng);
+            this.$rootScope.$apply();
+        });
+    }
+
+    public t(key: string, ownOptions: I18next.TranslationOptions) {
+        let hasOwnOptions: boolean = angular.isDefined(ownOptions);
+        let hasOwnNsOption: boolean = hasOwnOptions && angular.isDefined(ownOptions.ns);
+        let hasInitNsObj: boolean = angular.isDefined(this.options) && angular.isDefined(this.options.ns);
+        let defaultOptions: I18next.Options = this.options;
         let mergedOptions: I18next.Options;
         let lng: string;
 
         // https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
         // Because of i18next read namespace from `options.ns`
         if (angular.isUndefined(hasOwnNsOption) && hasInitNsObj) {
-            defaultOptions = angular.extend({}, this.initOptions);
+            defaultOptions = angular.extend({}, this.options);
             defaultOptions.ns = defaultOptions.defaultNS;
         }
 
-        mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, options) : defaultOptions;
+        mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, ownOptions) : defaultOptions;
 
         // https://github.com/i18next/i18next/blob/7af53d5a01cc9942c0edae361bd2f65361e340c9/src/i18next.translate.js#L289
         // lng will be deleted in some case
@@ -85,12 +96,12 @@ export class I18nTranslateService implements Ii18nTranslateService {
 
         this.translate(key, mergedOptions, hasOwnOptions);
 
-        return angular.isDefined(lng) && this.localesLoaded ? this.translations[lng][key] : this.translations['auto'][key];
+        return angular.isDefined(lng) ? this.translations[lng][key] : this.translations['auto'][key];
     }
 
-    public changeLanguage(lng: string) {
-        if (this.initOptions.lng !== lng && this.i18n.language !== lng) {
-            this.initOptions.lng = lng;
+        public changeLanguage(lng: string) {
+        if (this.options.lng !== lng && this.i18n.language !== lng) {
+            this.options.lng = lng;
             this.i18n.changeLanguage(lng, (err, t) => {
                 this.$rootScope.$broadcast('i18nextLanguageChange', this.i18n.language);
             });
@@ -99,12 +110,13 @@ export class I18nTranslateService implements Ii18nTranslateService {
 
     public changeOptions(options: I18next.Options) {
         if (angular.isDefined(options)) {
-            this.initOptions = options;
+            this.options = options;
         }
     }
 
+
     private translate(key: string, options: I18next.TranslationOptions, hasOwnOptions: boolean) {
-        let localOptions: I18next.TranslationOptions = angular.isDefined(options) && hasOwnOptions ? options : this.initOptions;
+        let localOptions: I18next.TranslationOptions = angular.isDefined(options) && hasOwnOptions ? options : this.options;
         let lng = localOptions.lng || 'auto';
 
         if (angular.isUndefined(this.translations[lng])) {

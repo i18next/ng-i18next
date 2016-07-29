@@ -176,7 +176,7 @@
                         var newValue = undefined;
                         var sanitized = this.$sanitize(value);
                         var numeric = Number(value);
-                        if (typeof numeric === 'number') {
+                        if (typeof numeric === 'number' && !isNaN(numeric)) {
                             newValue = numeric;
                         }
                         else {
@@ -241,22 +241,24 @@
             this.$rootScope = $rootScope;
             this.$timeout = $timeout;
             this.$q = $q;
-            this.initOptions = {};
+            this.options = {};
             this.tOptions = {};
-            this.i18nextModules = [];
+            this.modules = [];
             this.localesLoaded = false;
             this.translations = {};
             this.i18n = window.i18next;
-            this.initOptions = options;
-            this.i18nextModules = modules;
-            this.init(this.initOptions, this.i18nextModules)
-                .then(function (response) {
-                _this.localesLoaded = true;
-                _this.$rootScope.$broadcast('i18nextLanguageChange', _this.i18n.language);
-                console.log('i18nextLanguageChange: ' + _this.i18n.language);
+            this.options = options;
+            this.modules = modules;
+            this.initializeI18next(this.options, this.modules)
+                .then(function (response) { _this.initializeI18nextComplete(response); });
+            this.$rootScope.$watch(function () { return _this.options; }, function (newOptions, oldOptions) {
+                if (newOptions !== oldOptions) {
+                    _this.initializeI18next(newOptions, _this.modules)
+                        .then(function (response) { _this.initializeI18nextComplete(response); });
+                }
             });
         }
-        I18nTranslateService.prototype.init = function (options, modules) {
+        I18nTranslateService.prototype.initializeI18next = function (options, modules) {
             var _this = this;
             var i18nDeferred = this.$q.defer();
             if (window.i18next && angular.isDefined(modules)) {
@@ -292,30 +294,37 @@
             }
             return i18nDeferred.promise;
         };
-        I18nTranslateService.prototype.t = function (key, options) {
-            var hasOwnOptions = angular.isDefined(options);
-            var hasOwnNsOption = hasOwnOptions && angular.isDefined(options.ns);
-            var hasInitNsObj = angular.isDefined(this.initOptions) && angular.isDefined(this.initOptions.ns);
-            var defaultOptions = this.initOptions;
+        I18nTranslateService.prototype.initializeI18nextComplete = function (response) {
+            var _this = this;
+            this.$timeout(function () {
+                _this.$rootScope.$broadcast('i18nextLanguageChange', _this.options.lng);
+                _this.$rootScope.$apply();
+            });
+        };
+        I18nTranslateService.prototype.t = function (key, ownOptions) {
+            var hasOwnOptions = angular.isDefined(ownOptions);
+            var hasOwnNsOption = hasOwnOptions && angular.isDefined(ownOptions.ns);
+            var hasInitNsObj = angular.isDefined(this.options) && angular.isDefined(this.options.ns);
+            var defaultOptions = this.options;
             var mergedOptions;
             var lng;
             // https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
             // Because of i18next read namespace from `options.ns`
             if (angular.isUndefined(hasOwnNsOption) && hasInitNsObj) {
-                defaultOptions = angular.extend({}, this.initOptions);
+                defaultOptions = angular.extend({}, this.options);
                 defaultOptions.ns = defaultOptions.defaultNS;
             }
-            mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, options) : defaultOptions;
+            mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, ownOptions) : defaultOptions;
             // https://github.com/i18next/i18next/blob/7af53d5a01cc9942c0edae361bd2f65361e340c9/src/i18next.translate.js#L289
             // lng will be deleted in some case
             lng = mergedOptions.lng;
             this.translate(key, mergedOptions, hasOwnOptions);
-            return angular.isDefined(lng) && this.localesLoaded ? this.translations[lng][key] : this.translations['auto'][key];
+            return angular.isDefined(lng) ? this.translations[lng][key] : this.translations['auto'][key];
         };
         I18nTranslateService.prototype.changeLanguage = function (lng) {
             var _this = this;
-            if (this.initOptions.lng !== lng && this.i18n.language !== lng) {
-                this.initOptions.lng = lng;
+            if (this.options.lng !== lng && this.i18n.language !== lng) {
+                this.options.lng = lng;
                 this.i18n.changeLanguage(lng, function (err, t) {
                     _this.$rootScope.$broadcast('i18nextLanguageChange', _this.i18n.language);
                 });
@@ -323,11 +332,11 @@
         };
         I18nTranslateService.prototype.changeOptions = function (options) {
             if (angular.isDefined(options)) {
-                this.initOptions = options;
+                this.options = options;
             }
         };
         I18nTranslateService.prototype.translate = function (key, options, hasOwnOptions) {
-            var localOptions = angular.isDefined(options) && hasOwnOptions ? options : this.initOptions;
+            var localOptions = angular.isDefined(options) && hasOwnOptions ? options : this.options;
             var lng = localOptions.lng || 'auto';
             if (angular.isUndefined(this.translations[lng])) {
                 this.translations[lng] = {};
@@ -359,6 +368,10 @@
         I18nProvider.prototype.init = function (options, i18nextModules) {
             this.options = options;
             this.modules = i18nextModules;
+        };
+        I18nProvider.prototype.use = function (module) {
+            this.modules.push(module);
+            return this;
         };
         return I18nProvider;
     }());

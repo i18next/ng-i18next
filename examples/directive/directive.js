@@ -2,8 +2,16 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 	'use strict';
 
+	// Use form
+	$i18nextProvider
+		.use(window.i18nextXHRBackend)
+		.use(window.i18nextSprintfPostProcessor);
+
+	// Modules array property
+	// $i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
+
+	// Options property
 	$i18nextProvider.options = {
-		compatibilityAPI: 'v1',
 		lng: 'de', // If not given, i18n will detect the browser language.
 		fallbackLng: 'dev', // Default is dev
 		backend: {
@@ -14,8 +22,18 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 		postProcess: 'sprintf'
 	};
 
-	$i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
+	// Calling init method
 
+	// $i18nextProvider.init({
+	// 	lng: 'de', // If not given, i18n will detect the browser language.
+	// 	fallbackLng: 'dev', // Default is dev
+	// 	backend: {
+	// 		loadPath: '../locales/{{lng}}/{{ns}}.json'
+	// 	},
+	// 	useCookie: false,
+	// 	useLocalStorage: false,
+	// 	postProcess: 'sprintf'
+	// }, [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor]);
 
 	// /*jshint unused:false */
 	// window.i18next.addPostProcessor('patrick', function (value, key, options) {

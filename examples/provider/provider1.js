@@ -18,7 +18,6 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 	// $i18nextProvider.use(window.i18nextSprintfPostProcessor);
 
 	$i18nextProvider.options = {
-		compatibilityAPI: 'v1',
 		lng: 'de', // If not given, i18n will detect the browser language.
 		fallbackLng: 'dev', // Default is dev
 		backend: {
@@ -46,7 +45,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($
 	});
 
 	$scope.togglePatrick = function () {
-		$i18next.options.postProcess = $i18next.options.postProcess === 'patrick' ? '' : 'patrick';
+		$i18next.options.postProcess = $i18next.options.postProcess === ['patrick'] ? [] : ['patrick'];
 	};
 
 });

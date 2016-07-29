@@ -8,10 +8,10 @@ import { I18nFilter } from './filter';
 import { I18nTranslateService } from './translateService';
 
 
-class I18nProvider implements ng.IServiceProvider {
+class I18nProvider implements Ii18nProvider {
 
-	private options: {} = {};
-	private modules: Array<any> = [];
+	public options: {} = {};
+	public modules: Array<any> = [];
 
 	constructor() {
 		this.$get.$inject = ['$rootScope', '$timeout', '$q'];
@@ -20,6 +20,11 @@ class I18nProvider implements ng.IServiceProvider {
 	public init(options: I18next.Options, i18nextModules: Array<any>) {
 		this.options = options;
 		this.modules = i18nextModules;
+	}
+
+	public use(module: any) {
+		this.modules.push(module);
+		return this;
 	}
 
 	$get = ($rootScope: ng.IRootScopeService, $timeout: ng.ITimeoutService, $q: ng.IQService): I18nTranslateService => {

@@ -2,10 +2,9 @@ describe('Unit: jm.i18next - Provider', function () {
 
 	'use strict';
 
-	var $i18next, $timeout;
+	var $i18next, $timeout, $rootScope;
 	var i18nextOptions = {
-		compatibilityAPI: 'v1',
-		lng: 'de',
+		lng: 'de-DE',
 		useCookie: false,
 		useLocalStorage: false,
 		fallbackLng: 'dev',
@@ -46,17 +45,18 @@ describe('Unit: jm.i18next - Provider', function () {
 			$i18nextProvider.modules = [window.i18nextSprintfPostProcessor];
 		});
 
-		inject(function (_$i18next_, _$timeout_) {
+		inject(function (_$i18next_, _$timeout_, _$rootScope_) {
 			$i18next = _$i18next_;
 			$timeout = _$timeout_;
+			$rootScope = _$rootScope_;
+
+			$rootScope.$apply();
 		});
 
 	});
 
 	it('should contain an $i18next service', function () {
-		$timeout(function () {
-			expect($i18next).not.toEqual(null);
-		});
+		expect($i18next).not.toEqual(null);
 	});
 
 	/*
@@ -69,41 +69,33 @@ describe('Unit: jm.i18next - Provider', function () {
 	 */
 
 	it('should have options passed in "beforeEach"', function () {
-		$timeout(function () {
-			expect($i18next.options.lng).toBe('de-DE');
-		});
+		expect($i18next.options.lng).toBe('de-DE');
 	});
 
 	describe('simple strings', function () {
 
 		it('should return original key, because translation does not exist', function () {
-			$timeout(function () {
-				expect($i18next.t('Key_Not_Found')).toBe('Key_Not_Found');
-			});
+			expect($i18next.t('Key_Not_Found')).toBe('Key_Not_Found');
 		});
 
 		it('should translate "hello" into German ("de-DE"; default language)', function () {
-			$timeout(function () {
-				expect($i18next.t('hello')).toEqual('Herzlich Willkommen!');
-			});
+			expect($i18next.t('hello')).toEqual('Herzlich Willkommen!');
 		});
 
 		it('should translate "hello" into German in default namespace ("de-DE"; default language)', function () {
 			// @TODO: Create test for namespaces
-				var originResStore = angular.copy(i18nextOptions.resStore);
-				i18nextOptions.resStore['de-DE'] = {
-					a: { 'hello': 'Herzlich Willkommen!' },
-					b: { 'helloName': 'Herzlich Willkommen, __name__!' }
-				};
-				i18nextOptions.ns = {
-					namespaces: ['a', 'b'],
-					defaultNs: 'a'
-				};
+			var originResStore = angular.copy(i18nextOptions.resources);
+			i18nextOptions.resources['de-DE'] = {
+				a: { 'hello': 'Herzlich Willkommen!' },
+				b: { 'helloName': 'Herzlich Willkommen, {{name}}!' }
+			};
+			i18nextOptions.ns = ['a', 'b'];
+			i18nextOptions.defaultNs = 'a';
 
-				expect($i18next.t('hello')).toEqual('Herzlich Willkommen!');
+			expect($i18next.t('hello')).toEqual('Herzlich Willkommen!');
 
-				delete i18nextOptions.ns;
-				i18nextOptions.resStore = originResStore;
+			delete i18nextOptions.ns;
+			i18nextOptions.resources = originResStore;
 		});
 
 	});
@@ -111,21 +103,15 @@ describe('Unit: jm.i18next - Provider', function () {
 	describe('passing options', function () {
 
 		it('should translate "hello" into language passed by options ("dev")', function () {
-			$timeout(function () {
-				expect($i18next.t('hello', { lng: 'dev' })).toEqual('Welcome!');
-			});
+			expect($i18next.t('hello', { lng: 'dev' })).toEqual('Welcome!');
 		});
 
 		it('should replace "{{name}}" in the translation string with name given by options', function () {
-			inject(function () {
-				expect($i18next.t('helloName', {name: 'Andre'})).toEqual('Herzlich Willkommen, Andre!');
-			});
+			expect($i18next.t('helloName', { name: 'Andre' })).toEqual('Herzlich Willkommen, Andre!');
 		});
 
 		it('should replace "{{name}}" in the translation string with name given by options and should use "dev" as language', function () {
-			inject(function () {
-				expect($i18next.t('helloName', {name: 'Andre', lng: 'dev'})).toEqual('Welcome, Andre!');
-			});
+			expect($i18next.t('helloName', { name: 'Andre', lng: 'dev' })).toEqual('Welcome, Andre!');
 		});
 
 	});
@@ -139,15 +125,11 @@ describe('Unit: jm.i18next - Provider', function () {
 	describe('plurals', function () {
 
 		it('should use the single form', function () {
-			$timeout(function () {
-				expect($i18next.t('woman', { count: 1 })).toEqual('Frau');
-			});
+			expect($i18next.t('woman', { count: 1 })).toEqual('Frau');
 		});
 
 		it('should use the plural form', function () {
-			$timeout(function () {
-				expect($i18next.t('woman', { count: 5 })).toEqual('Frauen');
-			});
+			expect($i18next.t('woman', { count: 5 })).toEqual('Frauen');
 		});
 
 	});
@@ -155,21 +137,15 @@ describe('Unit: jm.i18next - Provider', function () {
 	describe('context', function () {
 
 		it('should use the "normal" form', function () {
-			$timeout(function () {
-				expect($i18next.t('friend')).toEqual('Freund');
-			});
+			expect($i18next.t('friend')).toEqual('Freund');
 		});
 
 		it('should use the male form', function () {
-			$timeout(function () {
-				expect($i18next.t('friend', { context: 'male' })).toEqual('Fester Freund');
-			});
+			expect($i18next.t('friend', { context: 'male' })).toEqual('Fester Freund');
 		});
 
 		it('should use the female form', function () {
-			$timeout(function () {
-				expect($i18next.t('friend', { context: 'female' })).toEqual('Feste Freundin');
-			});
+			expect($i18next.t('friend', { context: 'female' })).toEqual('Feste Freundin');
 		});
 
 	});
@@ -177,15 +153,11 @@ describe('Unit: jm.i18next - Provider', function () {
 	describe('nesting translations', function () {
 
 		it('should include another translation', function () {
-			$timeout(function () {
-				expect($i18next.t('helloNesting')).toEqual('Weißt du was? Du bist Herzlich Willkommen!');
-			});
+			expect($i18next.t('helloNesting')).toEqual('Weißt du was? Du bist Herzlich Willkommen!');
 		});
 
 		it('should include another translation and should use "dev" as language', function () {
-			$timeout(function () {
-				expect($i18next.t('helloNesting', { lng: 'dev' })).toEqual('You know what? You\'re Welcome!');
-			});
+			expect($i18next.t('helloNesting', { lng: 'dev' })).toEqual('You know what? You\'re Welcome!');
 		});
 
 	});

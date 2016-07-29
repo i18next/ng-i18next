@@ -4,7 +4,7 @@
     "content": "This is content.",
     "contentHTML": "This is <strong>content</strong>.",
     "dynamicDate": "Current date: {{date}}",
-    "helloName": "Welcome, __name__!",
+    "helloName": "Welcome, {{name}}!",
     "helloNesting": "You know what? You\"re $t(hello)",
     "woman": "Woman",
     "woman_plural": "Women",
@@ -12,5 +12,5 @@
     "friend": "Friend",
     "friend_male": "Boyfriend",
     "friend_female": "Girlfriend",
-    "helloNameHTML": "<h1>Welcome, __name__!</h1>"
+    "helloNameHTML": "<h1>Welcome, {{name}}!</h1>"
 }

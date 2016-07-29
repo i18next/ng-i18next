@@ -2,9 +2,8 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 
 	'use strict';
 
-	var $i18next, $timeout;
+	var $i18next, $timeout, $rootScope;
 	var i18nextOptions = {
-		compatibilityAPI: 'v1',
 		lng: 'de-DE',
 		useCookie: false,
 		useLocalStorage: false,
@@ -27,40 +26,38 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 			$i18nextProvider.options = i18nextOptions;
 		});
 
-		inject(function (_$i18next_, _$timeout_) {
+		inject(function (_$i18next_, _$timeout_, _$rootScope_) {
 			$i18next = _$i18next_;
 			$timeout = _$timeout_;
+			$rootScope = _$rootScope_;
+
+			$rootScope.$apply();
 		});
 
 	});
 
-	describe('global defaultLoadingValue', function () {
+	describe('global defaultValue', function () {
 
 		beforeEach(function () {
 			i18nextOptions.defaultValue = 'A default value!';
-			$i18next.options = i18nextOptions;
 		});
 
 		it('should return original key, because translation does not exist', function () {
-			inject(function () {
-				$i18next.options = i18nextOptions;
-				expect($i18next.t('Key_Not_Found')).toBe('A default value!');
-			});
+			$i18next.options = i18nextOptions;
+			expect($i18next.t('Key_Not_Found')).toBe('A default value!');
 		});
 
 		afterEach(function () {
-			delete i18nextOptions.defaultLoadingValue;
+			delete i18nextOptions.defaultValue;
 			$i18next.options = i18nextOptions;
 		});
 
 	});
 
-	describe('per-translation defaultLoadingValue', function () {
+	describe('per-translation defaultValue', function () {
 
-		it('should not return original key if defaultLoadingValue is provided', function () {
-			$timeout(function () {
-				expect($i18next.t('Key_Not_Found', { defaultLoadingValue: 'My default' })).toBe('My default');
-			});
+		it('should not return original key if defaultValue is provided', function () {
+			expect($i18next.t('Key_Not_Found', { defaultValue: 'My default' })).toBe('My default');
 		});
 
 	});

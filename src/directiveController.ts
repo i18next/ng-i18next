@@ -117,7 +117,7 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
                     let newValue: any = undefined;
                     let sanitized = this.$sanitize(value);
                     let numeric = Number(value);
-                    if (typeof numeric === 'number') {
+                    if (typeof numeric === 'number' && !isNaN(numeric)) {
                         newValue = numeric;
                     } else {
                         newValue = sanitized;
