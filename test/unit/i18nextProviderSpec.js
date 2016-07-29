@@ -118,13 +118,13 @@ describe('Unit: jm.i18next - Provider', function () {
 
 		it('should replace "{{name}}" in the translation string with name given by options', function () {
 			inject(function () {
-				expect($i18next('helloName', {name: 'Andre'})).toEqual('Herzlich Willkommen, Andre!');
+				expect($i18next.t('helloName', {name: 'Andre'})).toEqual('Herzlich Willkommen, Andre!');
 			});
 		});
 
 		it('should replace "{{name}}" in the translation string with name given by options and should use "dev" as language', function () {
 			inject(function () {
-				expect($i18next('helloName', {name: 'Andre', lng: 'dev'})).toEqual('Welcome, Andre!');
+				expect($i18next.t('helloName', {name: 'Andre', lng: 'dev'})).toEqual('Welcome, Andre!');
 			});
 		});
 
