@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "module": "umd",
+        "target": "es5"
+    },
+    "filesGlob": [
+        "!node_modules",
+        "**/*.ts",
+        "**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+    "files": [
+        "src/directive.ts",
+        "src/directiveBindOnce.ts",
+        "src/directiveController.ts",
+        "src/filter.ts",
+        "src/provider.ts",
+        "src/translateService.ts"
+    ]
+}

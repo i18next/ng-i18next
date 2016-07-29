@@ -14,16 +14,19 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 	/*jshint unused:true */
 
 	// Tell i18next to use the XHR backend
-	$i18nextProvider.use(window.i18nextXHRBackend);
-	$i18nextProvider.use(window.i18nextSprintfPostProcessor);
+	// $i18nextProvider.use(window.i18nextXHRBackend);
+	// $i18nextProvider.use(window.i18nextSprintfPostProcessor);
 
 	$i18nextProvider.options = {
+		compatibilityAPI: 'v1',
 		lng: 'de', // If not given, i18n will detect the browser language.
 		fallbackLng: 'dev', // Default is dev
 		backend: {
 			loadPath: '../locales/{{lng}}/{{ns}}.json'
 		}
 	};
+
+	$i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
 
 });
 
@@ -35,10 +38,8 @@ angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($
 
 	$rootScope.$on('i18nextLanguageChange', function () {
 
-		$scope.$apply(function () {
-			$scope.hello = $i18next('hello');
-			$scope.sprintf = $i18next('both.sprintf', {postProcess: 'sprintf', sprintf: ['a','b','c','d']});
-		});
+			$scope.hello = $i18next.t('hello');
+			$scope.sprintf = $i18next.t('both.sprintf', {postProcess: 'sprintf', sprintf: ['a','b','c','d']});
 
 		console.log($scope.hello);
 

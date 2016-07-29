@@ -1,0 +1,10 @@
+{
+  "name": "ng-i18next",
+  "dependencies": {},
+  "globalDependencies": {
+    "angular": "registry:dt/angular#1.5.0+20160720071806",
+    "angular-sanitize": "registry:dt/angular-sanitize#1.3.0+20160317120654",
+    "i18next": "registry:dt/i18next#2.3.4+20160709062428",
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008"
+  }
+}

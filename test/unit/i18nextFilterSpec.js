@@ -2,26 +2,30 @@ describe('Unit: jm.i18next - Filter', function () {
 
 	'use strict';
 
+	var $timeout;
+
 	var i18nextOptions = {
-		lng: 'de-DE',
+		compatibilityAPI: 'v1',
+		lng: 'de',
 		useCookie: false,
 		useLocalStorage: false,
 		fallbackLng: 'dev',
+		debug: false,
 		resources: {
-			'de-DE': {
+			de: {
 				translation: {
-					'hello': 'Herzlich Willkommen!',
-					'helloName': 'Herzlich Willkommen, {{name}}!',
-					'helloNesting': 'Weißt du was? Du bist $t(hello)',
-					'woman': 'Frau',
-					'woman_plural': 'Frauen',
-					'woman_plural_0': 'Keine Frauen',
-					'friend': 'Freund',
-					'friend_male': 'Fester Freund',
-					'friend_female': 'Feste Freundin'
+					"hello": "Herzlich Willkommen!",
+					"helloName": "Herzlich Willkommen, __name__!",
+					"helloNesting": "Weißt du was? Du bist $t(hello)",
+					"woman": "Frau",
+					"woman_plural": "Frauen",
+					"woman_plural_0": "Keine Frauen",
+					"friend": "Freund",
+					"friend_male": "Fester Freund",
+					"friend_female": "Feste Freundin",
 				}
 			},
-			'dev': {
+			dev: {
 				translation: {
 					'hello': 'Welcome!',
 					'helloName': 'Welcome, {{name}}!',
@@ -38,8 +42,14 @@ describe('Unit: jm.i18next - Filter', function () {
 	};
 
 	beforeEach(function () {
+
 		module('jm.i18next', function ($i18nextProvider) {
 			$i18nextProvider.options = i18nextOptions;
+			$i18nextProvider.modules = [window.i18nextSprintfPostProcessor];
+		});
+
+		inject(function (_$timeout_) {
+			$timeout = _$timeout_;
 		});
 	});
 
@@ -53,7 +63,7 @@ describe('Unit: jm.i18next - Filter', function () {
 	 */
 
 	it('should be a function object', function () {
-		inject(function ($filter) {
+		$timeout(function () {
 			expect(typeof $filter('i18next')).toBe('function');
 		});
 	});
@@ -61,13 +71,13 @@ describe('Unit: jm.i18next - Filter', function () {
 	describe('simple strings', function () {
 
 		it('should return original key, because translation does not exist', function () {
-			inject(function ($filter) {
+			$timeout(function () {
 				expect($filter('i18next')('Key_Not_Found')).toBe('Key_Not_Found');
 			});
 		});
 
 		it('should translate "hello" into German ("de-DE"; default language)', function () {
-			inject(function ($filter) {
+			$timeout(function () {
 				expect($filter('i18next')('hello')).toBe('Herzlich Willkommen!');
 			});
 		});
@@ -77,9 +87,7 @@ describe('Unit: jm.i18next - Filter', function () {
 	describe('passing options', function () {
 
 		it('should translate "hello" into language passed by options ("dev")', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('hello', {lng: 'dev'})).toEqual('Welcome!');
-			});
+				expect($filter('i18next')('hello', { lng: 'dev' })).toEqual('Welcome!');
 		});
 
 		it('should replace "{{name}}" in the translation string with name given by options', function () {
@@ -105,14 +113,14 @@ describe('Unit: jm.i18next - Filter', function () {
 	describe('plurals', function () {
 
 		it('should use the single form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('woman', {count: 1})).toEqual('Frau');
+			$timeout(function () {
+				expect($filter('i18next')('woman', { count: 1 })).toEqual('Frau');
 			});
 		});
 
 		it('should use the plural form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('woman', {count: 5})).toEqual('Frauen');
+			$timeout(function () {
+				expect($filter('i18next')('woman', { count: 5 })).toEqual('Frauen');
 			});
 		});
 
@@ -121,20 +129,20 @@ describe('Unit: jm.i18next - Filter', function () {
 	describe('context', function () {
 
 		it('should use the "normal" form', function () {
-			inject(function ($filter) {
+			$timeout(function () {
 				expect($filter('i18next')('friend')).toEqual('Freund');
 			});
 		});
 
 		it('should use the male form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('friend', {context: 'male'})).toEqual('Fester Freund');
+			$timeout(function () {
+				expect($filter('i18next')('friend', { context: 'male' })).toEqual('Fester Freund');
 			});
 		});
 
 		it('should use the female form', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('friend', {context: 'female'})).toEqual('Feste Freundin');
+			$timeout(function () {
+				expect($filter('i18next')('friend', { context: 'female' })).toEqual('Feste Freundin');
 			});
 		});
 
@@ -143,14 +151,14 @@ describe('Unit: jm.i18next - Filter', function () {
 	describe('nesting translations', function () {
 
 		it('should include another translation', function () {
-			inject(function ($filter) {
+			$timeout(function () {
 				expect($filter('i18next')('helloNesting')).toEqual('Weißt du was? Du bist Herzlich Willkommen!');
 			});
 		});
 
 		it('should include another translation and should use "dev" as language', function () {
-			inject(function ($filter) {
-				expect($filter('i18next')('helloNesting', {lng: 'dev'})).toEqual('You know what? You\'re Welcome!');
+			$timeout(function () {
+				expect($filter('i18next')('helloNesting', { lng: 'dev' })).toEqual('You know what? You\'re Welcome!');
 			});
 		});
 
