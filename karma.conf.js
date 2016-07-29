@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = function(config) {
+module.exports = function (config) {
 
 	config.set({
 
@@ -13,23 +13,18 @@ module.exports = function(config) {
 		frameworks: ['jasmine'],
 
 		files: [
-			'node_modules/angular/angular.js',
-			'node_modules/angular-mocks/angular-mocks.js',
+			'bower_components/angular/angular.js',
+			'bower_components/angular-mocks/angular-mocks.js',
 			'bower_components/angular-sanitize/angular-sanitize.js',
-			'node_modules/i18next-client/i18next.min.js',
-			'src/provider.js',
-			'src/{,*/}*.js',
-			'test/polyfills/*.js',
+			'bower_components/i18next/i18next.js',
+			'bower_components/i18next-xhr-backend/i18nextXHRBackend.js',
+			'bower_components/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js',
+			'./dist/ng-i18next.js',
 			'test/{,*/}*Spec.js'
 		],
 
 		// list of files to exclude
-		exclude: [],
-
-		plugins: [
-			'karma-jasmine',
-			'karma-phantomjs-launcher'
-		],
+		exclude: ['gulpfile.js'],
 
 		// web server port
 		port: 9876,
