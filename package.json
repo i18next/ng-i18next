@@ -1,6 +1,6 @@
 {
   "name": "ng-i18next",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)",
   "main": "./dist/ng-i18next.js",
   "author": {
@@ -21,6 +21,7 @@
     "angular": ">=1.5.0",
     "angular-mocks": ">=1.5.0",
     "gulp": "^3.9.1",
+    "gulp-bump": "^2.2.0",
     "gulp-concat": "^2.6.0",
     "gulp-flatten": "^0.3.0",
     "gulp-header": "^1.8.7",

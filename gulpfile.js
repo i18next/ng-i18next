@@ -12,21 +12,17 @@ var rename = require('gulp-rename');
 var size = require('gulp-size');
 var header = require('gulp-header');
 var rimraf = require('gulp-rimraf');
-var ts = require('gulp-typescript');
 var rollup = require('gulp-rollup');
 var typescript = require('rollup-plugin-typescript');
-
-var flatten = require('gulp-flatten');
 var karma = require('karma').Server;
+var bump = require('gulp-bump'),
 
-var tsconfig = require("./tsconfig.json");
+getToday = function () {
 
-var getToday = function () {
-
-	var today = new Date();
-	var dd    = today.getDate();
-	var mm    = today.getMonth() + 1; //January is 0!
-	var yyyy  = today.getFullYear();
+	let today = new Date();
+	let dd = 	today.getDate();
+	let mm = 	today.getMonth() + 1; //January is 0!
+	let yyyy =  today.getFullYear();
 
 	if (dd < 10) {
 		dd = '0' + dd;
@@ -56,6 +52,12 @@ var headerMeta = ['/*!',
 
 var headerMetaMin = '/*! <%= pkg.name %> - <%= pkg.version %> - ' + getToday() +
 	' - Copyright (c) ' + new Date().getFullYear() + ' <%= pkg.author.name %>; Licensed <%= pkg.license %>*/';
+
+gulp.task('bump', function () {
+	return gulp.src(['./bower.json', './package.json'])
+		.pipe(bump())
+		.pipe(gulp.dest('./'));
+});
 
 gulp.task('clean', [], function () {
 	//remove old files
