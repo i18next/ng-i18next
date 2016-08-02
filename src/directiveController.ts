@@ -5,7 +5,7 @@
 interface IParsedKey {
     key: string;
     options: any;
-    i18nOptions: any;
+    i18nOptions: I18next.TranslationOptions;
 }
 
 export class I18nDirectiveController implements Ii18nDirectiveController {
@@ -50,7 +50,9 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
         }
 
         if (!noWatch) {
-            this.argsUnregister = this.$scope.$watch(parsedKey.i18nOptions, this.render, true);
+            this.argsUnregister = this.$scope.$watch(() => {
+                return parsedKey.i18nOptions;
+            }, this.render, true);
         }
 
         this.render(parsedKey, noWatch);

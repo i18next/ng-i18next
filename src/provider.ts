@@ -9,26 +9,18 @@ import { I18nTranslateService } from './translateService';
 
 
 class I18nProvider implements Ii18nProvider {
-
-	public options: {} = {};
-	public modules: Array<any> = [];
+	translationOptions: I18next.TranslationOptions = {};
 
 	constructor() {
-		this.$get.$inject = ['$rootScope', '$timeout', '$q'];
+		this.$get.$inject = ['$rootScope'];
 	}
 
-	public init(options: I18next.Options, i18nextModules: Array<any>) {
-		this.options = options;
-		this.modules = i18nextModules;
-	}
-
-	public use(module: any) {
-		this.modules.push(module);
-		return this;
-	}
-
-	$get = ($rootScope: ng.IRootScopeService, $timeout: ng.ITimeoutService, $q: ng.IQService): I18nTranslateService => {
-		return new I18nTranslateService($rootScope, $timeout, $q, this.options, this.modules);
+	$get = ($rootScope: ng.IRootScopeService): I18nTranslateService => {
+		if (window.i18next) {
+			return new I18nTranslateService($rootScope, this.translationOptions);
+		} else {
+			throw 'i18next is not loaded';
+		}
 	};
 }
 

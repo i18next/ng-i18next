@@ -1,5 +1,5 @@
 /*!
- * ng-i18next - Version 0.6.1 - 2016-08-01
+ * ng-i18next - Version 0.6.2 - 2016-08-02
  * Copyright (c) 2016 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
@@ -125,7 +125,9 @@
                 this.stringUnregister();
             }
             if (!noWatch) {
-                this.argsUnregister = this.$scope.$watch(parsedKey.i18nOptions, this.render, true);
+                this.argsUnregister = this.$scope.$watch(function () {
+                    return parsedKey.i18nOptions;
+                }, this.render, true);
             }
             this.render(parsedKey, noWatch);
         };
@@ -222,7 +224,8 @@
         I18nFilter.factory = function () {
             var filter = function ($i18next) {
                 function i18nextFilter(key, options) {
-                    return $i18next.t(key, options);
+                    var localOptions = angular.isDefined(options) ? options : {};
+                    return $i18next.t(key, localOptions);
                 }
                 i18nextFilter.$stateful = true;
                 return i18nextFilter;
@@ -236,69 +239,31 @@
     /// <reference path="../typings/index.d.ts" />
     /// <reference path="./interfaces.ts" />
     var I18nTranslateService = (function () {
-        function I18nTranslateService($rootScope, $timeout, $q, options, modules) {
-            var _this = this;
+        function I18nTranslateService($rootScope, translationOptions) {
             this.$rootScope = $rootScope;
-            this.$timeout = $timeout;
-            this.$q = $q;
             this.options = {};
             this.tOptions = {};
             this.modules = [];
             this.localesLoaded = false;
             this.translations = {};
             this.i18n = window.i18next;
-            this.options = options;
-            this.modules = modules;
-            this.initializeI18next(this.options, this.modules)
-                .then(function (response) { _this.initializeI18nextComplete(response); });
-            this.$rootScope.$watch(function () { return _this.options; }, function (newOptions, oldOptions) {
-                if (newOptions !== oldOptions) {
-                    _this.initializeI18next(newOptions, _this.modules)
-                        .then(function (response) { _this.initializeI18nextComplete(response); });
-                }
-            });
+            this.tOptions = translationOptions;
+            this.initializeI18next();
         }
-        I18nTranslateService.prototype.initializeI18next = function (options, modules) {
-            var _this = this;
-            var i18nDeferred = this.$q.defer();
-            if (window.i18next && angular.isDefined(modules)) {
+        I18nTranslateService.prototype.initializeI18next = function () {
+            var self = this;
+            if (window.i18next && window.i18nextOptions) {
                 // assign instance of i18next
                 this.i18n = window.i18next;
-                // register i18next plugin modules
-                angular.forEach(modules, function (i18nextModule) {
-                    if (angular.isDefined(i18nextModule)) {
-                        _this.i18n.use(i18nextModule);
-                    }
-                    else {
-                        var error = new Error('[ng-i18next] Can\'t find one or more  of the requested i18next modules! Please refer to i18next.');
-                        _this.handleError(error);
-                        i18nDeferred.reject(error);
-                    }
-                });
-                // initialize i18next
-                this.i18n.init(options, function (err, localize) {
-                    if (typeof (localize) === 'undefined') {
-                        localize = err;
-                        err = undefined;
-                    }
-                    else if (angular.isDefined(err) && typeof (err) !== 'undefined' && err !== null) {
-                        _this.handleError(err);
-                    }
-                    i18nDeferred.resolve('ng-i18next initialized');
-                });
+                this.options = window.i18nextOptions;
             }
             else {
-                var error = new Error('[ng-i18next] Can\'t find i18next and/or i18next modules! Please refer to i18next.');
+                var error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
                 this.handleError(error);
-                i18nDeferred.reject(error);
             }
-            return i18nDeferred.promise;
-        };
-        I18nTranslateService.prototype.initializeI18nextComplete = function (response) {
-            var _this = this;
-            this.$timeout(function () {
-                _this.$rootScope.$broadcast('i18nextLanguageChange', _this.options.lng);
-                _this.$rootScope.$apply();
+            window.i18next.on('initialized', function (options) {
+                self.options = options;
+                self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
             });
         };
         I18nTranslateService.prototype.t = function (key, ownOptions) {
@@ -314,7 +279,7 @@
                 defaultOptions = angular.extend({}, this.options);
                 defaultOptions.ns = defaultOptions.defaultNS;
             }
-            mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, ownOptions) : defaultOptions;
+            mergedOptions = hasOwnOptions ? ownOptions : this.tOptions;
             // https://github.com/i18next/i18next/blob/7af53d5a01cc9942c0edae361bd2f65361e340c9/src/i18next.translate.js#L289
             // lng will be deleted in some case
             lng = mergedOptions.lng;
@@ -335,8 +300,8 @@
                 this.options = options;
             }
         };
-        I18nTranslateService.prototype.translate = function (key, options, hasOwnOptions) {
-            var localOptions = angular.isDefined(options) && hasOwnOptions ? options : this.options;
+        I18nTranslateService.prototype.translate = function (key, tOptions, hasOwnOptions) {
+            var localOptions = angular.isDefined(tOptions) && hasOwnOptions ? tOptions : this.tOptions;
             var lng = localOptions.lng || 'auto';
             if (angular.isUndefined(this.translations[lng])) {
                 this.translations[lng] = {};
@@ -358,21 +323,17 @@
     var I18nProvider = (function () {
         function I18nProvider() {
             var _this = this;
-            this.options = {};
-            this.modules = [];
-            this.$get = function ($rootScope, $timeout, $q) {
-                return new I18nTranslateService($rootScope, $timeout, $q, _this.options, _this.modules);
+            this.translationOptions = {};
+            this.$get = function ($rootScope) {
+                if (window.i18next) {
+                    return new I18nTranslateService($rootScope, _this.translationOptions);
+                }
+                else {
+                    throw 'i18next is not loaded';
+                }
             };
-            this.$get.$inject = ['$rootScope', '$timeout', '$q'];
+            this.$get.$inject = ['$rootScope'];
         }
-        I18nProvider.prototype.init = function (options, i18nextModules) {
-            this.options = options;
-            this.modules = i18nextModules;
-        };
-        I18nProvider.prototype.use = function (module) {
-            this.modules.push(module);
-            return this;
-        };
         return I18nProvider;
     }());
     angular.module('jm.i18next', ['ng', 'ngSanitize'])

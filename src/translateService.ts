@@ -2,7 +2,7 @@
 /// <reference path="./interfaces.ts" />
 
 export class I18nTranslateService implements Ii18nTranslateService {
-    public options: I18next.Options = {};
+    options: I18next.Options = {};
     tOptions: I18next.TranslationOptions = {};
     interpolationOptions: I18next.InterpolationOptions;
 
@@ -13,63 +13,26 @@ export class I18nTranslateService implements Ii18nTranslateService {
 
     i18n: I18next.I18n = window.i18next;
 
-    constructor(private $rootScope: ng.IRootScopeService, private $timeout: ng.ITimeoutService, private $q: ng.IQService, options: I18next.Options, modules: Array<any>) {
-        this.options = options;
-        this.modules = modules;
-
-        this.initializeI18next(this.options, this.modules)
-            .then((response: ng.IPromise<{}>) => { this.initializeI18nextComplete(response); })
-
-        this.$rootScope.$watch(() => { return this.options }, (newOptions: I18next.Options, oldOptions: I18next.Options) => {
-            if (newOptions !== oldOptions) {
-                this.initializeI18next(newOptions, this.modules)
-                    .then((response: ng.IPromise<{}>) => { this.initializeI18nextComplete(response) });
-            }
-        });
+    constructor(private $rootScope: ng.IRootScopeService, translationOptions: I18next.TranslationOptions) {
+        this.tOptions = translationOptions;
+        this.initializeI18next();
     }
 
-    private initializeI18next(options: any, modules: Array<any>) {
-        let i18nDeferred = this.$q.defer();
+    private initializeI18next() {
+        let self = this;
 
-        if (window.i18next && angular.isDefined(modules)) {
+        if (window.i18next && window.i18nextOptions) {
             // assign instance of i18next
             this.i18n = window.i18next;
-
-            // register i18next plugin modules
-            angular.forEach(modules, (i18nextModule) => {
-                if (angular.isDefined(i18nextModule)) {
-                    this.i18n.use(i18nextModule);
-                } else {
-                    let error = new Error('[ng-i18next] Can\'t find one or more  of the requested i18next modules! Please refer to i18next.');
-                    this.handleError(error);
-                    i18nDeferred.reject(error);
-                }
-            });
-
-            // initialize i18next
-            this.i18n.init(options, (err, localize) => {
-                if (typeof (localize) === 'undefined') {
-                    localize = err;
-                    err = undefined;
-                } else if (angular.isDefined(err) && typeof (err) !== 'undefined' && err !== null) {
-                    this.handleError(err);
-                }
-
-                i18nDeferred.resolve('ng-i18next initialized');
-            });
+            this.options = window.i18nextOptions;
         } else {
-            let error = new Error('[ng-i18next] Can\'t find i18next and/or i18next modules! Please refer to i18next.');
+            let error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
             this.handleError(error);
-            i18nDeferred.reject(error);
         }
 
-        return i18nDeferred.promise;
-    }
-
-    private initializeI18nextComplete(response: ng.IPromise<{}>) {
-        this.$timeout(() => {
-            this.$rootScope.$broadcast('i18nextLanguageChange', this.options.lng);
-            this.$rootScope.$apply();
+        window.i18next.on('initialized', function (options) {
+            self.options = options;
+            self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
         });
     }
 
@@ -78,7 +41,7 @@ export class I18nTranslateService implements Ii18nTranslateService {
         let hasOwnNsOption: boolean = hasOwnOptions && angular.isDefined(ownOptions.ns);
         let hasInitNsObj: boolean = angular.isDefined(this.options) && angular.isDefined(this.options.ns);
         let defaultOptions: I18next.Options = this.options;
-        let mergedOptions: I18next.Options;
+        let mergedOptions: I18next.TranslationOptions;
         let lng: string;
 
         // https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
@@ -88,7 +51,7 @@ export class I18nTranslateService implements Ii18nTranslateService {
             defaultOptions.ns = defaultOptions.defaultNS;
         }
 
-        mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, ownOptions) : defaultOptions;
+        mergedOptions = hasOwnOptions ? ownOptions : this.tOptions;
 
         // https://github.com/i18next/i18next/blob/7af53d5a01cc9942c0edae361bd2f65361e340c9/src/i18next.translate.js#L289
         // lng will be deleted in some case
@@ -99,7 +62,7 @@ export class I18nTranslateService implements Ii18nTranslateService {
         return angular.isDefined(lng) ? this.translations[lng][key] : this.translations['auto'][key];
     }
 
-        public changeLanguage(lng: string) {
+    public changeLanguage(lng: string) {
         if (this.options.lng !== lng && this.i18n.language !== lng) {
             this.options.lng = lng;
             this.i18n.changeLanguage(lng, (err, t) => {
@@ -115,8 +78,8 @@ export class I18nTranslateService implements Ii18nTranslateService {
     }
 
 
-    private translate(key: string, options: I18next.TranslationOptions, hasOwnOptions: boolean) {
-        let localOptions: I18next.TranslationOptions = angular.isDefined(options) && hasOwnOptions ? options : this.options;
+    private translate(key: string, tOptions: I18next.TranslationOptions, hasOwnOptions: boolean) {
+        let localOptions: I18next.TranslationOptions = angular.isDefined(tOptions) && hasOwnOptions ? tOptions : this.tOptions;
         let lng = localOptions.lng || 'auto';
 
         if (angular.isUndefined(this.translations[lng])) {

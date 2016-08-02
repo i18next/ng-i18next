@@ -43,8 +43,14 @@ describe('Unit: jm.i18next - Filter', function () {
 	beforeEach(function () {
 
 		module('jm.i18next', function ($i18nextProvider) {
-			$i18nextProvider.options = i18nextOptions;
-			$i18nextProvider.modules = [window.i18nextSprintfPostProcessor];
+			jasmine.getGlobal().i18next.init(i18nextOptions, function (err, t) {
+				// console.log('resources loaded');
+			});
+
+			jasmine.getGlobal().i18next.on('initialized', function (options) {
+				// console.log('i18next initialized');
+				jasmine.getGlobal().i18nextOptions = options;
+			});
 		});
 
 		inject(function (_$filter_, _$rootScope_) {

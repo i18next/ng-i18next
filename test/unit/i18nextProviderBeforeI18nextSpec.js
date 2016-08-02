@@ -19,11 +19,20 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 		}
 	};
 
+	var tOptions = {};
+
 	beforeEach(function () {
 
 		module('jm.i18next', function ($i18nextProvider) {
 			spyOn(jasmine.getGlobal().i18next, 'init');
-			$i18nextProvider.options = i18nextOptions;
+			jasmine.getGlobal().i18next.init(i18nextOptions, function (err, t) {
+				// console.log('resources loaded');
+			});
+
+			jasmine.getGlobal().i18next.on('initialized', function (options) {
+				// console.log('i18next initialized');
+				jasmine.getGlobal().i18nextOptions = options;
+			});
 		});
 
 		inject(function (_$i18next_, _$timeout_, _$rootScope_) {
@@ -39,17 +48,17 @@ describe('Unit: jm.i18next - Provider behavior before i18next has been initializ
 	describe('global defaultValue', function () {
 
 		beforeEach(function () {
-			i18nextOptions.defaultValue = 'A default value!';
+			tOptions.defaultValue = 'A default value!';
 		});
 
 		it('should return original key, because translation does not exist', function () {
-			$i18next.options = i18nextOptions;
+			$i18next.tOptions = tOptions;
 			expect($i18next.t('Key_Not_Found')).toBe('A default value!');
 		});
 
 		afterEach(function () {
-			delete i18nextOptions.defaultValue;
-			$i18next.options = i18nextOptions;
+			delete tOptions.defaultValue;
+			$i18next.tOptions = tOptions;
 		});
 
 	});

@@ -1,0 +1,82 @@
+{
+	"headings": {
+		"directive": "No, this is Patrick!",
+		"filter": "No, this is Patrick!"
+	},
+
+	"both": {
+		"basicUsage": "No, this is Patrick!",
+		"ngRepeat": "No, this is Patrick!",
+		"passingOptions": "No, this is Patrick!",
+		"passingOptionsHTMLDescription": "No, this is Patrick!",
+		"lngTest": "No, this is Patrick!",
+		"lngTestHTML": "No, this is Patrick!",
+		"passingOptionsPlural": "No, this is Patrick!",
+		"passingOptionsPluralDynamic": "No, this is Patrick!",
+		"sprintf": "No, this is Patrick!"
+	},
+
+	"directive": {
+		"basics": "No, this is Patrick!",
+		"withHTML": "No, this is Patrick!",
+		"attr": "No, this is Patrick!",
+		"passingOptionsDescription": "No, this is Patrick!",
+		"basicUsageHTML": "No, this is Patrick!",
+		"basicUsageHTMLAsText": "No, this is Patrick!",
+		"dynamicHTML": "No, this is Patrick!",
+		"dynamicHTMLAsText":"No, this is Patrick!",
+		"getTranslationKeyFromScope": "No, this is Patrick!",
+		"attrHeading": "No, this is Patrick!",
+		"attr": {
+			"titleOnly": "No, this is Patrick!",
+			"titleAndContent": "No, this is Patrick!",
+			"titleAndHTML": "No, this is Patrick!"
+		},
+		"usingContentHeading": "No, this is Patrick!",
+		"usingContent": {
+
+		},
+		"innerDirective": "No, this is Patrick!",
+		"others": "No, this is Patrick!",
+		"translateVariableThatChanges": "No, this is Patrick!",
+		"cloak": {
+			"heading": "No, this is Patrick!",
+			"description": "No, this is Patrick!"
+		},
+		"postProcessor": {
+			"heading": "No, this is Patrick!",
+			"randomStrings": "No, this is Patrick!:",
+			"own": "No, this is Patrick!:"
+		},
+		"defaultValue": {
+			"shouldBe": "No, this is Patrick!"
+		},
+		"bindOnce": {
+			"heading": "No, this is Patrick!",
+			"description": "No, this is Patrick!"
+		}
+	},
+
+	"numbers": {
+		"one": "No, this is Patrick!",
+		"two": "No, this is Patrick!",
+		"three": "No, this is Patrick!"
+	},
+
+	"client": {
+		"client": "No, this is Patrick!",
+		"client_plural": "No, this is Patrick!",
+		"client_plural_0": "No, this is Patrick!",
+		"total": "No, this is Patrick!",
+		"increaseClients": "No, this is Patrick!",
+		"decreaseClients": "No, this is Patrick!"
+	},
+
+	"hello": "No, this is Patrick!!",
+	"helloHTML": "No, this is Patrick!",
+	"content": "No, this is Patrick!",
+	"contentHTML": "No, this is Patrick!",
+	"dynamicDate": "No, this is Patrick!",
+	"sayHelloHTML": "No, this is Patrick!"
+
+}

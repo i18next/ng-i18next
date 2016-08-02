@@ -1,17 +1,24 @@
-angular.module('jm.i18next').config(function ($i18nextProvider) {
 
-	'use strict';
-
-	// Use form
-	$i18nextProvider
+if (window.i18next) {
+	window.i18next
 		.use(window.i18nextXHRBackend)
 		.use(window.i18nextSprintfPostProcessor);
 
-	// Modules array property
-	// $i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
+	window.i18next.use({
+		name: 'patrick',
+		type: 'postProcessor',
+		process: function (value, key, options) {
+			if (!options.patrick) {
+				return value;
+			}
 
-	// Options property
-	$i18nextProvider.options = {
+			return 'No, this is Patrick!';
+
+		}
+	});
+
+	window.i18next.init({
+		debug: true,
 		lng: 'de', // If not given, i18n will detect the browser language.
 		fallbackLng: 'dev', // Default is dev
 		backend: {
@@ -19,35 +26,23 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 		},
 		useCookie: false,
 		useLocalStorage: false,
-		postProcess: 'sprintf'
-	};
+		postProcess: ['sprintf', 'patrick']
+	}, function (err, t) {
+		console.log('resources loaded');
+	});
 
-	// Calling init method
+	window.i18next.on('initialized', function (options) {
+		window.i18nextOptions = options;
+	});
+}
 
-	// $i18nextProvider.init({
-	// 	lng: 'de', // If not given, i18n will detect the browser language.
-	// 	fallbackLng: 'dev', // Default is dev
-	// 	backend: {
-	// 		loadPath: '../locales/{{lng}}/{{ns}}.json'
-	// 	},
-	// 	useCookie: false,
-	// 	useLocalStorage: false,
-	// 	postProcess: 'sprintf'
-	// }, [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor]);
 
-	// /*jshint unused:false */
-	// window.i18next.addPostProcessor('patrick', function (value, key, options) {
-	// 	//https://www.youtube.com/watch?v=YSzOXtXm8p0
-	// 	return 'No, this is Patrick!';
-	// });
+angular.module('jm.i18next').config(function ($i18nextProvider) {
 
-	// window.i18next.addPostProcessor('test', function (value, key, options) {
-	// 	return 'PostProcessor is working!';
-	// });
-	// /*jshint unused:true */
+	'use strict';
 });
 
-angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function ($rootScope, $scope, $timeout, $i18next) {
+angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function ($rootScope, $scope, $timeout, $i18next, $filter) {
 
 	'use strict';
 
@@ -66,7 +61,7 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 
 	$scope.bindingVariable = $scope.dynamicBindingVariable = 'helloHTML';
 
-	$scope.date = new Date();
+	$scope.date = new Date().toString();
 
 	$scope.clientsTotal = 2;
 

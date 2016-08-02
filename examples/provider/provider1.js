@@ -1,8 +1,8 @@
-angular.module('jm.i18next').config(function ($i18nextProvider) {
+if (window.i18next) {
+	window.i18next
+		.use(window.i18nextXHRBackend)
+		.use(window.i18nextSprintfPostProcessor);
 
-	'use strict';
-
-	/*jshint unused:false */
 	window.i18next.use({
 		name: 'patrick',
 		type: 'postProcessor',
@@ -11,21 +11,21 @@ angular.module('jm.i18next').config(function ($i18nextProvider) {
 			return 'No, this is Patrick!';
 		}
 	});
-	/*jshint unused:true */
 
-	// Tell i18next to use the XHR backend
-	// $i18nextProvider.use(window.i18nextXHRBackend);
-	// $i18nextProvider.use(window.i18nextSprintfPostProcessor);
-
-	$i18nextProvider.options = {
+	window.i18next.init({
 		lng: 'de', // If not given, i18n will detect the browser language.
 		fallbackLng: 'dev', // Default is dev
 		backend: {
 			loadPath: '../locales/{{lng}}/{{ns}}.json'
-		}
-	};
+		},
+		postProcess: 'patrick'
+	});
+}
 
-	$i18nextProvider.modules = [window.i18nextXHRBackend, window.i18nextSprintfPostProcessor];
+
+angular.module('jm.i18next').config(function ($i18nextProvider) {
+
+	'use strict';
 
 });
 

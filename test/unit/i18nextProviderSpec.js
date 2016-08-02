@@ -41,8 +41,14 @@ describe('Unit: jm.i18next - Provider', function () {
 	beforeEach(function () {
 
 		module('jm.i18next', function ($i18nextProvider) {
-			$i18nextProvider.options = i18nextOptions;
-			$i18nextProvider.modules = [window.i18nextSprintfPostProcessor];
+			jasmine.getGlobal().i18next.init(i18nextOptions, function (err, t) {
+				// console.log('resources loaded');
+			});
+
+			jasmine.getGlobal().i18next.on('initialized', function (options) {
+				// console.log('i18next initialized');
+				jasmine.getGlobal().i18nextOptions = options;
+			});
 		});
 
 		inject(function (_$i18next_, _$timeout_, _$rootScope_) {
@@ -86,16 +92,26 @@ describe('Unit: jm.i18next - Provider', function () {
 			// @TODO: Create test for namespaces
 			var originResStore = angular.copy(i18nextOptions.resources);
 			i18nextOptions.resources['de-DE'] = {
-				a: { 'hello': 'Herzlich Willkommen!' },
+				a: { 'hello': 'Herzlich Willkommen Wookie!' },
 				b: { 'helloName': 'Herzlich Willkommen, {{name}}!' }
 			};
 			i18nextOptions.ns = ['a', 'b'];
-			i18nextOptions.defaultNs = 'a';
+			i18nextOptions.defaultNS = 'a';
 
-			expect($i18next.t('hello')).toEqual('Herzlich Willkommen!');
+			jasmine.getGlobal().i18next.init(i18nextOptions, function (err, t) {
+				expect(t('hello')).toEqual('Herzlich Willkommen Wookie!');
+			});
 
 			delete i18nextOptions.ns;
 			i18nextOptions.resources = originResStore;
+			i18nextOptions.defaultNS = 'translation';
+
+			jasmine.getGlobal().i18next.init(i18nextOptions, function (err, t) {
+				expect(t('hello')).toEqual('Herzlich Willkommen!');
+			});
+			jasmine.getGlobal().i18next.on('initialized', function (options) {
+				jasmine.getGlobal().i18nextOptions = options;
+			});
 		});
 
 	});
