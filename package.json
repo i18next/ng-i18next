@@ -44,7 +44,8 @@
     "phantomjs-prebuilt": "2.1.7",
     "rollup-plugin-typescript": "^0.7.7",
     "tslint": "^3.7.1",
-    "typescript": "^1.8.9"
+    "typescript": "^1.8.9",
+    "rollup": "^0.34.3"
   },
   "scripts": {
     "test": "gulp test"
