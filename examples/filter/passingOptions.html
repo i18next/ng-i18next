@@ -1,5 +1,6 @@
 <!doctype html>
 <html ng-app="MyApp">
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -7,19 +8,18 @@
 	<title>Passing Options - ng-i18next</title>
 
 	<style>
-		.mBottom, code {
+		.mBottom,
+		code {
 			margin-bottom: 40px;
-			display:block;
+			display: block;
 		}
 	</style>
 
 	<script src="../../bower_components/angular/angular.js"></script>
 	<script src="../../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-	<script src="../../bower_components/i18next/i18next.min.js"></script>
-	<script src="../../bower_components/i18next-xhr-backend/i18nextXHRBackend.min.js"></script>
-	<script src="../../src/provider.js"></script>
-	<script src="../../src/filter/filter.js"></script>
-	<script src="../../src/directive/directive.js"></script>
+	<script src="../../bower_components/i18next/i18next.js"></script>
+	<script src="../../bower_components/i18next-xhr-backend/i18nextXHRBackend.js"></script>
+	<script src="../../dist/ng-i18next.js"></script>
 	<script src="filter.js"></script>
 
 </head>
@@ -27,6 +27,12 @@
 <body>
 	<!-- You can escape HTML here: http://www.htmlescape.net/htmlescape_tool.html -->
 	<div ng-controller="MyFilterCtrl">
+		<p>
+			Change language to: <br>
+			<a href="#" ng-click="changeLng('dev')">English</a><br>
+			<a href="#" ng-click="changeLng('de')">German</a>
+		</p>
+
 
 		<h2>{{'both.passingOptions' | i18next}}</h2>
 
@@ -45,8 +51,10 @@
 		<p>{{'client.total' | i18next:{total:1} }}</p>
 		<p>{{'client.total' | i18next:{total:4} }}</p>
 
-		<p>Should be: {{'client.client' | i18next }}, {{'client.client_plural' | i18next }}, {{'client.client_plural_0' | i18next }}</p>
-		<p>{{'client.client' | i18next:{count:0} }}, {{'client.client' | i18next:{count:1} }}, {{'client.client' | i18next:{count:4} }}</p>
+		<p>Should be: {{'client.client' | i18next }}, {{'client.client_plural' | i18next }}, {{'client.client_plural_0' | i18next
+			}}</p>
+		<p>{{'client.client' | i18next:{count:0} }}, {{'client.client' | i18next:{count:1} }}, {{'client.client' | i18next:{count:4}
+			}}</p>
 
 		<code ng-non-bindable>
 		  &lt;p&gt;{{'client.total' | i18next:{total:0} }}&lt;/p&gt;
@@ -57,11 +65,12 @@
 		<p ng-i18next="both.passingOptionsPluralDynamic"></p>
 		<p>
 			<a href="#" ng-click="increaseClients()" ng-i18next="client.increaseClients"></a>
-			 |
+			|
 			<a href="#" ng-click="decreaseClients()" ng-i18next="client.decreaseClients"></a>
 		</p>
-		<p ng-i18next="{{'client.total' | i18next: {total:clientsTotal} }}"></p>
+		<p ng-i18next="{{'client.total' | i18next: {total: clientsTotal } }}"></p>
 
 	</div>
 </body>
+
 </html>

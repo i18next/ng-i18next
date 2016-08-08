@@ -15,11 +15,10 @@
 
 	<script src="../../bower_components/angular/angular.js"></script>
 	<script src="../../bower_components/angular-sanitize/angular-sanitize.min.js"></script>
-	<script src="../../bower_components/i18next/i18next.min.js"></script>
-	<script src="../../bower_components/i18next-xhr-backend/i18nextXHRBackend.min.js"></script>
-	<script src="../../src/provider.js"></script>
-	<script src="../../src/filter/filter.js"></script>
-	<script src="../../src/directive/directive.js"></script>
+	<script src="../../bower_components/i18next/i18next.js"></script>
+	<script src="../../bower_components/i18next-xhr-backend/i18nextXHRBackend.js"></script>
+	<script src="../../bower_components/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js"></script>	
+	<script src="../../dist/ng-i18next.js"></script>
 	<script src="directive.js"></script>
 
 </head>
@@ -34,7 +33,7 @@
 			<a href="#" ng-click="changeLng('de')">German</a>
 		</p>
 
-		<h2 ng-i18next="Basics"></h2>
+		<h2 ng-i18next="directive.basics"></h2>
 
 		<p ng-i18next="both.basicUsage"></p>
 		<code ng-non-bindable>

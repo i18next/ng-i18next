@@ -1,8 +1,8 @@
 /*!
- * ng-i18next - Version 0.6.0 - 2016-01-20
+ * ng-i18next - Version 0.6.2 - 2016-08-02
  * Copyright (c) 2016 Andre Meyering
  *
- * AngularJS provider, filter and directive for `i18next` 2 (`i18next` by Jan Mühlemann)
+ * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
  *
  * - Source: https://github.com/i18next/ng-i18next/
  * - Issues: https://github.com/i18next/ng-i18next/issues
@@ -10,408 +10,341 @@
  * License: MIT - https://github.com/i18next/ng-i18next/blob/master/LICENSE
  *
 */
-angular.module('jm.i18next', ['ng', 'ngSanitize']);
-angular.module('jm.i18next').provider('$i18next', function () {
-
-	'use strict';
-
-	var self = this,
-		/**
-		 * This will be our translation function (see code below)
-		 */
-		t = null,
-		translations = {},
-		globalOptions = {},
-		triesToLoadI18next = 0;
-
-	self.options = globalOptions;
-
-	self.use = function (plugin) {
-		window.i18next.use(plugin);
-	};
-
-	self.$get = ['$rootScope', '$timeout', '$q', function ($rootScope, $timeout, $q) {
-
-		var i18nDeferred;
-
-		function init(options) {
-
-			var i18n = window.i18next;
-
-			if (i18n) {
-
-				i18nDeferred = $q.defer();
-
-				i18n.init(options, function (err, localize) {
-
-					translations = {};
-
-					if (typeof(localize) === 'undefined') {
-						localize = err;
-						err = undefined;
-					} else if (!!err && typeof(err) !== 'undefined' && err !== null) {
-						console.log('[ng-i18next] i18next error: ' + err);
-					}
-
-					t = localize;
-
-					if (!$rootScope.$$phase) {
-						$rootScope.$digest();
-					}
-
-					$rootScope.$broadcast('i18nextLanguageChange', i18n.language);
-
-					i18nDeferred.resolve();
-
-				});
-
-				return i18nDeferred.promise;
-
-			} else {
-
-				triesToLoadI18next++;
-				// only check 4 times for i18next
-				if (triesToLoadI18next < 5) {
-
-					$timeout(function () {
-						return init(options);
-					}, 400);
-
-				} else {
-					throw new Error('[ng-i18next] Can\'t find i18next!');
-				}
-
-			}
-		}
-
-		function optionsChange(newOptions, oldOptions) {
-
-			t = null;
-
-			$i18nextTanslate.debugMsg.push(['i18next options changed:', oldOptions, newOptions]);
-
-			globalOptions = newOptions;
-
-			return init(globalOptions);
-
-		}
-
-		/**
-		 * Translates `key` with given options and puts the translation into `translations`.
-		 * @param {Boolean} hasOwnOptions hasOwnOptions means that we are passing options to
-		 *                                $i18next so we can't use previous saved translation.
-		 */
-		function translate(key, options, hasOwnOptions) {
-
-			var lng = options.lng || 'auto';
-
-			if (!translations[lng]) {
-				translations[lng] = {};
-			}
-
-			if (!t) {
-
-				translations[lng][key] = 'defaultLoadingValue' in options ? options.defaultLoadingValue :
-					'defaultValue' in options ? options.defaultValue :
-					'defaultLoadingValue' in globalOptions ? globalOptions.defaultLoadingValue : key;
-
-			} else if (!translations[lng][key] || hasOwnOptions) {
-
-				translations[lng][key] = t(key, options);
-
-			}
-
-		}
-
-		function $i18nextTanslate(key, options) {
-
-			var hasOwnOptions = !!options,
-			    hasOwnNsOption = hasOwnOptions && options.ns,
-			    hasGlobalNsObj = globalOptions && globalOptions.ns,
-			    defaultOptions = globalOptions,
-			    mergedOptions,
-			    lng;
-
-			// https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
-			// Because of i18next read namespace from `options.ns`
-			if (!hasOwnNsOption && hasGlobalNsObj) {
-				defaultOptions = angular.extend({}, globalOptions);
-				defaultOptions.ns = defaultOptions.ns.defaultNs;
-			}
-
-			mergedOptions = hasOwnOptions ? angular.extend({}, defaultOptions, options) : defaultOptions;
-
-			// https://github.com/i18next/i18next/blob/7af53d5a01cc9942c0edae361bd2f65361e340c9/src/i18next.translate.js#L289
-			// lng will be deleted in some case
-			lng = mergedOptions.lng;
-
-			translate(key, mergedOptions, hasOwnOptions);
-
-			return !!lng ? translations[lng][key] : translations['auto'][key];
-
-		}
-
-		$i18nextTanslate.debugMsg = [];
-
-		$i18nextTanslate.options = self.options;
-
-		if (self.options !== globalOptions) {
-			optionsChange(self.options, globalOptions);
-		}
-
-		$i18nextTanslate.reInit = function () {
-			return optionsChange(globalOptions, globalOptions);
-		};
-
-		$rootScope.$watch(function () { return $i18nextTanslate.options; }, function (newOptions, oldOptions) {
-			// Check whether there are new options and whether the new options are different from the old options.
-			// Check if globalOptions
-			if (!!newOptions && (oldOptions !== newOptions || globalOptions!== newOptions)) {
-				optionsChange(newOptions, oldOptions);
-			}
-		}, true);
-
-		return $i18nextTanslate;
-
-	}];
-
-});
-
-angular.module('jm.i18next').directive('ngI18next', ['$i18next', '$compile', '$parse', '$interpolate', '$sanitize',
-	function ($i18next, $compile, $parse, $interpolate, $sanitize) {
-
-	'use strict';
-
-	function parseOptions(options) {
-
-		var res = {
-			attr: 'text'
-		};
-
-		options = options.split(':');
-
-		for (var i = 0; i < options.length; ++i) {
-			if (options[i] === 'i18next') {
-				res[options[i]] = true;
-			} else {
-				res.attr = options[i];
-			}
-		}
-
-		return res;
-	}
-
-	function parseKey(key) {
-
-		var options = {
-				attr: 'text'
-			},
-			i18nOptions = '{}',
-			tmp;
-
-		key = key.trim();
-
-		if (key.indexOf('[') === 0) {
-			tmp = key.split(']');
-			options = parseOptions(tmp.shift().substr(1).trim());
-			key = tmp.join(']');
-		}
-
-		if (options.i18next && key.indexOf('(') === 0 && key.indexOf(')') >= 0) {
-			tmp = key.split(')');
-			key = tmp.pop().trim();
-			i18nOptions = tmp.join(')').substr(1).trim();
-		}
-
-		return {
-			key: key,
-			options: options,
-			i18nOptions: $parse(i18nOptions)
-		};
-	}
-
-	function I18nextCtrl($scope, $element) {
-
-		var argsUnregister;
-		var stringUnregister;
-
-		function parse(key, noWatch) {
-			var parsedKey = parseKey(key);
-
-			// If there are watched values, unregister them
-			if (argsUnregister) {
-				argsUnregister();
-			}
-			if (stringUnregister) {
-				stringUnregister();
-			}
-
-			function render(i18nOptions) {
-				if (i18nOptions.sprintf) {
-					i18nOptions.postProcess = 'sprintf';
-				}
-
-				if (parsedKey.options.attr === 'html') {
-					angular.forEach(i18nOptions, function(value, key) {
-						var sanitized = $sanitize(value);
-						var numeric = Number(value);
-						i18nOptions[key] = sanitized == numeric ? numeric : sanitized; // jshint ignore:line
-					});
-				}
-
-				var string = $i18next(parsedKey.key, i18nOptions);
-
-				if (parsedKey.options.attr === 'html') {
-					$element.empty().append(string);
-
-					/*
-					 * Now compile the content of the element and bind the variables to
-					 * the scope
-					 */
-					$compile($element.contents())($scope);
-
-					return;
-				}
-
-				if (stringUnregister) {
-					stringUnregister();
-				}
-
-				var insertText = $element.text.bind($element);
-
-				if (parsedKey.options.attr !== 'text') {
-					insertText = $element.attr.bind($element, parsedKey.options.attr);
-				}
-
-				string = $interpolate(string);
-				if (!noWatch) {
-					stringUnregister = $scope.$watch(string, insertText);
-				}
-				insertText(string($scope));
-			}
-
-			if (!noWatch) {
-				argsUnregister = $scope.$watch(parsedKey.i18nOptions, render, true);
-			}
-			render(parsedKey.i18nOptions($scope));
-		}
-
-		this.localize = function localize(key, noWatch) {
-			var keys = key.split(';');
-
-			for (var i = 0; i < keys.length; ++i) {
-				key = keys[i].trim();
-
-				if (key === '') {
-					continue;
-				}
-
-				parse(key, noWatch);
-			}
-
-		};
-	}
-
-	return {
-
-		// 'A': only as attribute
-		restrict: 'A',
-
-		scope: false,
-
-		controller: ['$scope', '$element', I18nextCtrl],
-
-		require: 'ngI18next',
-
-		link: function postLink(scope, element, attrs, ctrl) {
-			var translationValue = '';
-
-			function observe(value) {
-				translationValue = value.replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
-
-				if (translationValue === '') {
-					return setupWatcher();
-				}
-
-				ctrl.localize(translationValue);
-			}
-
-			function setupWatcher() {
-				// Prevent from executing this method twice
-				if (setupWatcher.done) {
-					return;
-				}
-
-				// interpolate is allowing to transform {{expr}} into text
-				var interpolation = $interpolate(element.html());
-
-				scope.$watch(interpolation, observe);
-
-				setupWatcher.done = true;
-			}
-
-			translationValue = attrs.ngI18next.replace(/^\s+|\s+$/g, '');
-
-			if (translationValue.indexOf('__once__') < 0) {
-
-				attrs.$observe('ngI18next', observe);
-
-			} else {
-				// Remove '__once__'
-				translationValue = translationValue.split('__once__').join('');
-
-				ctrl.localize(translationValue, true);
-			}
-
-			scope.$on('i18nextLanguageChange', function () {
-				ctrl.localize(translationValue);
-			});
-
-		}
-
-	};
-
-}]);
-
-angular.module('jm.i18next').directive('boI18next', ['$i18next', '$compile', function ($i18next, $compile) {
-
-	'use strict';
-
-	return {
-
-		// 'A': only as attribute
-		restrict: 'A',
-
-		scope: false,
-
-		link: function postLink(scope, element, attrs) {
-
-			var newElement = element.clone();
-
-			newElement.attr('ng-i18next', '__once__' + attrs.boI18next);
-			newElement.removeAttr('bo-i18next');
-
-			element.replaceWith($compile(newElement)(scope));
-
-		}
-
-	};
-
-}]);
-
-angular.module('jm.i18next').filter('i18next', ['$i18next', function ($i18next) {
-
-	'use strict';
-
-	function i18nextFilter(string, options) {
-
-		return $i18next(string, options);
-
-	}
-
-	// https://docs.angularjs.org/guide/filter#stateful-filters
-	i18nextFilter.$stateful = true;
-
-	return i18nextFilter;
-
-}]);
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+    (factory((global.ngI18next = global.ngI18next || {})));
+}(this, function (exports) { 'use strict';
+
+    /// <reference path="../typings/index.d.ts" />
+    /// <reference path="./interfaces.ts" />
+    var I18nDirective = (function () {
+        function I18nDirective($interpolate) {
+            var _this = this;
+            this.$interpolate = $interpolate;
+            this.restrict = 'A';
+            this.scope = false;
+            this.controller = 'NgI18nextController';
+            this.link = function ($scope, $element, $attrs, ctrl) {
+                var self = _this;
+                var translationValue = '';
+                var isTransformed = false;
+                translationValue = $attrs.ngI18next.replace(/^\s+|\s+$/g, '');
+                if (translationValue.indexOf('__once__') < 0) {
+                    $attrs.$observe('ngI18next', observe);
+                }
+                else {
+                    // Remove '__once__'
+                    translationValue = translationValue.split('__once__').join('');
+                    ctrl.localize(translationValue, true);
+                }
+                $scope.$on('i18nextLanguageChange', function () {
+                    ctrl.localize(translationValue);
+                });
+                function observe(value) {
+                    if (angular.isDefined(value)) {
+                        translationValue = value.replace(/^\s+|\s+$/g, ''); // RegEx removes whitespace
+                        if (translationValue === '') {
+                            return setupWatcher();
+                        }
+                        ctrl.localize(translationValue);
+                    }
+                }
+                function setupWatcher() {
+                    // Prevent from executing this method twice
+                    if (isTransformed) {
+                        return;
+                    }
+                    // interpolate is allowing to transform {{expr}} into text
+                    var interpolation = self.$interpolate($element.html());
+                    $scope.$watch(interpolation, observe);
+                    isTransformed = true;
+                }
+            };
+        }
+        I18nDirective.factory = function () {
+            var directive = function ($interpolate) { return new I18nDirective($interpolate); };
+            directive.$inject = ['$interpolate'];
+            return directive;
+        };
+        return I18nDirective;
+    }());
+
+    /// <reference path="./interfaces.ts" />
+    var I18nBindOnceDirective = (function () {
+        function I18nBindOnceDirective($compile) {
+            var _this = this;
+            this.$compile = $compile;
+            this.restrict = 'A';
+            this.scope = false;
+            this.link = function (scope, element, attrs) {
+                var newElement = element.clone();
+                newElement.attr('ng-i18next', '__once__' + attrs.boI18next);
+                newElement.removeAttr('bo-i18next');
+                element.replaceWith(_this.$compile(newElement)(scope));
+            };
+        }
+        I18nBindOnceDirective.factory = function () {
+            var directive = function ($compile) { return new I18nBindOnceDirective($compile); };
+            directive.$inject = ['$compile'];
+            return directive;
+        };
+        return I18nBindOnceDirective;
+    }());
+
+    /// <reference path="../typings/index.d.ts" />
+    /// <reference path="./interfaces.ts" />
+    var I18nDirectiveController = (function () {
+        function I18nDirectiveController($scope, $element, $compile, $parse, $interpolate, $sanitize, $i18next) {
+            this.$scope = $scope;
+            this.$element = $element;
+            this.$compile = $compile;
+            this.$parse = $parse;
+            this.$interpolate = $interpolate;
+            this.$sanitize = $sanitize;
+            this.$i18next = $i18next;
+        }
+        I18nDirectiveController.prototype.localize = function (key, noWatch) {
+            var keys = key.split(';');
+            for (var i = 0; i < keys.length; ++i) {
+                key = keys[i].trim();
+                if (key === '') {
+                    continue;
+                }
+                this.parse(key, noWatch);
+            }
+        };
+        ;
+        I18nDirectiveController.prototype.parse = function (key, noWatch) {
+            var parsedKey = this.parseKey(key);
+            // If there are watched values, unregister them
+            if (this.argsUnregister) {
+                this.argsUnregister();
+            }
+            if (this.stringUnregister) {
+                this.stringUnregister();
+            }
+            if (!noWatch) {
+                this.argsUnregister = this.$scope.$watch(function () {
+                    return parsedKey.i18nOptions;
+                }, this.render, true);
+            }
+            this.render(parsedKey, noWatch);
+        };
+        I18nDirectiveController.prototype.parseKey = function (key) {
+            var options = {
+                attr: 'text'
+            }, i18nOptions = '{}', tmp;
+            key = key.trim();
+            if (key.indexOf('[') === 0) {
+                tmp = key.split(']');
+                options = this.parseOptions(tmp.shift().substr(1).trim());
+                key = tmp.join(']');
+            }
+            if (key.indexOf('(') === 0 && key.indexOf(')') >= 0) {
+                tmp = key.split(')');
+                key = tmp.pop().trim();
+                i18nOptions = tmp.join(')').substr(1).trim();
+            }
+            return {
+                key: key,
+                options: options,
+                i18nOptions: this.$parse(i18nOptions)
+            };
+        };
+        I18nDirectiveController.prototype.parseOptions = function (options) {
+            var res = {
+                attr: 'text'
+            };
+            var optionsSplit = options.split(':');
+            for (var i = 0; i < optionsSplit.length; ++i) {
+                if (optionsSplit[i] === 'i18next') {
+                    res[optionsSplit[i]] = true;
+                }
+                else {
+                    res.attr = optionsSplit[i];
+                }
+            }
+            return res;
+        };
+        I18nDirectiveController.prototype.render = function (parsedKey, noWatch) {
+            if (angular.isDefined(this) && angular.isDefined(this.$scope)) {
+                var i18nOptions_1 = parsedKey.i18nOptions(this.$scope);
+                if (i18nOptions_1.sprintf) {
+                    i18nOptions_1.postProcess = 'sprintf';
+                }
+                if (parsedKey.options.attr === 'html') {
+                    angular.forEach(i18nOptions_1, function (value, key) {
+                        var newValue = undefined;
+                        var sanitized = this.$sanitize(value);
+                        var numeric = Number(value);
+                        if (typeof numeric === 'number' && !isNaN(numeric)) {
+                            newValue = numeric;
+                        }
+                        else {
+                            newValue = sanitized;
+                        }
+                        i18nOptions_1[key] = newValue; // jshint ignore:line
+                    }, this);
+                }
+                var localizedString = this.$i18next.t(parsedKey.key, i18nOptions_1);
+                if (angular.isDefined(localizedString)) {
+                    if (parsedKey.options.attr === 'html') {
+                        this.$element.empty().append(localizedString);
+                        /*
+                         * Now compile the content of the element and bind the variables to
+                         * the scope
+                         */
+                        this.$compile(this.$element.contents())(this.$scope);
+                        return;
+                    }
+                    if (this.stringUnregister) {
+                        this.stringUnregister();
+                    }
+                    var insertText = this.$element.text.bind(this.$element);
+                    if (parsedKey.options.attr !== 'text') {
+                        insertText = this.$element.attr.bind(this.$element, parsedKey.options.attr);
+                    }
+                    var localizedStringInterpolation = this.$interpolate(localizedString);
+                    if (!noWatch) {
+                        this.stringUnregister = this.$scope.$watch(localizedStringInterpolation, insertText);
+                    }
+                    insertText(localizedStringInterpolation(this.$scope));
+                }
+            }
+        };
+        I18nDirectiveController.$inject = ['$scope', '$element', '$compile', '$parse', '$interpolate', '$sanitize', '$i18next'];
+        return I18nDirectiveController;
+    }());
+
+    /// <reference path="./interfaces.ts" />
+    var I18nFilter = (function () {
+        function I18nFilter() {
+        }
+        I18nFilter.factory = function () {
+            var filter = function ($i18next) {
+                function i18nextFilter(key, options) {
+                    var localOptions = angular.isDefined(options) ? options : {};
+                    return $i18next.t(key, localOptions);
+                }
+                i18nextFilter.$stateful = true;
+                return i18nextFilter;
+            };
+            filter.$inject = ['$i18next'];
+            return filter;
+        };
+        return I18nFilter;
+    }());
+
+    /// <reference path="../typings/index.d.ts" />
+    /// <reference path="./interfaces.ts" />
+    var I18nTranslateService = (function () {
+        function I18nTranslateService($rootScope, translationOptions) {
+            this.$rootScope = $rootScope;
+            this.options = {};
+            this.tOptions = {};
+            this.modules = [];
+            this.localesLoaded = false;
+            this.translations = {};
+            this.i18n = window.i18next;
+            this.tOptions = translationOptions;
+            this.initializeI18next();
+        }
+        I18nTranslateService.prototype.initializeI18next = function () {
+            var self = this;
+            if (window.i18next && window.i18nextOptions) {
+                // assign instance of i18next
+                this.i18n = window.i18next;
+                this.options = window.i18nextOptions;
+            }
+            else {
+                var error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
+                this.handleError(error);
+            }
+            window.i18next.on('initialized', function (options) {
+                self.options = options;
+                self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
+            });
+        };
+        I18nTranslateService.prototype.t = function (key, ownOptions) {
+            var hasOwnOptions = angular.isDefined(ownOptions);
+            var hasOwnNsOption = hasOwnOptions && angular.isDefined(ownOptions.ns);
+            var hasInitNsObj = angular.isDefined(this.options) && angular.isDefined(this.options.ns);
+            var defaultOptions = this.options;
+            var mergedOptions;
+            var lng;
+            // https://github.com/i18next/i18next/blob/e47bdb4d5528c752499b0209d829fde4e1cc96e7/src/i18next.translate.js#L232
+            // Because of i18next read namespace from `options.ns`
+            if (angular.isUndefined(hasOwnNsOption) && hasInitNsObj) {
+                defaultOptions = angular.extend({}, this.options);
+                defaultOptions.ns = defaultOptions.defaultNS;
+            }
+            mergedOptions = hasOwnOptions ? ownOptions : this.tOptions;
+            // https://github.com/i18next/i18next/blob/7af53d5a01cc9942c0edae361bd2f65361e340c9/src/i18next.translate.js#L289
+            // lng will be deleted in some case
+            lng = mergedOptions.lng;
+            this.translate(key, mergedOptions, hasOwnOptions);
+            return angular.isDefined(lng) ? this.translations[lng][key] : this.translations['auto'][key];
+        };
+        I18nTranslateService.prototype.changeLanguage = function (lng) {
+            var _this = this;
+            if (this.options.lng !== lng && this.i18n.language !== lng) {
+                this.options.lng = lng;
+                this.i18n.changeLanguage(lng, function (err, t) {
+                    _this.$rootScope.$broadcast('i18nextLanguageChange', _this.i18n.language);
+                });
+            }
+        };
+        I18nTranslateService.prototype.changeOptions = function (options) {
+            if (angular.isDefined(options)) {
+                this.options = options;
+            }
+        };
+        I18nTranslateService.prototype.translate = function (key, tOptions, hasOwnOptions) {
+            var localOptions = angular.isDefined(tOptions) && hasOwnOptions ? tOptions : this.tOptions;
+            var lng = localOptions.lng || 'auto';
+            if (angular.isUndefined(this.translations[lng])) {
+                this.translations[lng] = {};
+            }
+            if (angular.isUndefined(this.i18n)) {
+                this.translations[lng][key] = angular.isDefined(localOptions.defaultValue) ? localOptions.defaultValue : key;
+            }
+            else if (angular.isUndefined(this.translations[lng][key]) || hasOwnOptions) {
+                this.translations[lng][key] = this.i18n.t(key, localOptions);
+            }
+        };
+        I18nTranslateService.prototype.handleError = function (error) {
+            var message = angular.isDefined(error.message) ? error.message : error[0];
+            console.log(message);
+        };
+        return I18nTranslateService;
+    }());
+
+    var I18nProvider = (function () {
+        function I18nProvider() {
+            var _this = this;
+            this.translationOptions = {};
+            this.$get = function ($rootScope) {
+                if (window.i18next) {
+                    return new I18nTranslateService($rootScope, _this.translationOptions);
+                }
+                else {
+                    throw 'i18next is not loaded';
+                }
+            };
+            this.$get.$inject = ['$rootScope'];
+        }
+        return I18nProvider;
+    }());
+    angular.module('jm.i18next', ['ng', 'ngSanitize'])
+        .provider('$i18next', I18nProvider)
+        .directive('ngI18next', I18nDirective.factory())
+        .directive('boI18next', I18nBindOnceDirective.factory())
+        .controller('NgI18nextController', I18nDirectiveController)
+        .filter('i18next', I18nFilter.factory());
+
+    exports.I18nProvider = I18nProvider;
+
+    Object.defineProperty(exports, '__esModule', { value: true });
+
+}));

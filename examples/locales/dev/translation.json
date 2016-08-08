@@ -23,8 +23,8 @@
 		"passingOptionsDescription": "pass options in directive by using [i18next]",
 		"basicUsageHTML": "<em>HTML Code-Translation</em>",
 		"basicUsageHTMLAsText": "<em>HTML Code-Translation as text</em>",
-		"dynamicHTML": "<em>numbers[2] = {{numbers[2]}}</em>",
-		"dynamicHTMLAsText":"<em>numbers[2] = {{numbers[2]}}</em> - it's text, not HTML",
+		"dynamicHTML": "<em>numbers[1] = {{ number }}</em>",
+		"dynamicHTMLAsText":"<em>numbers[1] = {{ number }}</em> - it's text, not HTML",
 		"getTranslationKeyFromScope": "Get the string, we want to translate, from the $scope",
 		"attrHeading": "Translation of attributes",
 		"attr": {

@@ -1,15 +1,7 @@
 {
   "name": "ng-i18next",
-  "version": "0.6.0",
-  "description": "AngularJS provider, filter and directive for `i18next` 2 (`i18next` by Jan Mühlemann)",
-  "keywords": ["translation", "angular", "i18next"],
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/i18next/ng-i18next.git"
-  },
-  "bugs": {
-    "url": "https://github.com/i18next/ng-i18next/issues"
-  },
+  "version": "0.6.2",
+  "description": "AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)",
   "main": "./dist/ng-i18next.js",
   "author": {
     "name": "Andre Meyering"
@@ -19,28 +11,41 @@
     "type": "git",
     "url": "git://github.com/i18next/ng-i18next.git"
   },
+  "bugs": {
+    "url": "https://github.com/i18next/ng-i18next/issues"
+  },
+  "peerDependencies": {
+    "angular": ">=1.5.0"
+  },
   "devDependencies": {
-    "angular": "1.4.8",
-    "angular-mocks": "1.4.8",
-    "gulp": "3.9.0",
-    "gulp-concat": "2.6.0",
-    "gulp-header": "1.7.1",
-    "gulp-jasmine": "2.2.1",
-    "gulp-jshint": "2.0.0",
-    "gulp-karma": "0.0.5",
-    "gulp-rename": "1.2.2",
-    "gulp-rimraf": "0.2.0",
-    "gulp-size": "2.0.0",
-    "gulp-uglify": "1.5.1",
-    "gulp-webserver": "0.9.1",
-    "i18next": "2.0.4",
-    "i18next-client": "1.11.4",
-    "jshint": "2.8.0",
-    "jshint-stylish": "2.1.0",
-    "karma": "0.13.15",
-    "karma-jasmine": "0.3.6",
-    "karma-phantomjs-launcher": "0.2.1",
-    "phantomjs": "1.9.19"
+    "angular": ">=1.5.0",
+    "angular-mocks": ">=1.5.0",
+    "gulp": "^3.9.1",
+    "gulp-bump": "^2.2.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-flatten": "^0.3.0",
+    "gulp-header": "^1.8.7",
+    "gulp-jasmine": "^2.4.0",
+    "gulp-jshint": "^2.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-rimraf": "^0.2.0",
+    "gulp-rollup": "^2.3.0",
+    "gulp-size": "^2.1.0",
+    "gulp-typescript": "^2.13.6",
+    "gulp-uglify": "^1.5.4",
+    "gulp-webserver": "^0.9.1",
+    "jasmine-core": "^2.4.1",
+    "jshint": "^2.9.2",
+    "jshint-stylish": ">=2.2.0",
+    "karma": ">=1.1.1",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-jasmine": ">=1.0.2",
+    "karma-phantomjs-launcher": "^1.0.1",
+    "phantomjs-prebuilt": "2.1.7",
+    "rollup-plugin-typescript": "^0.7.7",
+    "tslint": "^3.7.1",
+    "typescript": "^1.8.9",
+    "rollup": "^0.34.3"
   },
   "scripts": {
     "test": "gulp test"

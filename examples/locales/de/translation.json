@@ -23,8 +23,8 @@
 		"passingOptionsDescription": "Übergebe Optionen mithilfe von [i18next]",
 		"basicUsageHTML": "<em>HTML Code-Übersetzung</em>",
 		"basicUsageHTMLAsText": "<em>HTML Code-Übersetzung als Text</em>",
-		"dynamicHTML": "<em>numbers[2] = {{numbers[2]}}</em>",
-		"dynamicHTMLAsText":"<em>numbers[2] = {{numbers[2]}}</em> - it's text, not HTML",
+		"dynamicHTML": "<em>numbers[2] = {{ number }}</em>",
+		"dynamicHTMLAsText":"<em>numbers[2] = {{ number }}</em> - it's text, not HTML",
 		"getTranslationKeyFromScope": "Den zu übersetzenden String vom $scope erhalten",
 		"attrHeading": "Übersetzungen von Attributen",
 		"attr": {
