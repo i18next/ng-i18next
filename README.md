@@ -19,6 +19,12 @@ You can install `ng-i18next` as a bower dependency:
 
 	bower install ng-i18next
 
+# Upgrading from <=0.5.5
+
+You will need to
+1. Move initialization of i18next from the ng-i18next provider within Angular to i18next natively before booting Angular
+2. Change translations using the $i18next provider in you Angular code. From `$i18next('localeKey')` to `$i18next.t('localeKey')` 
+
 # Usage #
 First add
 
