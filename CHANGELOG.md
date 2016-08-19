@@ -1,4 +1,8 @@
 # Changelog #
+v0.6.4 - 2016/07/27
+- port to TypeScript
+- remove provider initialization of i18next
+- initialize i18next natively in tests
 
 v0.5.4 - 2016/07/22
 - bumped version number and updated CHANGELOG

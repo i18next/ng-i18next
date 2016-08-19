@@ -24,11 +24,11 @@ First add
 
 - [`AngularJS >=1.5.0`](https://angularjs.org)
 - [`ngSanitize`](https://docs.angularjs.org/api/ngSanitize#!)
-- `i18next`
+- [`i18next`](http://i18next.com/)
 - [`i18next-xhr-backend`](https://github.com/i18next/i18next-xhr-backend) or a backend of your choice to load locales.
 - `ng-i18next`
 
-to your HTML file. `AngularJS`, `ngSanitize` and `i18next` have to be loaded **before** `ng-i18next`!
+to your HTML file. `AngularJS`, `ngSanitize`, `i18next`, and `i18next-xhr-backend` have to be loaded **before** `ng-i18next`!
 
 Before booting angular use i18next configuration system to configure and load your localization resources. Refer to [i18next configuration reference.](http://i18next.com/docs/)
 
@@ -192,11 +192,30 @@ angular
 		$scope.hello = $i18next.t('hello');
 });
 ```
-=> translates `hello` with translate options
+=> translates `hello` with [translate options](http://i18next.com/docs/options/#t-options)
 
 ```js
 $scope.sprintf = $i18next.t('both.sprintf', { postProcess: 'sprintf', sprintf: ['a', 'b', 'c', 'd'] });
 ```
+
+=> translates copyright label and use [interpolation](http://i18next.com/translate/interpolation/) to add the year
+
+locale
+```json
+{
+    "copyrightLabel": "Copyright __year__ Acme, Inc. All rights reserved",
+}
+```
+
+JavaScript
+```js
+$i18next.t('copyrightLabel', { year: this.$window.moment().year() });
+```
+
+Results
+
+Copyright 2016 Acme, Inc. All rights reserved
+
 
 ---------
 
@@ -218,9 +237,10 @@ Run this inside your `ng-i18next` directory.
 To contribute, you must have:
 
 - [Node.js](http://nodejs.org/)
-- [bower](http://bower.io/)
 - [Gulp](http://gulpjs.com/)
+- [bower](http://bower.io/)
 - [TypeScript](http://www.typescriptlang.org/)
+- [typings](https://www.npmjs.com/package/typings)
 
 installed.
 
