@@ -1,8 +1,6 @@
 # ng-i18next - use i18next with [AngularJS](https://www.angularjs.org/) [![Build Status](https://travis-ci.org/i18next/ng-i18next.svg?branch=master)](https://travis-ci.org/i18next/ng-i18next) #
 
-# This project needs a [new maintainer](https://github.com/i18next/ng-i18next/issues/104). #
-
-Project goal is to provide an easy way to use [i18next](http://i18next.com/) with [AngularJS](http://angularjs.org/):
+Project goal is to provide an easy way to use [i18next](http://i18next.com/) with [AngularJS 1.x](http://angularjs.org/):
 
 - `ng-i18next` directive
 - `i18next` filter
@@ -15,47 +13,53 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 - nested translations (`$t('hello')`; see [i18next documentation](http://i18next.com/pages/doc_features.html))
 - scope variables in translations (if the translation contains directives of variables like `{{hello}}`, they'll get compiled)
 - sprintf support (directive and provider)
-- support for default values to be displayed before i18next engine is initialized
 
 # Installation #
 You can install `ng-i18next` as a bower dependency:
 
 	bower install ng-i18next
 
+# Upgrading from <=0.5.5
+
+You will need to
+1. Move initialization of i18next from the ng-i18next provider within Angular to i18next natively before booting Angular
+2. Change translations using the $i18next provider in you Angular code. From `$i18next('localeKey')` to `$i18next.t('localeKey')` 
 
 # Usage #
 First add
 
-- [`AngularJS`](https://angularjs.org)
+- [`AngularJS >=1.5.0`](https://angularjs.org)
 - [`ngSanitize`](https://docs.angularjs.org/api/ngSanitize#!)
-- `i18next`
+- [`i18next`](http://i18next.com/)
+- [`i18next-xhr-backend`](https://github.com/i18next/i18next-xhr-backend) or a backend of your choice to load locales.
 - `ng-i18next`
 
-to your HTML file. `AngularJS`, `ngSanitize` and `i18next` have to be loaded **before** `ng-i18next`!
+to your HTML file. `AngularJS`, `ngSanitize`, `i18next`, and `i18next-xhr-backend` have to be loaded **before** `ng-i18next`!
 
-Make sure you require `jm.i18next` as a dependency of your AngularJS module. Also configurate the provider first:
+Before booting angular use i18next configuration system to configure and load your localization resources. Refer to [i18next configuration reference.](http://i18next.com/docs/)
 
 ```js
-angular.module('jm.i18next').config(['$i18nextProvider', function ($i18nextProvider) {
-	// Optionally specify the instance of i18next to use; otherwise, it's obtained from `window`
-	$i18nextProvider.i18next = require('i18next');
+window.i18next
+	.use(window.i18nextXHRBackend);
 
-	$i18nextProvider.options = {
-		lng: 'de',
-		fallbackLng: 'dev',
-		backend: {
-			loadPath: '../locales/{{lng}}/{{ns}}.json'
-		}
-		defaultLoadingValue: '' // ng-i18next option, *NOT* directly supported by i18next
-	};
-}]);
+window.i18next.init({
+	debug: true,
+	lng: 'de', // If not given, i18n will detect the browser language.
+	fallbackLng: 'dev', // Default is dev
+	backend: {
+		loadPath: '../locales/{{lng}}/{{ns}}.json'
+	},
+	useCookie: false,
+	useLocalStorage: false
+}, function (err, t) {
+	console.log('resources loaded');
+});
+
+window.i18next.on('initialized', function (options) {
+	window.i18nextOptions = options;
+});
 ```
-
-For testing purposes set up a server. Don't open your files directly because `i18next` then fails to load the language files!
-
-For more options visit the [i18next documentation](http://i18next.com/pages/doc_init.html).
-
-There are two ways to use `ng-i18next`:
+There are three ways to use `ng-i18next`:
 
 ## filter ##
 
@@ -182,6 +186,43 @@ where `sprintfString` could be `The first 4 letters of the english alphabet are:
 
 Using the directive, `postProcess:'sprintf'` isn't neccassary. The directive will add it automatically when using `sprintf` in the options.
 
+## provider ##
+
+=> translates `hello`
+
+```js
+angular
+	.module('MyApp', ['jm.i18next'])
+	.controller('MyProviderCtrl', function ($scope, $i18next) {
+		'use strict';
+		$scope.hello = $i18next.t('hello');
+});
+```
+=> translates `hello` with [translate options](http://i18next.com/docs/options/#t-options)
+
+```js
+$scope.sprintf = $i18next.t('both.sprintf', { postProcess: 'sprintf', sprintf: ['a', 'b', 'c', 'd'] });
+```
+
+=> translates copyright label and use [interpolation](http://i18next.com/translate/interpolation/) to add the year
+
+locale
+```json
+{
+    "copyrightLabel": "Copyright __year__ Acme, Inc. All rights reserved",
+}
+```
+
+JavaScript
+```js
+$i18next.t('copyrightLabel', { year: this.$window.moment().year() });
+```
+
+Results
+
+Copyright 2016 Acme, Inc. All rights reserved
+
+
 ---------
 
 For more, see examples.
@@ -195,66 +236,6 @@ gulp serve
 Run this inside your `ng-i18next` directory.
 (This requires you to have NodeJS and gulp to be installed.)
 
-```js
-python -m SimpleHTTPServer 8000
-```
-
-Create a simple pyhton HTTP server. Run this inside the `ng-i18next` folder.
-You must have python installed, of course.
-
-Then go to [`http://localhost:8000`](http://localhost:8000).
-
----------
-
-# Default values while i18next is initializing #
-
-`i18next` supports providing a `defaultValue` when requesting any translation. But what happens when i18next hasn't been fully initialized yet?
-
-`ng-i18next` adds a `defaultLoadingValue` option, which can be provided either in `$i18nextProvider.options` or with any individual
-translation request just like you would `defaultValue`. If i18n strings need to be rendered before i18next is initialized,
-these special loading values will be used instead.
-
-## Default values - Examples ##
-```js
-$i18nextProvider.options = {
-	/* ... */
-	defaultLoadingValue: ''
-};
-```
-
-(in template)
-
-```html
-<p>{{'hello' | i18next}}</p>
-```
-
-=> displays an empty string (visually nothing) until i18next is initialized, then translates `hello`
-
-```html
-<p>{{'hello' | i18next:{'defaultLoadingValue':'Loading...'} }}</p>
-```
-
-=> displays "Loading..." until i18next is loaded, then translates `hello`
-
-```html
-<p>{{'not-translated-welcome-key' | i18next:{'defaultLoadingValue':'Loading...', 'defaultValue':'Welcome!'} }}</p>
-```
-
-=> displays "Loading..." until i18next is loaded, then translates `not-translated-welcome-key` with default of "Welcome!"
-if the key is not defined in your i18n file
-
-# Specifying an i18next instance #
-
-`ng-i18next` has an `i18next` property that can be provided to specify the instance of i18next to use. This is particularly useful when i18next is included through a module loader and hasn't been added to `window`.
-
-## i18next instance - Examples ##
-```js
-$i18nextProvider.i18next = require('i18next')
-$i18nextProvider.options = {
-	/* ... */
-};
-```
-
 ---------
 
 # Contribute #
@@ -262,15 +243,18 @@ $i18nextProvider.options = {
 To contribute, you must have:
 
 - [Node.js](http://nodejs.org/)
-- [bower](http://bower.io/)
 - [Gulp](http://gulpjs.com/)
+- [bower](http://bower.io/)
+- [TypeScript](http://www.typescriptlang.org/)
+- [typings](https://www.npmjs.com/package/typings)
 
 installed.
 
-Load all dependencies using [`npm`](https://npmjs.org/) and [`bower`](http://bower.io/):
+Load all dependencies using [`npm`](https://npmjs.org/),  [`bower`](http://bower.io/) and [`typings`](https://www.npmjs.com/package/typings):
 
 	npm install
 	bower install
+	typings install
 
 Build `ng-i18next.js` using Gulp:
 

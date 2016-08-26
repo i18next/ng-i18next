@@ -36,12 +36,6 @@ if (window.i18next) {
 	});
 }
 
-
-angular.module('jm.i18next').config(function ($i18nextProvider) {
-
-	'use strict';
-});
-
 angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function ($rootScope, $scope, $timeout, $i18next, $filter) {
 
 	'use strict';

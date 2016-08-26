@@ -120,7 +120,7 @@ gulp.task('default', function () {
 	var info = [
 		'',
 		'  Usage:',
-		'    - build: `gulp rollup`',
+		'    - build: `gulp build`',
 		'    - watch & test: `gulp watch`',
 		'    - run examples: `gulp serve`',
 		'      - Then open http://localhost:8000',
@@ -145,5 +145,7 @@ gulp.task('serve', [], function () {
 		}));
 
 });
+
+gulp.task('build', ['ci'])
 
 gulp.task('ci', ['clean', 'rollup', 'concat', 'test']);

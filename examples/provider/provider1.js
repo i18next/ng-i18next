@@ -22,13 +22,6 @@ if (window.i18next) {
 	});
 }
 
-
-angular.module('jm.i18next').config(function ($i18nextProvider) {
-
-	'use strict';
-
-});
-
 angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($rootScope, $scope, $i18next) {
 
 	'use strict';
@@ -37,8 +30,8 @@ angular.module('MyApp', ['jm.i18next']).controller('MyProviderCtrl', function ($
 
 	$rootScope.$on('i18nextLanguageChange', function () {
 
-			$scope.hello = $i18next.t('hello');
-			$scope.sprintf = $i18next.t('both.sprintf', {postProcess: 'sprintf', sprintf: ['a','b','c','d']});
+		$scope.hello = $i18next.t('hello');
+		$scope.sprintf = $i18next.t('both.sprintf', { postProcess: 'sprintf', sprintf: ['a', 'b', 'c', 'd'] });
 
 		console.log($scope.hello);
 
