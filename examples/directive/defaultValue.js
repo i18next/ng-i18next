@@ -1,14 +1,26 @@
+if (window.i18next) {
+	window.i18next
+		.use(window.i18nextXHRBackend);
+
+	window.i18next.init({
+		lng: 'de', // If not given, i18n will detect the browser language.
+		fallbackLng: 'dev'//, // Default is dev
+		// backend: {
+		// 	loadPath: '../locales/{{lng}}/{{ns}}.json'
+		// }
+	}, function (err, t) {
+		console.log('resources loaded');
+	});
+
+	window.i18next.on('initialized', function(options) {
+		window.i18nextOptions = options;
+	});
+}
+
+
 angular.module('jm.i18next').config(function ($i18nextProvider) {
 
 	'use strict';
-
-	$i18nextProvider.options = {
-		lng: 'de', // If not given, i18n will detect the browser language.
-		fallbackLng: 'dev', // Default is dev
-		useCookie: false,
-		useLocalStorage: false,
-		resGetPath: '../locales/__lng__/__ns__.json'
-	};
 
 });
 
@@ -17,8 +29,8 @@ angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function (
 	'use strict';
 
 	$scope.changeLng = function (lng) {
-		$i18next.options.lng = lng;
-		console.log($i18next.debugMsg[$i18next.debugMsg.length - 1]);
+		$i18next.changeLanguage(lng);
+		console.log('language changed: ' + lng);
 	};
 
 });
