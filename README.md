@@ -10,7 +10,7 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 # Features #
 - AngularJS provider, directive and filter
 - variable binding (translates again when variable changes)
-- nested translations (`$t('hello')`; see [i18next documentation](http://i18next.com/pages/doc_features.html))
+- nested translations (`$t('hello')`; see [i18next documentation](http://i18next.com/docs/))
 - scope variables in translations (if the translation contains directives of variables like `{{hello}}`, they'll get compiled)
 - sprintf support (directive and provider)
 
