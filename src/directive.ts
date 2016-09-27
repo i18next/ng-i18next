@@ -10,7 +10,6 @@ interface I18nController {
 	localize: (value: string, watch?: boolean) => string;
 }
 
-
 export class I18nDirective implements ng.IDirective {
 
 	constructor(

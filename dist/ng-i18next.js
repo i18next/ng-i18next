@@ -1,5 +1,5 @@
 /*!
- * ng-i18next - Version 1.0.1 - 2016-09-08
+ * ng-i18next - Version 1.0.1 - 2016-09-26
  * Copyright (c) 2016 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
@@ -11,10 +11,10 @@
  *
 */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-    typeof define === 'function' && define.amd ? define(['exports'], factory) :
-    (factory((global.ngI18next = global.ngI18next || {})));
-}(this, (function (exports) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    (global.ngI18next = factory());
+}(this, (function () { 'use strict';
 
 /// <reference path="../typings/index.d.ts" />
 /// <reference path="./interfaces.ts" />
@@ -114,7 +114,7 @@ var I18nDirectiveController = (function () {
             this.parse(key, noWatch);
         }
     };
-    ;
+    
     I18nDirectiveController.prototype.parse = function (key, noWatch) {
         var parsedKey = this.parseKey(key);
         // If there are watched values, unregister them
@@ -344,9 +344,8 @@ angular.module('jm.i18next', ['ng', 'ngSanitize'])
     .directive('boI18next', I18nBindOnceDirective.factory())
     .controller('NgI18nextController', I18nDirectiveController)
     .filter('i18next', I18nFilter.factory());
+var provider = 'jm.i18next';
 
-exports.I18nProvider = I18nProvider;
-
-Object.defineProperty(exports, '__esModule', { value: true });
+return provider;
 
 })));
