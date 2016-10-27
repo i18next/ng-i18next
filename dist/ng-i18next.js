@@ -1,5 +1,5 @@
 /*!
- * ng-i18next - Version 1.0.1 - 2016-09-26
+ * ng-i18next - Version 1.0.3 - 2016-10-27
  * Copyright (c) 2016 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
@@ -114,8 +114,9 @@ var I18nDirectiveController = (function () {
             this.parse(key, noWatch);
         }
     };
-    
+    ;
     I18nDirectiveController.prototype.parse = function (key, noWatch) {
+        var _this = this;
         var parsedKey = this.parseKey(key);
         // If there are watched values, unregister them
         if (this.argsUnregister) {
@@ -126,8 +127,8 @@ var I18nDirectiveController = (function () {
         }
         if (!noWatch) {
             this.argsUnregister = this.$scope.$watch(function () {
-                return parsedKey.i18nOptions;
-            }, this.render, true);
+                return parsedKey.i18nOptions(_this.$scope);
+            }, function () { return _this.render(parsedKey, noWatch); }, true);
         }
         this.render(parsedKey, noWatch);
     };
@@ -146,11 +147,12 @@ var I18nDirectiveController = (function () {
             key = tmp.pop().trim();
             i18nOptions = tmp.join(')').substr(1).trim();
         }
-        return {
+        var parsedKey = {
             key: key,
             options: options,
             i18nOptions: this.$parse(i18nOptions)
         };
+        return parsedKey;
     };
     I18nDirectiveController.prototype.parseOptions = function (options) {
         var res = {

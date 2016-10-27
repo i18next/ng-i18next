@@ -5,7 +5,7 @@
 interface IParsedKey {
     key: string;
     options: any;
-    i18nOptions: I18next.TranslationOptions;
+    i18nOptions: ng.ICompiledExpression;
 }
 
 export class I18nDirectiveController implements Ii18nDirectiveController {
@@ -80,11 +80,13 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
             i18nOptions = tmp.join(')').substr(1).trim();
         }
 
-        return {
+        let parsedKey: IParsedKey  = {
             key: key,
             options: options,
             i18nOptions: this.$parse(i18nOptions)
         };
+
+        return parsedKey;
     }
 
     private parseOptions(options: string) {
