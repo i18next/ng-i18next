@@ -51,8 +51,8 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
 
         if (!noWatch) {
             this.argsUnregister = this.$scope.$watch(() => {
-                return parsedKey.i18nOptions;
-            }, this.render, true);
+                return parsedKey.i18nOptions(this.$scope);
+            }, () => this.render(parsedKey, noWatch), true);
         }
 
         this.render(parsedKey, noWatch);

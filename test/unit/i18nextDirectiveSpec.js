@@ -110,6 +110,23 @@ describe('Unit: jm.i18next - Directive', function () {
 			expect(c.text()).toEqual('Herzlich Willkommen, Andre!');
 		});
 
+		it('should replace "{{name}}" in the translation string with scope variable', function () {
+			$rootScope.name = "Wax";
+			var c = $compile('<p ng-i18next="[i18next]({name: name})helloName"></p>')($rootScope);
+			$rootScope.$apply();
+			expect(c.text()).toEqual('Herzlich Willkommen, Wax!');
+		});
+
+		it('should update "{{name}}" in the translation string when scope variable changes', function () {
+			$rootScope.name = "Wax";
+			var c = $compile('<p ng-i18next="[i18next]({name: name})helloName"></p>')($rootScope);
+			$rootScope.$apply();
+			expect(c.text()).toEqual('Herzlich Willkommen, Wax!');
+			$rootScope.name = "Wayne";
+			$rootScope.$apply();
+			expect(c.text()).toEqual('Herzlich Willkommen, Wayne!');
+		});
+
 		it('should replace "{{name}}" in the translation string with name given by options and should use "dev" as language', function () {
 			var c = $compile('<p ng-i18next="[i18next]({name:\'Andre\',lng:\'dev\'})helloName"></p>')($rootScope);
 			$rootScope.$apply();
