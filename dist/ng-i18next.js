@@ -114,7 +114,7 @@ var I18nDirectiveController = (function () {
             this.parse(key, noWatch);
         }
     };
-    ;
+    
     I18nDirectiveController.prototype.parse = function (key, noWatch) {
         var _this = this;
         var parsedKey = this.parseKey(key);
