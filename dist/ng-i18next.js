@@ -1,5 +1,5 @@
 /*!
- * ng-i18next - Version 1.0.3 - 2016-10-27
+ * ng-i18next - Version 1.0.3 - 2016-11-07
  * Copyright (c) 2016 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
@@ -248,22 +248,22 @@ var I18nTranslateService = (function () {
         this.modules = [];
         this.localesLoaded = false;
         this.translations = {};
-        this.i18n = window.i18next;
+        this.i18n = i18next;
         this.tOptions = translationOptions;
         this.initializeI18next();
     }
     I18nTranslateService.prototype.initializeI18next = function () {
         var self = this;
-        if (window.i18next && window.i18nextOptions) {
+        if (i18next) {
             // assign instance of i18next
-            this.i18n = window.i18next;
-            this.options = window.i18nextOptions;
+            this.i18n = i18next;
+            this.options = i18next.options;
         }
         else {
             var error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
             this.handleError(error);
         }
-        window.i18next.on('initialized', function (options) {
+        i18next.on('initialized', function (options) {
             self.options = options;
             self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
         });
@@ -329,7 +329,7 @@ var I18nProvider = (function () {
         var _this = this;
         this.translationOptions = {};
         this.$get = function ($rootScope) {
-            if (window.i18next) {
+            if (i18next) {
                 return new I18nTranslateService($rootScope, _this.translationOptions);
             }
             else {

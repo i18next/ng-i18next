@@ -30,10 +30,6 @@ if (window.i18next) {
 	}, function (err, t) {
 		console.log('resources loaded');
 	});
-
-	window.i18next.on('initialized', function (options) {
-		window.i18nextOptions = options;
-	});
 }
 
 angular.module('MyApp', ['jm.i18next']).controller('MyDirectiveCtrl', function ($rootScope, $scope, $timeout, $i18next, $filter) {

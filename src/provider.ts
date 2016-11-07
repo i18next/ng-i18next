@@ -7,6 +7,8 @@ import { I18nDirectiveController } from './directiveController';
 import { I18nFilter } from './filter';
 import { I18nTranslateService } from './translateService';
 
+declare var i18next: I18next.I18n;
+
 class I18nProvider implements Ii18nProvider {
 	translationOptions: I18next.TranslationOptions = {};
 
@@ -15,7 +17,7 @@ class I18nProvider implements Ii18nProvider {
 	}
 
 	$get = ($rootScope: ng.IRootScopeService): I18nTranslateService => {
-		if (window.i18next) {
+		if (i18next) {
 			return new I18nTranslateService($rootScope, this.translationOptions);
 		} else {
 			throw 'i18next is not loaded';

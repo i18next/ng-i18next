@@ -1,6 +1,8 @@
 /// <reference path="../typings/index.d.ts" />
 /// <reference path="./interfaces.ts" />
 
+declare var i18next: I18next.I18n;
+
 export class I18nTranslateService implements Ii18nTranslateService {
     options: I18next.Options = {};
     tOptions: I18next.TranslationOptions = {};
@@ -11,7 +13,7 @@ export class I18nTranslateService implements Ii18nTranslateService {
     localesLoaded: boolean = false;
     translations: any = {};
 
-    i18n: I18next.I18n = window.i18next;
+    i18n: I18next.I18n = i18next;
 
     constructor(private $rootScope: ng.IRootScopeService, translationOptions: I18next.TranslationOptions) {
         this.tOptions = translationOptions;
@@ -21,16 +23,16 @@ export class I18nTranslateService implements Ii18nTranslateService {
     private initializeI18next() {
         let self = this;
 
-        if (window.i18next && window.i18nextOptions) {
+        if (i18next) {
             // assign instance of i18next
-            this.i18n = window.i18next;
-            this.options = window.i18nextOptions;
+            this.i18n = i18next;
+            this.options = i18next.options;
         } else {
             let error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
             this.handleError(error);
         }
 
-        window.i18next.on('initialized', function (options) {
+        i18next.on('initialized', function (options) {
             self.options = options;
             self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
         });

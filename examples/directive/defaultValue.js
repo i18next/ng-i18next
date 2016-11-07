@@ -11,10 +11,6 @@ if (window.i18next) {
 	}, function (err, t) {
 		console.log('resources loaded');
 	});
-
-	window.i18next.on('initialized', function(options) {
-		window.i18nextOptions = options;
-	});
 }
 
 

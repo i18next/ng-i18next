@@ -54,10 +54,6 @@ window.i18next.init({
 }, function (err, t) {
 	console.log('resources loaded');
 });
-
-window.i18next.on('initialized', function (options) {
-	window.i18nextOptions = options;
-});
 ```
 There are three ways to use `ng-i18next`:
 
