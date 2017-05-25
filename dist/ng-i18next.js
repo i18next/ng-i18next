@@ -1,6 +1,6 @@
 /*!
- * ng-i18next - Version 1.0.3 - 2016-11-07
- * Copyright (c) 2016 Andre Meyering
+ * ng-i18next - Version 1.0.4 - 2017-05-25
+ * Copyright (c) 2017 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
  *
@@ -11,13 +11,11 @@
  *
 */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global.ngI18next = factory());
-}(this, (function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('angular')) :
+	typeof define === 'function' && define.amd ? define(['angular'], factory) :
+	(global.ngI18next = factory(global.angular));
+}(this, (function (angular) { 'use strict';
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nDirective = (function () {
     function I18nDirective($interpolate) {
         var _this = this;
@@ -70,7 +68,6 @@ var I18nDirective = (function () {
     return I18nDirective;
 }());
 
-/// <reference path="./interfaces.ts" />
 var I18nBindOnceDirective = (function () {
     function I18nBindOnceDirective($compile) {
         var _this = this;
@@ -92,8 +89,6 @@ var I18nBindOnceDirective = (function () {
     return I18nBindOnceDirective;
 }());
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nDirectiveController = (function () {
     function I18nDirectiveController($scope, $element, $compile, $parse, $interpolate, $sanitize, $i18next) {
         this.$scope = $scope;
@@ -219,7 +214,6 @@ var I18nDirectiveController = (function () {
     return I18nDirectiveController;
 }());
 
-/// <reference path="./interfaces.ts" />
 var I18nFilter = (function () {
     function I18nFilter() {
     }
@@ -238,8 +232,6 @@ var I18nFilter = (function () {
     return I18nFilter;
 }());
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nTranslateService = (function () {
     function I18nTranslateService($rootScope, translationOptions) {
         this.$rootScope = $rootScope;
@@ -322,8 +314,6 @@ var I18nTranslateService = (function () {
     return I18nTranslateService;
 }());
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nProvider = (function () {
     function I18nProvider() {
         var _this = this;

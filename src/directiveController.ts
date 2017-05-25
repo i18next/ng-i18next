@@ -1,6 +1,6 @@
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
+import * as angular from 'angular';
 
+import { Ii18nDirectiveController, Ii18nTranslateService } from 'interfaces';
 
 interface IParsedKey {
     key: string;

@@ -121,7 +121,7 @@ gulp.task('default', function () {
 		'',
 		'  Usage:',
 		'    - build: `gulp build`',
-		'    - watch & test: `gulp watch`',
+		'    - watch & test: `gulp karma-watch`',
 		'    - run examples: `gulp serve`',
 		'      - Then open http://localhost:8000',
 		'',

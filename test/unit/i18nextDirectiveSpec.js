@@ -226,7 +226,7 @@ describe('Unit: jm.i18next - Directive', function () {
 		it('should return original key, because translation does not exist', function () {
 			var c = $compile('<p ng-i18next="[html]helloHTML"></p>')($rootScope);
 			$rootScope.$apply();
-			expect(c.html()).toBe('<span class="ng-scope">helloHTML</span>');
+			expect(c.html()).toBe('helloHTML');
 		});
 
 	});

@@ -13,12 +13,12 @@ module.exports = function (config) {
 		frameworks: ['jasmine'],
 
 		files: [
-			'bower_components/angular/angular.js',
-			'bower_components/angular-mocks/angular-mocks.js',
-			'bower_components/angular-sanitize/angular-sanitize.js',
-			'bower_components/i18next/i18next.js',
-			'bower_components/i18next-xhr-backend/i18nextXHRBackend.js',
-			'bower_components/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js',
+			'node_modules/angular/angular.js',
+			'node_modules/angular-mocks/angular-mocks.js',
+			'node_modules/angular-sanitize/angular-sanitize.js',
+			'node_modules/i18next/i18next.js',
+			'node_modules/i18next-xhr-backend/i18nextXHRBackend.js',
+			'node_modules/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js',
 			'./dist/ng-i18next.js',
 			'test/{,*/}*Spec.js'
 		],

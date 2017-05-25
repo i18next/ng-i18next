@@ -1,4 +1,7 @@
 # Changelog #
+v1.0.4
+- Release TypeScript port
+
 v0.6.4 - 2016/07/27
 - port to TypeScript
 - remove provider initialization of i18next

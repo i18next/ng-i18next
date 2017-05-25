@@ -1,5 +1,6 @@
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
+import * as angular from 'angular';
+import * as I18next from 'i18next';
+import { Ii18nTranslateService } from 'interfaces';
 
 declare var i18next: I18next.I18n;
 
