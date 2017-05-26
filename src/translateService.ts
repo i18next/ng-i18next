@@ -1,43 +1,24 @@
 import * as angular from 'angular';
 import * as I18next from 'i18next';
-import { Ii18nTranslateService } from 'interfaces';
+import { Ii18nTranslateService } from './interfaces';
 
 declare var i18next: I18next.I18n;
 
 export class I18nTranslateService implements Ii18nTranslateService {
-    options: I18next.Options = {};
-    tOptions: I18next.TranslationOptions = {};
-    interpolationOptions: I18next.InterpolationOptions;
+    public options: I18next.Options = {};
+    public tOptions: I18next.TranslationOptions = {};
+    public interpolationOptions: I18next.InterpolationOptions;
 
     public modules: Array<any> = [];
 
-    localesLoaded: boolean = false;
-    translations: any = {};
-
-    i18n: I18next.I18n = i18next;
+    private translations: any = {};
+    private i18n: I18next.I18n = i18next;
 
     constructor(private $rootScope: ng.IRootScopeService, translationOptions: I18next.TranslationOptions) {
         this.tOptions = translationOptions;
         this.initializeI18next();
     }
 
-    private initializeI18next() {
-        let self = this;
-
-        if (i18next) {
-            // assign instance of i18next
-            this.i18n = i18next;
-            this.options = i18next.options;
-        } else {
-            let error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
-            this.handleError(error);
-        }
-
-        i18next.on('initialized', function (options) {
-            self.options = options;
-            self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
-        });
-    }
 
     public t(key: string, ownOptions: I18next.TranslationOptions) {
         let hasOwnOptions: boolean = angular.isDefined(ownOptions);
@@ -80,6 +61,23 @@ export class I18nTranslateService implements Ii18nTranslateService {
         }
     }
 
+    private initializeI18next() {
+        let self = this;
+
+        if (i18next) {
+            // assign instance of i18next
+            this.i18n = i18next;
+            this.options = i18next.options;
+        } else {
+            let error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
+            this.handleError(error);
+        }
+
+        i18next.on('initialized', function (options) {
+            self.options = options;
+            self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
+        });
+    }
 
     private translate(key: string, tOptions: I18next.TranslationOptions, hasOwnOptions: boolean) {
         let localOptions: I18next.TranslationOptions = angular.isDefined(tOptions) && hasOwnOptions ? tOptions : this.tOptions;
@@ -98,6 +96,7 @@ export class I18nTranslateService implements Ii18nTranslateService {
 
     private handleError(error: any) {
         let message = angular.isDefined(error.message) ? error.message : error[0];
+        // tslint:disable-next-line:no-console
         console.log(message);
     }
 }

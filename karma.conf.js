@@ -7,24 +7,36 @@ module.exports = function (config) {
 	config.set({
 
 		// base path, that will be used to resolve files and exclude
-		basePath: '',
+		basePath: './src/',
 
 		// testing framework to use (jasmine/mocha/qunit/...)
-		frameworks: ['jasmine'],
+		frameworks: ['jasmine', 'karma-typescript'],
 
 		files: [
-			'node_modules/angular/angular.js',
-			'node_modules/angular-mocks/angular-mocks.js',
-			'node_modules/angular-sanitize/angular-sanitize.js',
-			'node_modules/i18next/i18next.js',
-			'node_modules/i18next-xhr-backend/i18nextXHRBackend.js',
-			'node_modules/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js',
-			'./dist/ng-i18next.js',
-			'test/{,*/}*Spec.js'
+			'../node_modules/angular/angular.js',
+			'../node_modules/angular-mocks/angular-mocks.js',
+			'../node_modules/angular-sanitize/angular-sanitize.js',
+			'../node_modules/i18next/i18next.js',
+			'../node_modules/i18next-xhr-backend/i18nextXHRBackend.js',
+			'../node_modules/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js',
+
+			{ pattern: './*.ts', included: true },
+
 		],
 
+		preprocessors: {
+            './**/!(*spec).ts': ['karma-typescript', 'coverage'],
+			'./*.spec.ts': ['karma-typescript']
+		},
+
+		reporters: ["progress", "karma-typescript"],
+
+		karmaTypescriptConfig: {
+			tsconfig: "../tsconfig-karma.json"
+		},
+
 		// list of files to exclude
-		exclude: ['gulpfile.js'],
+		exclude: [],
 
 		// web server port
 		port: 9876,

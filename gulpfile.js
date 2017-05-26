@@ -9,6 +9,7 @@ var uglify = require('gulp-uglify');
 var webserver = require('gulp-webserver');
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
+var minifyJS = require('gulp-minify');
 var size = require('gulp-size');
 var header = require('gulp-header');
 var rimraf = require('gulp-rimraf');
@@ -65,7 +66,7 @@ gulp.task('clean', [], function () {
 		.pipe(rimraf());
 });
 
-gulp.task('rollup', ['clean'], function () {
+gulp.task('rollup', ['clean', 'karma'], function () {
 	return gulp.src(['./src/*.ts'])
 		.pipe(rollup({
 			allowRealFiles: true,
@@ -84,26 +85,28 @@ gulp.task('rollup', ['clean'], function () {
 		.pipe(gulp.dest('./build/'));
 });
 
-gulp.task('concat', ['clean', 'rollup'], function () {
+gulp.task('concat', ['clean', 'karma', 'rollup'], function () {
 	return gulp.src('./build/ng-i18next.js')
 		.pipe(header(headerMeta, { pkg: pkg }))
 		.pipe(gulp.dest('./dist/'))
 		.pipe(rename(pkg.name + '.min.js'))
-		.pipe(uglify())
+		.pipe(uglify({ mangle: false }))
 		.pipe(header(headerMetaMin, { pkg: pkg }))
 		.pipe(size())
 		.pipe(gulp.dest('./dist/'));
 });
 
 //run tests
-gulp.task('karma', ['clean', 'rollup', 'concat'], function () {
-	return karma.start({
+gulp.task('karma', [], function (done) {
+	karma.start({
 		configFile: __dirname + '/karma.conf.js',
+	}, function() {
+		done();
 	});
 });
 
 //watch tests
-gulp.task('karma-watch', ['clean', 'rollup', 'concat'], function () {
+gulp.task('karma-watch', [], function () {
 	return karma.start({
 		configFile: __dirname + '/karma.conf.js',
 		browsers: ['Chrome'],
@@ -134,7 +137,7 @@ gulp.task('default', function () {
 	console.info(info);
 });
 
-gulp.task('test', ['clean', 'rollup', 'concat', 'karma']);
+gulp.task('test', ['clean', 'karma', 'rollup', 'concat']);
 
 gulp.task('serve', [], function () {
 
@@ -148,4 +151,4 @@ gulp.task('serve', [], function () {
 
 gulp.task('build', ['ci'])
 
-gulp.task('ci', ['clean', 'rollup', 'concat', 'test']);
+gulp.task('ci', ['clean', 'karma', 'rollup', 'concat']);

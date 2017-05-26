@@ -1,16 +1,17 @@
 import * as angular from 'angular';
 
-import { I18nAttributes, I18nController } from 'interfaces';
+import { I18nAttributes, I18nController } from './interfaces';
 
 export class I18nDirective implements ng.IDirective {
+
+	public restrict: string = 'A';
+	public scope: boolean = false;
+	public controller: string = 'NgI18nextController';
 
 	constructor(
 		private $interpolate: ng.IInterpolateService) {
 	}
 
-	public restrict: string = 'A';
-	public scope: boolean = false;
-	public controller: string = 'NgI18nextController';
 	public link: ng.IDirectiveLinkFn = ($scope: ng.IScope, $element: ng.IAugmentedJQuery, $attrs: I18nAttributes, ctrl: I18nController) => {
 		let self = this;
 		let translationValue = '';

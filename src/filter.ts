@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import * as i18next from 'i18next';
-import { Ii18nTranslateService } from 'interfaces';
+import { Ii18nTranslateService, IFilterI18next } from './interfaces';
 
 export class I18nFilter {
 	public static factory() {
@@ -9,12 +9,10 @@ export class I18nFilter {
 				let localOptions = angular.isDefined(options) ? options : {};
 				return $i18next.t(key, localOptions);
 			}
-			(i18nextFilter as any).$stateful = true;
+			(i18nextFilter as IFilterI18next).$stateful = true;
 			return i18nextFilter;
 		};
 		filter.$inject = ['$i18next'];
 		return filter;
 	}
 }
-
-

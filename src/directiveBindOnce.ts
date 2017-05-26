@@ -20,4 +20,3 @@ export class I18nBindOnceDirective implements ng.IDirective {
 
 	}
 }
-

@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import * as I18next from 'i18next';
 
-import { Ii18nProvider } from 'interfaces';
+import { Ii18nProvider } from './interfaces';
 
 import { I18nDirective } from './directive';
 import { I18nBindOnceDirective } from './directiveBindOnce';

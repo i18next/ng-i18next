@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import { Ii18nDirectiveController, Ii18nTranslateService } from 'interfaces';
+import { Ii18nDirectiveController, Ii18nTranslateService } from './interfaces';
 
 interface IParsedKey {
     key: string;
@@ -9,10 +9,10 @@ interface IParsedKey {
 }
 
 export class I18nDirectiveController implements Ii18nDirectiveController {
-    argsUnregister: any;
-    stringUnregister: any;
+    public static $inject = ['$scope', '$element', '$compile', '$parse', '$interpolate', '$sanitize', '$i18next'];
 
-    static $inject = ['$scope', '$element', '$compile', '$parse', '$interpolate', '$sanitize', '$i18next'];
+    private argsUnregister: any;
+    private stringUnregister: any;
 
     constructor(
         private $scope: ng.IScope,
@@ -61,10 +61,10 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
     private parseKey(key: string): IParsedKey {
 
         let options: any = {
-            attr: 'text'
-        },
-            i18nOptions: string = '{}',
-            tmp: any;
+            attr: 'text',
+        };
+        let i18nOptions: string = '{}';
+        let tmp: any;
 
         key = key.trim();
 
@@ -81,9 +81,9 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
         }
 
         let parsedKey: IParsedKey  = {
+            i18nOptions: this.$parse(i18nOptions),
             key: key,
             options: options,
-            i18nOptions: this.$parse(i18nOptions)
         };
 
         return parsedKey;
@@ -92,7 +92,7 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
     private parseOptions(options: string) {
 
         let res: any = {
-            attr: 'text'
+            attr: 'text',
         };
 
         let optionsSplit: string[] = options.split(':');
