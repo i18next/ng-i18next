@@ -1,6 +1,6 @@
 /*!
- * ng-i18next - Version 1.0.3 - 2016-11-07
- * Copyright (c) 2016 Andre Meyering
+ * ng-i18next - Version 1.0.4 - 2017-05-26
+ * Copyright (c) 2017 Andre Meyering
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
  *
@@ -11,13 +11,11 @@
  *
 */
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-    typeof define === 'function' && define.amd ? define(factory) :
-    (global.ngI18next = factory());
-}(this, (function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('angular')) :
+	typeof define === 'function' && define.amd ? define(['angular'], factory) :
+	(global.ngI18next = factory(global.angular));
+}(this, (function (angular) { 'use strict';
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nDirective = (function () {
     function I18nDirective($interpolate) {
         var _this = this;
@@ -70,7 +68,6 @@ var I18nDirective = (function () {
     return I18nDirective;
 }());
 
-/// <reference path="./interfaces.ts" />
 var I18nBindOnceDirective = (function () {
     function I18nBindOnceDirective($compile) {
         var _this = this;
@@ -92,8 +89,6 @@ var I18nBindOnceDirective = (function () {
     return I18nBindOnceDirective;
 }());
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nDirectiveController = (function () {
     function I18nDirectiveController($scope, $element, $compile, $parse, $interpolate, $sanitize, $i18next) {
         this.$scope = $scope;
@@ -134,8 +129,10 @@ var I18nDirectiveController = (function () {
     };
     I18nDirectiveController.prototype.parseKey = function (key) {
         var options = {
-            attr: 'text'
-        }, i18nOptions = '{}', tmp;
+            attr: 'text',
+        };
+        var i18nOptions = '{}';
+        var tmp;
         key = key.trim();
         if (key.indexOf('[') === 0) {
             tmp = key.split(']');
@@ -148,15 +145,15 @@ var I18nDirectiveController = (function () {
             i18nOptions = tmp.join(')').substr(1).trim();
         }
         var parsedKey = {
+            i18nOptions: this.$parse(i18nOptions),
             key: key,
             options: options,
-            i18nOptions: this.$parse(i18nOptions)
         };
         return parsedKey;
     };
     I18nDirectiveController.prototype.parseOptions = function (options) {
         var res = {
-            attr: 'text'
+            attr: 'text',
         };
         var optionsSplit = options.split(':');
         for (var i = 0; i < optionsSplit.length; ++i) {
@@ -219,7 +216,6 @@ var I18nDirectiveController = (function () {
     return I18nDirectiveController;
 }());
 
-/// <reference path="./interfaces.ts" />
 var I18nFilter = (function () {
     function I18nFilter() {
     }
@@ -238,36 +234,17 @@ var I18nFilter = (function () {
     return I18nFilter;
 }());
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nTranslateService = (function () {
     function I18nTranslateService($rootScope, translationOptions) {
         this.$rootScope = $rootScope;
         this.options = {};
         this.tOptions = {};
         this.modules = [];
-        this.localesLoaded = false;
         this.translations = {};
         this.i18n = i18next;
         this.tOptions = translationOptions;
         this.initializeI18next();
     }
-    I18nTranslateService.prototype.initializeI18next = function () {
-        var self = this;
-        if (i18next) {
-            // assign instance of i18next
-            this.i18n = i18next;
-            this.options = i18next.options;
-        }
-        else {
-            var error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
-            this.handleError(error);
-        }
-        i18next.on('initialized', function (options) {
-            self.options = options;
-            self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
-        });
-    };
     I18nTranslateService.prototype.t = function (key, ownOptions) {
         var hasOwnOptions = angular.isDefined(ownOptions);
         var hasOwnNsOption = hasOwnOptions && angular.isDefined(ownOptions.ns);
@@ -302,6 +279,22 @@ var I18nTranslateService = (function () {
             this.options = options;
         }
     };
+    I18nTranslateService.prototype.initializeI18next = function () {
+        var self = this;
+        if (i18next) {
+            // assign instance of i18next
+            this.i18n = i18next;
+            this.options = i18next.options;
+        }
+        else {
+            var error = new Error('[ng-i18next] Can\'t find i18next and/or i18next options! Please refer to i18next.');
+            this.handleError(error);
+        }
+        i18next.on('initialized', function (options) {
+            self.options = options;
+            self.$rootScope.$broadcast('i18nextLanguageChange', self.options.lng);
+        });
+    };
     I18nTranslateService.prototype.translate = function (key, tOptions, hasOwnOptions) {
         var localOptions = angular.isDefined(tOptions) && hasOwnOptions ? tOptions : this.tOptions;
         var lng = localOptions.lng || 'auto';
@@ -317,13 +310,12 @@ var I18nTranslateService = (function () {
     };
     I18nTranslateService.prototype.handleError = function (error) {
         var message = angular.isDefined(error.message) ? error.message : error[0];
+        // tslint:disable-next-line:no-console
         console.log(message);
     };
     return I18nTranslateService;
 }());
 
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
 var I18nProvider = (function () {
     function I18nProvider() {
         var _this = this;

@@ -6,10 +6,9 @@ node_js:
 
 before_install:
   - npm install -g gulp
-  - npm install -g bower
   - npm install -g typescript
   - npm install -g rollup
-  - bower install
+  - npm install
 
 script:
   - gulp ci

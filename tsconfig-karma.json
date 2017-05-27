@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "declaration": true,
+        "module": "commonjs",
+        "types": [
+            "angular",
+            "angular-mocks",
+            "angular-sanitize",
+            "jasmine"
+        ]
+    },
+    "exclude": [
+        "build",
+        "node_modules",
+        "examples/typings",
+        "dist/typings",
+        "build"
+    ]
+}

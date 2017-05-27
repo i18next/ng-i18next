@@ -1,25 +1,18 @@
-/// <reference path="../typings/index.d.ts" />
-/// <reference path="./interfaces.ts" />
+import * as angular from 'angular';
 
-
-interface I18nttributes extends ng.IAttributes {
-	ngI18next: string;
-}
-
-interface I18nController {
-	localize: (value: string, watch?: boolean) => string;
-}
+import { I18nAttributes, I18nController } from './interfaces';
 
 export class I18nDirective implements ng.IDirective {
+
+	public restrict: string = 'A';
+	public scope: boolean = false;
+	public controller: string = 'NgI18nextController';
 
 	constructor(
 		private $interpolate: ng.IInterpolateService) {
 	}
 
-	public restrict: string = 'A';
-	public scope: boolean = false;
-	public controller: string = 'NgI18nextController';
-	public link: ng.IDirectiveLinkFn = ($scope: ng.IScope, $element: ng.IAugmentedJQuery, $attrs: I18nttributes, ctrl: I18nController) => {
+	public link: ng.IDirectiveLinkFn = ($scope: ng.IScope, $element: ng.IAugmentedJQuery, $attrs: I18nAttributes, ctrl: I18nController) => {
 		let self = this;
 		let translationValue = '';
 		let isTransformed = false;
@@ -66,9 +59,6 @@ export class I18nDirective implements ng.IDirective {
 
 			isTransformed = true;
 		}
-
-
-
 	}
 
 	public static factory() {

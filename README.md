@@ -14,10 +14,15 @@ First check out the [documentation](http://i18next.com) by Jan Mühlemann.
 - scope variables in translations (if the translation contains directives of variables like `{{hello}}`, they'll get compiled)
 - sprintf support (directive and provider)
 
-# Installation #
+# Installation Bower #
 You can install `ng-i18next` as a bower dependency:
 
 	bower install ng-i18next
+
+# Installation npm #
+You can install `ng-i18next` as a npm dependency:
+
+	npm install ng-i18next
 
 # Upgrading from <=0.5.5
 
