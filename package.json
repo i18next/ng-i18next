@@ -4,7 +4,7 @@
   "description": "AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)",
   "main": "./dist/ng-i18next.js",
   "author": {
-    "name": "Andre Meyering"
+    "name": "i18next authors"
   },
   "license": "MIT",
   "repository": {
