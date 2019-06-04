@@ -70,10 +70,12 @@ gulp.task('rollup', ['clean', 'karma'], function () {
 	return gulp.src(['./src/*.ts'])
 		.pipe(rollup({
 			allowRealFiles: true,
-			entry: 'src/provider.ts',
-			format: 'umd',
-			moduleName: 'ngI18next',
-			dest: 'dist/ng-i18next.js',
+			input: 'src/provider.ts',
+			output: {
+				format: 'umd',
+				name: 'ngI18next',
+				file: 'dist/ng-i18next.js'
+			},
 			external: [
 				'typescript'
 			],

@@ -25,7 +25,7 @@ module.exports = function (config) {
 		],
 
 		preprocessors: {
-            './**/!(*spec).ts': ['karma-typescript', 'coverage'],
+			'./**/!(*spec).ts': ['karma-typescript', 'coverage'],
 			'./*.spec.ts': ['karma-typescript']
 		},
 
