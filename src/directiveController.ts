@@ -80,7 +80,7 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
             i18nOptions = tmp.join(')').substr(1).trim();
         }
 
-        let parsedKey: IParsedKey  = {
+        let parsedKey: IParsedKey = {
             i18nOptions: this.$parse(i18nOptions),
             key: key,
             options: options,
@@ -108,15 +108,15 @@ export class I18nDirectiveController implements Ii18nDirectiveController {
         return res;
     }
 
-    private render(parsedKey: any, noWatch: boolean) {
+    private render(parsedKey: IParsedKey, noWatch: boolean) {
         if (angular.isDefined(this) && angular.isDefined(this.$scope)) {
             let i18nOptions = parsedKey.i18nOptions(this.$scope);
 
-            if (i18nOptions.sprintf) {
+            if (angular.isDefined(i18nOptions) && i18nOptions.sprintf) {
                 i18nOptions.postProcess = 'sprintf';
             }
 
-            if (parsedKey.options.attr === 'html') {
+            if (angular.isDefined(i18nOptions) && parsedKey.options.attr === 'html') {
                 angular.forEach(i18nOptions, function (value, key) {
                     let newValue: any = undefined;
                     let sanitized = this.$sanitize(value);
