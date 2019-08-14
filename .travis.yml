@@ -1,8 +1,11 @@
 language: node_js
 
+addons:
+  chrome: stable
+  
 node_js:
-  - 6
-  - 5
+  - 9
+  - 10
 
 before_install:
   - npm install -g gulp

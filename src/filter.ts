@@ -1,12 +1,11 @@
 import * as angular from 'angular';
-import * as i18next from 'i18next';
-import { Ii18nTranslateService, IFilterI18next } from './interfaces';
+import { IFilterI18next, Ii18nTranslateService } from './interfaces';
 
 export class I18nFilter {
 	public static factory() {
-		let filter = ($i18next: Ii18nTranslateService) => {
-			function i18nextFilter(key: string, options: i18next.TranslationOptions) {
-				let localOptions = angular.isDefined(options) ? options : {};
+		const filter = ($i18next: Ii18nTranslateService) => {
+			function i18nextFilter(key: string, options?: any) {
+				const localOptions = angular.isDefined(options) ? options : {};
 				return $i18next.t(key, localOptions);
 			}
 			(i18nextFilter as IFilterI18next).$stateful = true;
