@@ -78,7 +78,8 @@ gulp.task('rollup', ['clean', 'karma'], function () {
 				angular: 'angular', i18next: 'i18next'
 			},			
 			external: [
-				'typescript'
+				'typescript',
+				'angular'
 			],
 			plugins: [
 				typescript()

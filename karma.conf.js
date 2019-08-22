@@ -25,7 +25,7 @@ module.exports = function (config) {
 		],
 
 		preprocessors: {
-            './**/!(*spec).ts': ['karma-typescript', 'coverage'],
+			'./**/!(*spec).ts': ['karma-typescript', 'coverage'],
 			'./*.spec.ts': ['karma-typescript']
 		},
 
@@ -56,7 +56,7 @@ module.exports = function (config) {
 
 		singleRun: true,
 
-		browsers: ['PhantomJS'],
+		browsers: ['Chrome'],
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 60000

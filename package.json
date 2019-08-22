@@ -4,7 +4,7 @@
   "description": "AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)",
   "main": "./dist/ng-i18next.js",
   "author": {
-    "name": "Andre Meyering"
+    "name": "i18next authors"
   },
   "license": "MIT",
   "repository": {
@@ -49,7 +49,7 @@
     "jshint": "^2.10.2",
     "jshint-stylish": ">=2.2.0",
     "karma": "~4.2.0",
-    "karma-chrome-launcher": "~3.0.0",
+    "karma-chrome-launcher": "^3.0.0",
     "karma-cli": "~2.0.0",
     "karma-coverage": "~1.1.2",
     "karma-jasmine": "~2.0.1",
