@@ -1,10 +1,11 @@
 import typescript from 'rollup-plugin-typescript';
 
 export default {
-    entry: 'src/provider.ts',
-    format: 'umd',
-    moduleName: 'ngI18next',
-    dest: 'dist/ng-i18next.js',
+    input: 'src/provider.ts',
+    format: 'amd',
+    file: 'dist/ng-i18next.js',
+    name: 'ngI18next',
+    globals: ['angular', 'i18next'],
     external: [
         'typescript'
     ],

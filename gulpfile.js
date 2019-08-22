@@ -18,24 +18,24 @@ var typescript = require('rollup-plugin-typescript');
 var karma = require('karma').Server;
 var bump = require('gulp-bump'),
 
-getToday = function () {
+	getToday = function () {
 
-	var today = new Date();
-	var dd = 	today.getDate();
-	var mm = 	today.getMonth() + 1; //January is 0!
-	var yyyy =  today.getFullYear();
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth() + 1; //January is 0!
+		var yyyy = today.getFullYear();
 
-	if (dd < 10) {
-		dd = '0' + dd;
-	}
+		if (dd < 10) {
+			dd = '0' + dd;
+		}
 
-	if (mm < 10) {
-		mm = '0' + mm;
-	}
+		if (mm < 10) {
+			mm = '0' + mm;
+		}
 
-	return yyyy + '-' + mm + '-' + dd;
+		return yyyy + '-' + mm + '-' + dd;
 
-};
+	};
 
 var headerMeta = ['/*!',
 	' * <%= pkg.name %> - Version <%= pkg.version %> - ' + getToday(),
@@ -71,13 +71,15 @@ gulp.task('rollup', ['clean', 'karma'], function () {
 		.pipe(rollup({
 			allowRealFiles: true,
 			input: 'src/provider.ts',
-			output: {
-				format: 'umd',
-				name: 'ngI18next',
-				file: 'dist/ng-i18next.js'
-			},
+			format: 'umd',
+			file: 'dist/ng-i18next.js',
+			name: 'ngI18next',
+			globals: {
+				angular: 'angular', i18next: 'i18next'
+			},			
 			external: [
-				'typescript'
+				'typescript',
+				'angular'
 			],
 			plugins: [
 				typescript()
@@ -102,7 +104,7 @@ gulp.task('concat', ['clean', 'karma', 'rollup'], function () {
 gulp.task('karma', [], function (done) {
 	karma.start({
 		configFile: __dirname + '/karma.conf.js',
-	}, function() {
+	}, function () {
 		done();
 	});
 });

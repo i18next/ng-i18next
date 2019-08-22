@@ -8,12 +8,18 @@ export class I18nDirective implements ng.IDirective {
 	public scope: boolean = false;
 	public controller: string = 'NgI18nextController';
 
+	public static factory() {
+		const directive = ($interpolate: ng.IInterpolateService) => new I18nDirective($interpolate);
+		directive.$inject = ['$interpolate'];
+		return directive;
+	}
+
 	constructor(
 		private $interpolate: ng.IInterpolateService) {
 	}
 
 	public link: ng.IDirectiveLinkFn = ($scope: ng.IScope, $element: ng.IAugmentedJQuery, $attrs: I18nAttributes, ctrl: I18nController) => {
-		let self = this;
+		const self = this;
 		let translationValue = '';
 		let isTransformed = false;
 
@@ -30,7 +36,7 @@ export class I18nDirective implements ng.IDirective {
 			ctrl.localize(translationValue, true);
 		}
 
-		$scope.$on('i18nextLanguageChange', function () {
+		$scope.$on('i18nextLanguageChange', () => {
 			ctrl.localize(translationValue);
 		});
 
@@ -53,19 +59,11 @@ export class I18nDirective implements ng.IDirective {
 			}
 
 			// interpolate is allowing to transform {{expr}} into text
-			let interpolation = self.$interpolate($element.html());
+			const interpolation = self.$interpolate($element.html());
 
 			$scope.$watch(interpolation, observe);
 
 			isTransformed = true;
 		}
 	}
-
-	public static factory() {
-		let directive = ($interpolate: ng.IInterpolateService) => new I18nDirective($interpolate);
-		directive.$inject = ['$interpolate'];
-		return directive;
-	}
-
 }
-

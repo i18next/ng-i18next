@@ -1,6 +1,6 @@
 /*!
- * ng-i18next - Version 1.0.4 - 2017-05-26
- * Copyright (c) 2017 Andre Meyering
+ * ng-i18next - Version 1.0.6 - 2019-08-21
+ * Copyright (c) 2019 i18next authors
  *
  * AngularJS provider, filter and directive for i18next (i18next by Jan Mühlemann)
  *
@@ -16,7 +16,7 @@
 	(global.ngI18next = factory(global.angular));
 }(this, (function (angular) { 'use strict';
 
-var I18nDirective = (function () {
+var I18nDirective = /** @class */ (function () {
     function I18nDirective($interpolate) {
         var _this = this;
         this.$interpolate = $interpolate;
@@ -68,7 +68,7 @@ var I18nDirective = (function () {
     return I18nDirective;
 }());
 
-var I18nBindOnceDirective = (function () {
+var I18nBindOnceDirective = /** @class */ (function () {
     function I18nBindOnceDirective($compile) {
         var _this = this;
         this.$compile = $compile;
@@ -89,7 +89,7 @@ var I18nBindOnceDirective = (function () {
     return I18nBindOnceDirective;
 }());
 
-var I18nDirectiveController = (function () {
+var I18nDirectiveController = /** @class */ (function () {
     function I18nDirectiveController($scope, $element, $compile, $parse, $interpolate, $sanitize, $i18next) {
         this.$scope = $scope;
         this.$element = $element;
@@ -101,8 +101,9 @@ var I18nDirectiveController = (function () {
     }
     I18nDirectiveController.prototype.localize = function (key, noWatch) {
         var keys = key.split(';');
-        for (var i = 0; i < keys.length; ++i) {
-            key = keys[i].trim();
+        for (var _i = 0, keys_1 = keys; _i < keys_1.length; _i++) {
+            var item = keys_1[_i];
+            key = item.trim();
             if (key === '') {
                 continue;
             }
@@ -174,7 +175,7 @@ var I18nDirectiveController = (function () {
             }
             if (parsedKey.options.attr === 'html') {
                 angular.forEach(i18nOptions_1, function (value, key) {
-                    var newValue = undefined;
+                    var newValue;
                     var sanitized = this.$sanitize(value);
                     var numeric = Number(value);
                     if (typeof numeric === 'number' && !isNaN(numeric)) {
@@ -216,7 +217,7 @@ var I18nDirectiveController = (function () {
     return I18nDirectiveController;
 }());
 
-var I18nFilter = (function () {
+var I18nFilter = /** @class */ (function () {
     function I18nFilter() {
     }
     I18nFilter.factory = function () {
@@ -234,7 +235,7 @@ var I18nFilter = (function () {
     return I18nFilter;
 }());
 
-var I18nTranslateService = (function () {
+var I18nTranslateService = /** @class */ (function () {
     function I18nTranslateService($rootScope, translationOptions) {
         this.$rootScope = $rootScope;
         this.options = {};
@@ -263,7 +264,7 @@ var I18nTranslateService = (function () {
         // lng will be deleted in some case
         lng = mergedOptions.lng;
         this.translate(key, mergedOptions, hasOwnOptions);
-        return angular.isDefined(lng) ? this.translations[lng][key] : this.translations['auto'][key];
+        return angular.isDefined(lng) ? this.translations[lng][key] : this.translations.auto[key];
     };
     I18nTranslateService.prototype.changeLanguage = function (lng) {
         var _this = this;
@@ -316,7 +317,7 @@ var I18nTranslateService = (function () {
     return I18nTranslateService;
 }());
 
-var I18nProvider = (function () {
+var I18nProvider = /** @class */ (function () {
     function I18nProvider() {
         var _this = this;
         this.translationOptions = {};
@@ -325,7 +326,7 @@ var I18nProvider = (function () {
                 return new I18nTranslateService($rootScope, _this.translationOptions);
             }
             else {
-                throw 'i18next is not loaded';
+                throw new Error('i18next is not loaded');
             }
         };
         this.$get.$inject = ['$rootScope'];
