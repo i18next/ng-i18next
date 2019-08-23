@@ -21,7 +21,6 @@ module.exports = function (config) {
 			'../node_modules/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.js',
 
 			{ pattern: './*.ts', included: true },
-
 		],
 
 		preprocessors: {
@@ -60,6 +59,5 @@ module.exports = function (config) {
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 60000
-
 	});
 };
