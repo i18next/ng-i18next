@@ -15,4 +15,4 @@ before_install:
   - npm install
 
 script:
-  - gulp ci
+  - gulp build
