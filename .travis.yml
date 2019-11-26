@@ -4,9 +4,8 @@ addons:
   chrome: stable
   
 node_js:
-  - 8
-  - 9
   - 10
+  - 12
 
 before_install:
   - npm install -g gulp
@@ -15,4 +14,4 @@ before_install:
   - npm install
 
 script:
-  - gulp ci
+  - gulp build

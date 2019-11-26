@@ -1,41 +1,36 @@
-'use strict';
+const { series, src, dest } = require('gulp');
 
-var gulp = require('gulp');
+const pkg = require('./package.json');
 
-var pkg = require('./package.json');
+const uglify = require('gulp-uglify');
+const webserver = require('gulp-webserver');
+const rename = require('gulp-rename');
+const size = require('gulp-size');
+const header = require('gulp-header');
+const rimraf = require('gulp-rimraf');
+const rollup = require('gulp-rollup');
+const typescript = require('rollup-plugin-typescript');
+const karma = require('karma').Server;
+const bump = require('gulp-bump'),
 
-var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
-var webserver = require('gulp-webserver');
-var concat = require('gulp-concat');
-var rename = require('gulp-rename');
-var minifyJS = require('gulp-minify');
-var size = require('gulp-size');
-var header = require('gulp-header');
-var rimraf = require('gulp-rimraf');
-var rollup = require('gulp-rollup');
-var typescript = require('rollup-plugin-typescript');
-var karma = require('karma').Server;
-var bump = require('gulp-bump'),
+  getToday = function() {
 
-	getToday = function () {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth() + 1; //January is 0!
+	var yyyy = today.getFullYear();
 
-		var today = new Date();
-		var dd = today.getDate();
-		var mm = today.getMonth() + 1; //January is 0!
-		var yyyy = today.getFullYear();
+	if (dd < 10) {
+		dd = '0' + dd;
+	}
 
-		if (dd < 10) {
-			dd = '0' + dd;
-		}
+	if (mm < 10) {
+		mm = '0' + mm;
+	}
 
-		if (mm < 10) {
-			mm = '0' + mm;
-		}
+	return yyyy + '-' + mm + '-' + dd;
 
-		return yyyy + '-' + mm + '-' + dd;
-
-	};
+};
 
 var headerMeta = ['/*!',
 	' * <%= pkg.name %> - Version <%= pkg.version %> - ' + getToday(),
@@ -54,20 +49,14 @@ var headerMeta = ['/*!',
 var headerMetaMin = '/*! <%= pkg.name %> - <%= pkg.version %> - ' + getToday() +
 	' - Copyright (c) ' + new Date().getFullYear() + ' <%= pkg.author.name %>; Licensed <%= pkg.license %>*/';
 
-gulp.task('bump', function () {
-	return gulp.src(['./bower.json', './package.json'])
-		.pipe(bump())
-		.pipe(gulp.dest('./'));
-});
-
-gulp.task('clean', [], function () {
+function clean() {
 	//remove old files
-	return gulp.src(['./dist/*', './build/*'], { read: false })
+	return src(['./dist/*', './build/*'], { read: false })
 		.pipe(rimraf());
-});
+}
 
-gulp.task('rollup', ['clean', 'karma'], function () {
-	return gulp.src(['./src/*.ts'])
+function rollupLib() {
+	return src(['./src/*.ts'])
 		.pipe(rollup({
 			allowRealFiles: true,
 			input: 'src/provider.ts',
@@ -76,7 +65,7 @@ gulp.task('rollup', ['clean', 'karma'], function () {
 			name: 'ngI18next',
 			globals: {
 				angular: 'angular', i18next: 'i18next'
-			},			
+			},
 			external: [
 				'typescript',
 				'angular'
@@ -86,49 +75,49 @@ gulp.task('rollup', ['clean', 'karma'], function () {
 			]
 		}))
 		.pipe(rename('ng-i18next.js'))
-		.pipe(gulp.dest('./build/'));
-});
+		.pipe(dest('./build/'));
+}
 
-gulp.task('concat', ['clean', 'karma', 'rollup'], function () {
-	return gulp.src('./build/ng-i18next.js')
+function concatLib() {
+	return src('./build/ng-i18next.js')
 		.pipe(header(headerMeta, { pkg: pkg }))
-		.pipe(gulp.dest('./dist/'))
+		.pipe(dest('./dist/'))
 		.pipe(rename(pkg.name + '.min.js'))
 		.pipe(uglify({ mangle: false }))
 		.pipe(header(headerMetaMin, { pkg: pkg }))
 		.pipe(size())
-		.pipe(gulp.dest('./dist/'));
-});
+		.pipe(dest('./dist/'));
+}
 
 //run tests
-gulp.task('karma', [], function (done) {
+function karmaTest(done) {
 	karma.start({
 		configFile: __dirname + '/karma.conf.js',
 	}, function () {
 		done();
 	});
-});
+}
 
 //watch tests
-gulp.task('karma-watch', [], function () {
+function karmaTestWatch() {
 	return karma.start({
 		configFile: __dirname + '/karma.conf.js',
 		browsers: ['Chrome'],
 		singleRun: false,
 		autoWatch: true
 	});
-});
+}
 
 
 //TODO: documentation
 
-gulp.task('default', function () {
+function info(done) {
 
 	var info = [
 		'',
 		'  Usage:',
 		'    - build: `gulp build`',
-		'    - watch & test: `gulp karma-watch`',
+		'    - watch & test: `gulp karmaWatch`',
 		'    - run examples: `gulp serve`',
 		'      - Then open http://localhost:8000',
 		'',
@@ -139,20 +128,21 @@ gulp.task('default', function () {
 	].join('\n');
 
 	console.info(info);
-});
 
-gulp.task('test', ['clean', 'karma', 'rollup', 'concat']);
+	done()
+}
 
-gulp.task('serve', [], function () {
-
-	gulp.src('./')
+function serve(done) {
+	src('./')
 		.pipe(webserver({
 			livereload: true,
 			fallback: './examples/index.html'
 		}));
+	done();
+}
 
-});
-
-gulp.task('build', ['ci'])
-
-gulp.task('ci', ['clean', 'karma', 'rollup', 'concat']);
+exports.test = series(clean, karmaTest, rollupLib, concatLib);
+exports.build = series(clean, karmaTest, rollupLib, concatLib);
+exports.karmaWatch = series(clean, karmaTestWatch);
+exports.serve = series(clean, karmaTest, rollupLib, concatLib, serve);
+exports.default = series(info);
