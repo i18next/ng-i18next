@@ -1,9 +1,9 @@
-const { series, src, dest } = require('gulp');
+const { series, src, dest, watch, reload } = require('gulp');
 
 const pkg = require('./package.json');
 
 const uglify = require('gulp-uglify');
-const webserver = require('gulp-webserver');
+const browserSync = require('browser-sync');
 const rename = require('gulp-rename');
 const size = require('gulp-size');
 const header = require('gulp-header');
@@ -13,24 +13,24 @@ const typescript = require('rollup-plugin-typescript');
 const karma = require('karma').Server;
 const bump = require('gulp-bump'),
 
-  getToday = function() {
+	getToday = function () {
 
-	var today = new Date();
-	var dd = today.getDate();
-	var mm = today.getMonth() + 1; //January is 0!
-	var yyyy = today.getFullYear();
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth() + 1; //January is 0!
+		var yyyy = today.getFullYear();
 
-	if (dd < 10) {
-		dd = '0' + dd;
-	}
+		if (dd < 10) {
+			dd = '0' + dd;
+		}
 
-	if (mm < 10) {
-		mm = '0' + mm;
-	}
+		if (mm < 10) {
+			mm = '0' + mm;
+		}
 
-	return yyyy + '-' + mm + '-' + dd;
+		return yyyy + '-' + mm + '-' + dd;
 
-};
+	};
 
 var headerMeta = ['/*!',
 	' * <%= pkg.name %> - Version <%= pkg.version %> - ' + getToday(),
@@ -133,11 +133,26 @@ function info(done) {
 }
 
 function serve(done) {
-	src('./')
-		.pipe(webserver({
-			livereload: true,
-			fallback: './examples/index.html'
-		}));
+	// init browser sync
+	browserSync({
+		server: {
+			baseDir: ['.'],
+			index: './examples/index.html',
+			routes: {
+				"/examples": "examples"
+			}
+		}
+	});
+
+	// reload if any of those file changes
+	watch([
+		'./src/**/*.ts',
+		'./examples/**/*.js',
+		'./examples/**/*.html',
+		'./examples/**/*.css'
+	])
+	.on('change', browserSync.reload);
+
 	done();
 }
 
