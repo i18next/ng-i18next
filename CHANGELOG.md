@@ -1,4 +1,16 @@
 # Changelog #
+v1.0.7
+- angular 1.7.9
+- gulp 4
+
+v1.0.6
+- remove phantomjs
+
+v1.0.5
+- update dependencies
+- chromeheadless
+- TypeScript 3.x
+
 v1.0.4
 - Release TypeScript port
 
